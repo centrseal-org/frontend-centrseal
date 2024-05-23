@@ -1,26 +1,17 @@
 import "./assets/main.scss";
-
+import "vuetify/styles";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-
-// Vuetify
-import "vuetify/styles";
-import { createVuetify } from "vuetify";
-import * as components from "vuetify/components";
-import * as directives from "vuetify/directives";
-
+import vuetify from "./plugins/vuetify";
 import App from "./App.vue";
 import router from "./router";
-
-const vuetify = createVuetify({
-  components,
-  directives,
-});
+import i18n from "@/locales/i18n";
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
 app.use(vuetify);
+app.use(i18n);
 
 app.mount("#app");
