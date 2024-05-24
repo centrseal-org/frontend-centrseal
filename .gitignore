@@ -32,3 +32,5 @@ pnpm-debug.log*
 
 # vue generate files
 components.d.ts
+
+.yarn
