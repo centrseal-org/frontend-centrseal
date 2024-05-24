@@ -4,7 +4,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="bg-lightPurple py-5">
+  <div class="bg-lightPurple py-6">
     <v-container>
       <v-row>
         <v-col cols="12">

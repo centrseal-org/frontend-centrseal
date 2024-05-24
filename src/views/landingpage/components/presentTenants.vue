@@ -19,7 +19,7 @@ const presentTenants = [
 </script>
 
 <template>
-  <div class="bg-lightPurple py-5">
+  <div class="bg-lightPurple py-6">
     <h2 class="text-center mb-3 gradient-text">
       {{ t("Present Tenants with Confidence") }}
     </h2>
