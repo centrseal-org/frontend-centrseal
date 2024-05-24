@@ -2,10 +2,14 @@
 import PresentTenants from "./components/presentTenants.vue";
 import JoinTheWaitlist from "./components/JoinTheWaitlist.vue";
 import Footer from "./components/Footer.vue";
+import Header from "./components/Header.vue";
+import Main from "./components/Main.vue";
 </script>
 
 <template>
   <main>
+    <Header />
+    <Main />
     <PresentTenants />
     <JoinTheWaitlist />
     <Footer />

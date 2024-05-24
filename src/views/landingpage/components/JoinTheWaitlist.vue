@@ -17,14 +17,15 @@ const { t } = useI18n();
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="6" class="d-flex align-center jus">
+        <v-col cols="6" class="d-flex align-center">
           <v-text-field
             hide-details="auto"
             label="Email address"
-            placeholder="johndoe@gmail.com"
+            placeholder="kasra@gmail.com"
             type="email"
             class="join-input"
             variant="solo"
+            density="compact"
           />
           <v-btn class="main-btn ml-4">{{ t("Join the Waitlist") }}</v-btn>
         </v-col>
@@ -32,11 +33,4 @@ const { t } = useI18n();
     </v-container>
   </div>
 </template>
-<style scoped lang="scss">
-.join-input {
-  border-radius: 8px;
-  border: 1px solid #c7c7c7;
-  background: #fff;
-  backdrop-filter: blur(10px);
-}
-</style>
+<style scoped lang="scss"></style>

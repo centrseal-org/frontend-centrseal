@@ -4853,6 +4853,7 @@ __metadata:
     vue-i18n: 9
     vue-router: ^4.3.0
     vue-tsc: ^2.0.11
+    vue3-carousel: ^0.3.3
     vuetify: ^3.6.7
   languageName: unknown
   linkType: soft
@@ -4890,6 +4891,15 @@ __metadata:
   bin:
     vue-tsc: bin/vue-tsc.js
   checksum: b95afad59e59314338f2588e1d8b826a25b5eeeddb3118dd6d40f539e267561ef8553a082e4a3a29c0a424196a88035df3ef1acb87d53921f7c9b38462c90e63
+  languageName: node
+  linkType: hard
+
+"vue3-carousel@npm:^0.3.3":
+  version: 0.3.3
+  resolution: "vue3-carousel@npm:0.3.3"
+  peerDependencies:
+    vue: ^3.2.0
+  checksum: eb52d5bf67771dbb6a2b5cb9ab133835fa343564f4f657612608faef7f35e28134367222f51ee4647e0affd52096cb857f3c8deed85ad6916e9cc80c57a79a46
   languageName: node
   linkType: hard
 

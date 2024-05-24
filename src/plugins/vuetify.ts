@@ -4,7 +4,6 @@ import * as directives from "vuetify/directives";
 
 const baseTheme = {
   // Colors
-  primary: "#FF0000",
   secondary: "#EBEBFF",
   accent: "#FFC0CB",
   error: "#DA4250",
@@ -13,6 +12,8 @@ const baseTheme = {
   warning: "#EEC138",
   grey: "#424242",
   naturalGrey: "#424242",
+
+  primary: "#F1F1F8",
   lightPurple: "#EBEBFF",
 };
 
