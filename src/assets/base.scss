@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
+  text-transform: unset !important;
 }
 body {
   min-height: 100vh;
@@ -15,6 +15,68 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.logo-text {
+  color: rgb(var(--v-theme-indigo));
+  font-size: 32px;
+  font-weight: 500;
+}
+.border-success{
+  border-color: rgb(var(--v-theme-success)) !important;
+}
+.border-warning {
+  border-color: rgb(var(--v-theme-warning)) !important;
+}
+.border-pending {
+  border-color: rgb(var(--v-theme-pending)) !important;
+}
+.border-info {
+  border-color: rgb(var(--v-theme-info)) !important;
+}
+.border-white {
+  border-color: rgb(var(--v-theme-white)) !important;
+}
+.main-btn {
+  display: flex !important;
+  border: 1px solid rgb(var(--v-theme-electricBlue)) !important;
+  background: linear-gradient(93deg, rgb(var(--v-theme-slateBlue)) 0%, rgb(var(--v-theme-indigo)) 100%) !important;
+  box-shadow: 0px 4px 10px 0px rgba(var(--v-theme-slateBlue), 0.32), 0px 2px 4px 0px rgba(var(--v-theme-white), 0.75) inset !important;
+  color: rgb(var(--v-theme-textWhite)) !important;
+  font-family: 'Inter';
+  .v-btn__content {
+    font-weight: 700 !important;
+  } 
+}
+.secondary-btn {
+  display: flex !important;
+  background: rgb(var(--v-theme-slateBlue)) !important;
+  color: rgb(var(--v-theme-textWhite)) !important;
+  font-family: 'Inter';
+  .v-btn__content {
+    font-weight: 700 !important;
+  }
+}
+.join-input {
+  max-width: 430px;
+  height: 50px;
+  .v-field--variant-solo {
+    box-shadow: unset;
+    border-radius: 6px;
+    border: 1px solid rgb(var(--v-theme-lightGray));
+    font-family: Inter;
+  }
+
+  input {
+    height: 50px;
+    font-size: 14px;
+  }
+}
+.gradient-text {
+  background: linear-gradient(90deg, rgb(var(--v-theme-gradientText1)) 0%, rgb(var(--v-theme-gradientText2)) 99.87%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 h2{
   text-align: center;
@@ -31,62 +93,9 @@ h3{
   font-weight: 500;
   line-height: normal;
 }
-.main-btn{
-  height: 52px !important;
-  border-radius: 8px !important;
-  border: 1px solid #1B16FF !important;
-  background: linear-gradient(93deg, #7B78FF 0%, #413DFF 100%) !important;
-  box-shadow: 0px 4px 10px 0px rgba(91, 87, 255, 0.32), 0px 2px 4px 0px rgba(255, 255, 255, 0.75) inset !important;
-  color:#fff !important;
-  font-family: 'Inter';
-  text-transform: unset !important;
-  box-shadow: unset !important;
-}
-.secondary-btn {
-  display: flex;
-  padding: 16px 0px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px !important;
-  background: #7A78F7 !important;
-  color: #fff !important;
-  font-family: 'Inter';
-  text-transform: unset !important;
-  box-shadow: unset !important;
-}
-.gradient-text {
-  font-size: 3em;
-  font-weight: bold;
-  background: linear-gradient(90deg, #701B41 0%, #343290 99.87%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-}
-.logo{
-  color: #413DFF;
-  text-align: center;
-  font-family: "Red Hat Display";
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-}
-.join-input {
-  max-width: 430px;
-  height: 52px;
-  .v-field--variant-solo{
-    box-shadow: unset;
-    border-radius: 8px;
-    border: 1px solid #C7C7C7;
-    font-family: Inter;
-  }
-  input{
-    height: 52px; 
-    font-size:14px;
-  }
-}
+
+
+
 .main-bg{
   background: rgba(255, 255, 255, 0.50);
 }
-// rgb(var(--v-theme-primary)) 

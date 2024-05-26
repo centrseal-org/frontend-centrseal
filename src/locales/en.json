@@ -1,3 +1,14 @@
 {
-  "hello": "{0} world"
+  "aSinglePlace": "A single place to have all tenant documents verified and save time",
+  "centrSeal": "CentrSeal",
+  "joinTheWaitlist": "Join the Waitlist",
+  "qualifyTenants": "Qualify Tenants for Your Listings",
+  "sendToLandlord": "Send to Landlord",
+  "idVerfied": "ID Verfied",
+  "idNotVerified": "ID Not Verified",
+  "paystubsNotVerified": "Paystubs Not Verified",
+  "paystubsVerified": "Paystubs Verified",
+  "creditScore": "Credit Score",
+  "waitingOnPaystubs": "Waiting On Paystubs",
+  "waitingOnCreditScore": "Waiting on Credit Score"
 }

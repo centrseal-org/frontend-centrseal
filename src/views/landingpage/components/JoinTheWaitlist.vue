@@ -20,14 +20,15 @@ const { t } = useI18n();
         <v-col cols="6" class="d-flex align-center">
           <v-text-field
             hide-details="auto"
-            label="Email address"
-            placeholder="kasra@gmail.com"
+            placeholder="Kasra@gmail.com"
             type="email"
             class="join-input"
             variant="solo"
             density="compact"
           />
-          <v-btn class="main-btn ml-4">{{ t("Join the Waitlist") }}</v-btn>
+          <v-btn class="main-btn ml-2 py-6" rounded="lg">{{
+            t("joinTheWaitlist")
+          }}</v-btn>
         </v-col>
       </v-row>
     </v-container>

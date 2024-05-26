@@ -1,61 +1,25 @@
+<!--
+Summary: Display header of the landing page
+@copyright Copyright (c) 2024 CentrSeal. All rights reserved.
+@file This file defines the Header component.
+@author Kasra Jannati
+-->
+
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 </script>
 
 <template>
-  <div class="py-5">
-    <img src="/s1.svg" class="img1" />
-    <img src="/s2.svg" class="img2" />
-    <v-container>
-      <v-row>
-        <v-col cols="12">
-          <div class="d-flex align-center justify-space-between">
-            <span class="logo">CentrSeal</span>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+  <v-container class="py-2">
+    <v-row>
+      <v-col cols="12">
+        <div class="d-flex align-center justify-space-between">
+          <span class="logo-text">{{ t("CentrSeal") }}</span>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
-<style scoped lang="scss">
-@keyframes move {
-  0% {
-    left: 0px;
-    top: 0px;
-  }
-  25% {
-    left: 100px;
-    top: 50px;
-  }
-  50% {
-    left: 200px;
-    top: 100px;
-  }
-  75% {
-    left: 250px;
-    top: 200px;
-  }
-  100% {
-    left: 0px;
-    top: 0px;
-  }
-}
 
-.img1 {
-  position: absolute;
-
-  animation-name: move;
-  animation-duration: 10s;
-
-  animation-iteration-count: infinite;
-}
-.img2 {
-  position: absolute;
-
-  animation-name: move;
-  animation-duration: 20s;
-
-  animation-iteration-count: infinite;
-}
-</style>
+<style scoped lang="scss"></style>
