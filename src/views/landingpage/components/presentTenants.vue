@@ -44,7 +44,7 @@ const presentTenants = [
             {{ presentTenant.text }}
           </v-card-text>
           <v-card-actions>
-            <v-btn class="main-btn">{{ t("joinTheWaitlist") }}</v-btn>
+            <v-btn class="main-btn py-5">{{ t("joinTheWaitlist") }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
