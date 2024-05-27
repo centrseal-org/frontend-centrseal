@@ -1,3 +1,10 @@
+<!--
+Summary: Display the bottom section of the landing page
+@copyright Copyright (c) 2024 CentrSeal. All rights reserved.
+@file This file defines the PresentTenants component.
+@author Kasra Jannati
+-->
+
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
@@ -19,27 +26,30 @@ const presentTenants = [
 </script>
 
 <template>
-  <div class="bg-lightPurple py-6">
-    <h2 class="text-center mb-3 gradient-text">
-      {{ t("Present Tenants with Confidence") }}
-    </h2>
-    <v-container>
-      <v-row>
-        <v-col v-for="presentTenant in presentTenants" cols="12" sm="4">
-          <v-card class="pa-5">
-            <v-card-item>
-              <v-card-title class="text-wrap" v-html="presentTenant.title" />
-            </v-card-item>
-            <v-card-text>
-              {{ presentTenant.text }}
-            </v-card-text>
-            <v-card-actions>
-              <v-btn class="main-btn">{{ t("Join the Waitlist") }}</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+  <v-container class="py-16">
+    <v-row>
+      <v-col cols="12">
+        <h2 class="text-center mb-2 gradient-text font-weight-medium">
+          {{ t("presentTenantsWithConfidence") }}
+        </h2>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col v-for="presentTenant in presentTenants" cols="12" sm="4">
+        <v-card class="pa-5 rounded-lg">
+          <v-card-item>
+            <v-card-title class="text-wrap" v-safe-html="presentTenant.title" />
+          </v-card-item>
+          <v-card-text>
+            {{ presentTenant.text }}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn class="main-btn">{{ t("joinTheWaitlist") }}</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
+
 <style scoped lang="scss"></style>

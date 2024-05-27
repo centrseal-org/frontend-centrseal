@@ -6,7 +6,7 @@ Summary: Index of the landing page
 -->
 
 <script setup lang="ts">
-import PresentTenants from "./components/presentTenants.vue";
+import PresentTenants from "./components/PresentTenants.vue";
 import JoinTheWaitlist from "./components/JoinTheWaitlist.vue";
 import Footer from "./components/Footer.vue";
 import Header from "./components/Header.vue";
@@ -17,14 +17,16 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
 <template>
   <main>
     <Header />
-    <div class="position-relative">
+    <div class="position-relative bg-offWhite">
       <img src="/s1.svg" class="shadow1" alt="" />
       <img src="/s2.svg" class="shadow2" alt="" />
       <Hero />
       <FocusOnTenants />
     </div>
-    <PresentTenants />
-    <JoinTheWaitlist />
+    <div class="position-relative bg-lavender">
+      <PresentTenants />
+      <JoinTheWaitlist />
+    </div>
     <Footer />
   </main>
 </template>
@@ -57,16 +59,17 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   position: absolute;
   border: 1px solid red;
   top: 0;
-
   animation-name: move;
   animation-duration: 10s;
   animation-iteration-count: infinite;
 }
 .shadow2 {
   position: absolute;
-
   animation-name: move;
   animation-duration: 20s;
   animation-iteration-count: infinite;
+}
+.vector {
+  position: absolute;
 }
 </style>

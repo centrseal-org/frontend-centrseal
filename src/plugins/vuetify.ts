@@ -6,6 +6,7 @@ const baseTheme = {
   indigo: "#413DFF",
   slateBlue: "#7A78F7",
   electricBlue: "#1B16FF",
+  lavender: "#EBEBFF",
   offWhite: "#F1F1F8",
   warning: "#DA6A63",
   warningLight: "#ECC8C6",
@@ -18,19 +19,11 @@ const baseTheme = {
   white: "#ffffff",
   textWhite: "#ffffff",
   lightGray: "#C7C7C7",
+  gray: "#949494",
   gradientText1: "#701B41",
   gradientText2: "#343290",
-
-  secondary: "#EBEBFF",
-  accent: "#FFC0CB",
-  error: "#DA4250",
-  // info: "#007EC7",
-  // success: "#2EA44F",
-  // warning: "#EEC138",
-  grey: "#424242",
-  naturalGrey: "#424242",
-
-  lightPurple: "#EBEBFF",
+  verified: "#0B8710",
+  highlight: "#ebff0066",
 };
 
 export default createVuetify({

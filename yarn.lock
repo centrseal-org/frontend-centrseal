@@ -1813,6 +1813,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clipboard@npm:^2.0.6":
+  version: 2.0.11
+  resolution: "clipboard@npm:2.0.11"
+  dependencies:
+    good-listener: ^1.2.2
+    select: ^1.1.2
+    tiny-emitter: ^2.0.0
+  checksum: 413055a6038e43898e0e895216b58ed54fbf386f091cb00188875ef35b186cefbd258acdf4cb4b0ac87cbc00de936f41b45dde9fe1fd1a57f7babb28363b8748
+  languageName: node
+  linkType: hard
+
 "color-convert@npm:^1.9.0":
   version: 1.9.3
   resolution: "color-convert@npm:1.9.3"
@@ -2015,6 +2026,13 @@ __metadata:
   version: 1.0.0
   resolution: "delayed-stream@npm:1.0.0"
   checksum: 46fe6e83e2cb1d85ba50bd52803c68be9bd953282fa7096f51fc29edd5d67ff84ff753c51966061e5ba7cb5e47ef6d36a91924eddb7f3f3483b1c560f77a0020
+  languageName: node
+  linkType: hard
+
+"delegate@npm:^3.1.2":
+  version: 3.2.0
+  resolution: "delegate@npm:3.2.0"
+  checksum: d943058fe05897228b158cbd1bab05164df28c8f54127873231d6b03b0a5acc1b3ee1f98ac70ccc9b79cd84aa47118a7de111fee2923753491583905069da27d
   languageName: node
   linkType: hard
 
@@ -2687,6 +2705,15 @@ __metadata:
     merge2: ^1.4.1
     slash: ^3.0.0
   checksum: b4be8885e0cfa018fc783792942d53926c35c50b3aefd3fdcfb9d22c627639dc26bd2327a40a0b74b074100ce95bb7187bfeae2f236856aa3de183af7a02aea6
+  languageName: node
+  linkType: hard
+
+"good-listener@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "good-listener@npm:1.2.2"
+  dependencies:
+    delegate: ^3.1.2
+  checksum: f39fb82c4e41524f56104cfd2d7aef1a88e72f3f75139115fbdf98cc7d844e0c1b39218b2e83438c6188727bf904ed78c7f0f2feff67b32833bc3af7f0202b33
   languageName: node
   linkType: hard
 
@@ -4118,6 +4145,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"select@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "select@npm:1.1.2"
+  checksum: 4346151e94f226ea6131e44e68e6d837f3fdee64831b756dd657cc0b02f4cb5107f867cb34a1d1216ab7737d0bf0645d44546afb030bbd8d64e891f5e4c4814e
+  languageName: node
+  linkType: hard
+
 "semver@npm:^6.3.1":
   version: 6.3.1
   resolution: "semver@npm:6.3.1"
@@ -4386,6 +4420,13 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: b6937a38c80c7f84d9c11dd75e49d5c44f71d95e810a3250bd1f1797fc7117c57698204adf676b71497acc205d769d65c16ae8fa10afad832ae1322630aef10a
+  languageName: node
+  linkType: hard
+
+"tiny-emitter@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "tiny-emitter@npm:2.1.0"
+  checksum: fbcfb5145751a0e3b109507a828eb6d6d4501352ab7bb33eccef46e22e9d9ad3953158870a6966a59e57ab7c3f9cfac7cab8521db4de6a5e757012f4677df2dd
   languageName: node
   linkType: hard
 
@@ -4771,6 +4812,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-clipboard3@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "vue-clipboard3@npm:2.0.0"
+  dependencies:
+    clipboard: ^2.0.6
+  checksum: 4a82dc080a6700811865adddd1b1560be9d0b1d68a78773e1e397ecb1784fe004e39c8f2c4a57f55a2e3276a8b23426047b9ba191597d67cacc6aa5d9e5ec2b3
+  languageName: node
+  linkType: hard
+
 "vue-component-type-helpers@npm:^2.0.0":
   version: 2.0.19
   resolution: "vue-component-type-helpers@npm:2.0.19"
@@ -4850,8 +4900,10 @@ __metadata:
     vite-plugin-vue-devtools: ^7.0.25
     vitest: ^1.4.0
     vue: ^3.4.21
+    vue-clipboard3: ^2.0.0
     vue-i18n: 9
     vue-router: ^4.3.0
+    vue-safe-html: ^3.0.1
     vue-tsc: ^2.0.11
     vuetify: ^3.6.7
   languageName: unknown
@@ -4865,6 +4917,13 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: c5093ddb5349b47814f1df032a64dd5ee70f34c792a2108fdc5324fcd544ac66f218be69c4b98e9762655f3e591c12ffa542c193897bbfb98e6e4a2b994e312a
+  languageName: node
+  linkType: hard
+
+"vue-safe-html@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "vue-safe-html@npm:3.0.1"
+  checksum: e18f33eaa31f95d72c11fed07684de0856c79192460e225d70e7a8330179244fdcb94ba8dbdc4e2a9e77f4d78f0a129997bbc291274d3d6662ce39e8a7cc9394
   languageName: node
   linkType: hard
 

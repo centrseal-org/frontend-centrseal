@@ -34,3 +34,4 @@ pnpm-debug.log*
 components.d.ts
 
 .yarn
+.yarn/install-state.gz

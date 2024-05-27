@@ -1,5 +1,5 @@
 <!--
-Summary: Display hero of the landing page
+Summary: Display the hero section of the landing page
 @copyright Copyright (c) 2024 CentrSeal. All rights reserved.
 @file This file defines the Hero component.
 @author Kasra Jannati
@@ -45,7 +45,7 @@ const [container] = useKeenSlider({
 </script>
 
 <template>
-  <div class="bg-offWhite py-16 hero">
+  <div class="py-16 hero">
     <v-container>
       <v-row>
         <v-col cols="12">
@@ -62,11 +62,11 @@ const [container] = useKeenSlider({
               hide-details="auto"
               placeholder="Kasra@gmail.com"
               type="email"
-              class="join-input"
+              class="text-input"
               variant="solo"
               density="compact"
             />
-            <v-btn class="main-btn ml-2 py-6" rounded="lg">{{
+            <v-btn class="main-btn ml-2 py-5" rounded="lg">{{
               t("joinTheWaitlist")
             }}</v-btn>
           </div>
@@ -222,6 +222,9 @@ const [container] = useKeenSlider({
 <style scoped lang="scss">
 .hero {
   min-height: calc(100vh - 67.2px);
+}
+.text-input {
+  max-width: 450px;
 }
 .card-slide {
   background: rgba(var(--v-theme-white), 0.5) !important;

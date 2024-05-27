@@ -1,37 +1,40 @@
+<!--
+Summary: Display the 'Join the Waitlist' section of the landing page.
+@copyright Copyright (c) 2024 CentrSeal. All rights reserved.
+@file This file defines the JoinTheWaitlist component.
+@author Kasra Jannati
+-->
+
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 </script>
 
 <template>
-  <div class="bg-lightPurple py-6">
-    <v-container>
-      <v-row>
-        <v-col cols="12">
-          <h3>{{ t("Join the Waitlist") }}</h3>
-          <span>{{
-            t(
-              "We'll let you know once we launch and occasionally send updates (no spam, pinky promise)"
-            )
-          }}</span>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="6" class="d-flex align-center">
-          <v-text-field
-            hide-details="auto"
-            placeholder="Kasra@gmail.com"
-            type="email"
-            class="join-input"
-            variant="solo"
-            density="compact"
-          />
-          <v-btn class="main-btn ml-2 py-6" rounded="lg">{{
-            t("joinTheWaitlist")
-          }}</v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+  <v-container class="py-16">
+    <v-row>
+      <v-col cols="12">
+        <h3>{{ t("joinTheWaitlist") }}</h3>
+        <span>{{ t("WeWillLetYouKnowOnce") }}</span>
+        <span class="text-gray pl-2">{{ t("noSpamPinkyPromise") }}</span>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="6" class="d-flex align-center">
+        <v-text-field
+          hide-details="auto"
+          placeholder="Kasra@gmail.com"
+          type="email"
+          class="text-input"
+          variant="solo"
+          density="compact"
+        />
+        <v-btn class="main-btn ml-2 py-5" rounded="lg">{{
+          t("joinTheWaitlist")
+        }}</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
+
 <style scoped lang="scss"></style>
