@@ -7,6 +7,7 @@ import App from "./App.vue";
 import router from "./router";
 import VueSafeHTML from "vue-safe-html";
 import i18n from "@/locales/i18n";
+import InlineSvg from "vue-inline-svg";
 
 const app = createApp(App);
 
@@ -32,5 +33,6 @@ app.use(VueSafeHTML, {
     "mark",
   ],
 });
+app.component("InlineSvg", InlineSvg);
 
 app.mount("#app");

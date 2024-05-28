@@ -98,10 +98,16 @@ h3{
     font-family: Inter;
     font-size: 14px;
     .v-field__input{
-    padding: 0 5px;
+      padding: 0 5px;
+    }
+    .mdi-menu-down{
+      display: none;
     }
   }
 }
 mark {
   background-color: rgba(var(--v-theme-highlight), 0.5);
+}
+.svg-pending circle, .svg-pending path{
+  fill:rgb(var(--v-theme-gray));
 }

@@ -1,6 +1,7 @@
 {
   "aSinglePlace": "A single place to have all tenant documents verified and save time",
   "centrSeal": "CentrSeal",
+  "copied": "Copied!",
   "chooseYourCriteria": "Choose Your Criteria",
   "creditReportVerifyItsOver": "Credit Report. Verify It's Over",
   "last": "Last",
@@ -15,7 +16,7 @@
   "sendToLandlord": "Send to Landlord",
   "shareAsecureLink": "Share a Secure Link",
   "noSpamPinkyPromise": "(no spam, pinky promise)",
-  "idVerfied": "ID Verfied",
+  "idVerified": "ID Verified",
   "idNotVerified": "ID Not Verified",
   "paystubs": "Paystubs",
   "paystubsNotVerified": "Paystubs Not Verified",
@@ -27,5 +28,6 @@
   "waitingOnPaystubs": "Waiting On Paystubs",
   "waitingOn": "Waiting On",
   "waitingOnCreditScore": "Waiting on Credit Score",
+  "waitingOnIdCard": "Waiting on ID Card",
   "WeWillLetYouKnowOnce": "We'll let you know once we launch and occasionally send updates"
 }

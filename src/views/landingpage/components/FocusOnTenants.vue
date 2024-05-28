@@ -12,6 +12,7 @@ import useClipboard from "vue-clipboard3";
 
 const { t } = useI18n();
 const { toClipboard } = useClipboard();
+const snackbar = ref(false);
 const text = ref("https://centrseal.com/jk9420kd");
 const selectedPaystubs = ref<string>("1");
 const selectedCreditScore = ref<string>("700");
@@ -19,6 +20,7 @@ const selectedCreditScore = ref<string>("700");
 const copyFn = async () => {
   try {
     await toClipboard(text.value);
+    snackbar.value = true;
   } catch (e) {
     console.error(e);
   }
@@ -39,13 +41,13 @@ const copyFn = async () => {
       </v-col>
     </v-row>
     <v-row class="my-8">
-      <v-col cols="6" class="d-flex align-center">
+      <v-col cols="12" md="6" class="d-flex align-center">
         <div>
           <h3>{{ t("chooseYourCriteria") }}</h3>
           <span>{{ t("pickChecks") }}</span>
         </div>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <div class="d-flex flex-column align-baseline">
           <div class="d-flex align-center px-4 rounded-pill switch-card">
             <v-switch inset hide-details color="indigo" :model-value="true" />
@@ -65,7 +67,11 @@ const copyFn = async () => {
                 hide-details
                 variant="solo"
                 density="compact"
-              />
+              >
+                <template #append-inner>
+                  <inline-svg src="/arrow-down.svg" />
+                </template>
+              </v-select>
               <span class="font-weight-medium">{{ t("paystubs") }}</span>
             </span>
           </div>
@@ -89,17 +95,21 @@ const copyFn = async () => {
       </v-col>
     </v-row>
     <v-row class="my-16">
-      <v-col cols="6" class="d-flex align-center">
+      <v-col cols="12" md="6" class="d-flex align-center order-md-0 order-1">
         <div class="d-flex flex-column align-baseline">
           <div class="d-flex align-center px-4 py-3 rounded-pill switch-card">
             <span>
-              <span class="text-gray">https://centrseal.com/</span>jk9420kd
+              <span class="text-gray font-weight-medium"
+                >https://centrseal.com/</span
+              >jk9420kd
             </span>
-            <span @click="copyFn" class="ml-4"> click </span>
+            <span @click="copyFn" class="ml-4 d-flex cursor-pointer">
+              <inline-svg src="/copy-double.svg" />
+            </span>
           </div>
         </div>
       </v-col>
-      <v-col cols="6" class="d-flex align-center">
+      <v-col cols="12" md="6" class="d-flex align-center0">
         <div>
           <h3>{{ t("shareAsecureLink") }}</h3>
           <span>{{ t("generateAuniqueLink") }}</span>
@@ -107,18 +117,19 @@ const copyFn = async () => {
       </v-col>
     </v-row>
     <v-row class="my-8">
-      <v-col cols="6" class="d-flex align-center">
+      <v-col cols="12" md="6" class="d-flex align-center">
         <div>
           <h3>{{ t("getAreportOfYourLeads") }}</h3>
           <span>{{ t("seeHowLeadsQualify") }}</span>
         </div>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <div class="d-flex flex-column align-baseline">
           <div class="d-flex align-center px-4 py-2 rounded-pill switch-card">
             <div class="d-flex align-center">
               <img src="/p1.svg" alt="" />
-              <span class="ml-2 mr-4 font-weight-medium">Chance Workman</span>
+              <span class="ml-2 mr-6 font-weight-medium">Chance Workman</span>
+              <inline-svg src="/dot.svg" />
               <span class="ml-2 font-weight-medium text-verified">{{
                 t("Verified")
               }}</span>
@@ -129,7 +140,8 @@ const copyFn = async () => {
           >
             <div class="d-flex align-center">
               <img src="/p4.svg" alt="" />
-              <span class="ml-2 mr-4 font-weight-medium">Dulce Vaccaro</span>
+              <span class="ml-2 mr-6 font-weight-medium">Dulce Vaccaro</span>
+              <inline-svg src="/dot.svg" class="svg-pending" />
               <span class="ml-2 font-weight-medium text-gray">{{
                 t("waitingOn")
               }}</span>
@@ -138,7 +150,8 @@ const copyFn = async () => {
           <div class="d-flex align-center px-4 py-2 rounded-pill switch-card">
             <div class="d-flex align-center">
               <img src="/p3.svg" alt="" />
-              <span class="ml-2 mr-4 font-weight-medium">Ann Schleifer</span>
+              <span class="ml-2 mr-6 font-weight-medium">Ann Schleifer</span>
+              <inline-svg src="/dot.svg" />
               <span class="ml-2 font-weight-medium text-verified">{{
                 t("Verified")
               }}</span>
@@ -148,6 +161,9 @@ const copyFn = async () => {
       </v-col>
     </v-row>
   </v-container>
+  <v-snackbar v-model="snackbar" :timeout="1000">
+    {{ t("copied") }}
+  </v-snackbar>
 </template>
 
 <style scoped lang="scss">

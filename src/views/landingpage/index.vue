@@ -17,13 +17,15 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
 <template>
   <main>
     <Header />
-    <div class="position-relative bg-offWhite">
+    <div class="position-relative bg-offWhite overflow-hidden">
       <img src="/s1.svg" class="shadow1" alt="" />
       <img src="/s2.svg" class="shadow2" alt="" />
       <Hero />
       <FocusOnTenants />
     </div>
-    <div class="position-relative bg-lavender">
+    <div class="position-relative bg-lavender overflow-hidden">
+      <img src="/s1.svg" class="shadow-b1" alt="" />
+      <img src="/s2.svg" class="shadow-b2" alt="" />
       <PresentTenants />
       <JoinTheWaitlist />
     </div>
@@ -32,44 +34,74 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
 </template>
 
 <style scoped lang="scss">
-@keyframes move {
+@keyframes moveLeft {
   0% {
-    left: 0px;
+    right: 0px;
     top: 0px;
   }
   25% {
-    left: 100px;
-    top: 50px;
+    right: 20%;
+    top: 20%;
   }
   50% {
-    left: 200px;
-    top: 100px;
+    right: 50%;
+    top: 20%;
   }
   75% {
-    left: 250px;
-    top: 200px;
+    right: 80%;
+    top: 25%;
+  }
+  100% {
+    right: 0;
+    top: 0;
+  }
+}
+@keyframes moveRight {
+  0% {
+    left: 0px;
+    top: 20%;
+  }
+  25% {
+    left: 20%;
+    top: 5%;
+  }
+  50% {
+    left: 80%;
+    top: 25%;
+  }
+  75% {
+    left: 40;
+    top: 0;
   }
   100% {
     left: 0px;
-    top: 0px;
+    top: 20%;
   }
 }
-
 .shadow1 {
   position: absolute;
-  border: 1px solid red;
   top: 0;
-  animation-name: move;
-  animation-duration: 10s;
+  right: 0;
+  animation-name: moveLeft;
+  animation-duration: 300s;
   animation-iteration-count: infinite;
 }
 .shadow2 {
   position: absolute;
-  animation-name: move;
-  animation-duration: 20s;
+  left: 0;
+  top: 20%;
+  animation-name: moveRight;
+  animation-duration: 300s;
   animation-iteration-count: infinite;
 }
 .vector {
   position: absolute;
+}
+.shadow-b1,
+.shadow-b2 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  opacity: 0.8;
 }
 </style>

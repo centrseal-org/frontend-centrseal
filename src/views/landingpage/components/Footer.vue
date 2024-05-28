@@ -14,7 +14,9 @@ const { t } = useI18n();
   <v-container class="py-4">
     <v-row>
       <v-col cols="12">
-        <div class="d-flex align-center justify-space-between">
+        <div
+          class="d-flex align-sm-center justify-space-between flex-column flex-sm-row"
+        >
           <span class="logo-text">{{ t("centrSeal") }}</span>
           <span class="text-gray"
             >Copyright © {{ new Date().getFullYear() }} | All Rights Reserved

@@ -4874,6 +4874,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-inline-svg@npm:next":
+  version: 3.1.2
+  resolution: "vue-inline-svg@npm:3.1.2"
+  peerDependencies:
+    vue: ^3
+  checksum: 3699193cd0219fa62022e276936949bbf2cbfca8adeb11f24f414c4e35107e32c46be07dd32ad65afd13a5bef9ad72b35c992800ca63158a8c6e8acc6726e9e4
+  languageName: node
+  linkType: hard
+
 "vue-project@workspace:.":
   version: 0.0.0-use.local
   resolution: "vue-project@workspace:."
@@ -4902,6 +4911,7 @@ __metadata:
     vue: ^3.4.21
     vue-clipboard3: ^2.0.0
     vue-i18n: 9
+    vue-inline-svg: next
     vue-router: ^4.3.0
     vue-safe-html: ^3.0.1
     vue-tsc: ^2.0.11

@@ -12,6 +12,49 @@ import "keen-slider/keen-slider.min.css";
 
 const { t } = useI18n();
 
+const slides = [
+  {
+    id: "1",
+    name: "Jaylon Philips",
+    idCard: true,
+    payStubs: true,
+    creditScore: 596,
+    image: "p1",
+  },
+  {
+    id: "2",
+    name: "Jaylon Philips",
+    idCard: false,
+    payStubs: null,
+    creditScore: 782,
+    image: "p2",
+  },
+  {
+    id: "3",
+    name: "Jaylon Philips",
+    idCard: true,
+    payStubs: null,
+    creditScore: 0,
+    image: "p1",
+  },
+  {
+    id: "4",
+    name: "Jaylon Philips",
+    idCard: true,
+    payStubs: false,
+    creditScore: 650,
+    image: "p4",
+  },
+  {
+    id: "5",
+    name: "Jaylon Philips",
+    idCard: true,
+    payStubs: true,
+    creditScore: 710,
+    image: "p4",
+  },
+];
+
 /* Slideshow */
 const animation = { duration: 70000, easing: (t: number) => t };
 const [container] = useKeenSlider({
@@ -57,162 +100,94 @@ const [container] = useKeenSlider({
           </div>
         </v-col>
         <v-col cols="12">
-          <div class="d-flex align-center justify-center">
+          <div
+            class="d-flex align-center justify-center flex-column flex-sm-row"
+          >
             <v-text-field
               hide-details="auto"
               placeholder="Kasra@gmail.com"
               type="email"
-              class="text-input"
+              class="text-input mb-2 mb-sm-0 w-sm-auto w-100"
               variant="solo"
               density="compact"
             />
-            <v-btn class="main-btn ml-2 py-5" rounded="lg">{{
-              t("joinTheWaitlist")
-            }}</v-btn>
+            <v-btn
+              class="main-btn ml-sm-2 py-5 ml-0 w-sm-auto w-100"
+              rounded="lg"
+              >{{ t("joinTheWaitlist") }}
+              <inline-svg src="/arrowRight.svg" class="ml-2"
+            /></v-btn>
           </div>
         </v-col>
       </v-row>
     </v-container>
 
     <div ref="container" class="keen-slider mt-16">
-      <div class="keen-slider__slide number-slide1">
+      <div v-for="slide in slides" :key="slide.id" class="keen-slider__slide">
         <div class="card-slide mr-4 pa-6 rounded-xl border border-white">
           <div class="d-flex align-center">
-            <img src="/p1.svg" alt="" />
-            <span class="ml-2 font-weight-medium">Brandon Septimus</span>
+            <img :src="`/${slide.image}.svg`" :alt="slide.image" />
+            <span class="ml-2 font-weight-medium">{{ slide.name }}</span>
           </div>
-          <div class="my-6">
+          <div class="my-6 d-flex flex-column">
             <div
-              class="docs-status px-4 py-1 bg-warningLight border border-warning rounded-pill"
+              class="docs-status px-4 py-2 rounded-pill border"
+              :class="{
+                'bg-successLight border-success': slide.idCard === true,
+                'bg-warningLight border-warning': slide.idCard === false,
+                'bg-pendingLight border-pending': slide.idCard === null,
+              }"
             >
-              {{ t("idNotVerified") }}
+              <inline-svg src="/id-card.svg" class="mr-2" />
+              {{
+                slide.idCard === true
+                  ? t("idVerified")
+                  : slide.idCard === false
+                    ? t("idNotVerified")
+                    : t("waitingOnIdCard")
+              }}
             </div>
             <div
-              class="docs-status px-4 py-1 bg-warningLight my-2 border border-warning rounded-pill"
+              class="docs-status px-4 py-2 my-2 rounded-pill border"
+              :class="{
+                'bg-successLight border-success': slide.payStubs === true,
+                'bg-warningLight border-warning': slide.payStubs === false,
+                'bg-pendingLight border-pending': slide.payStubs === null,
+              }"
             >
-              {{ t("paystubsNotVerified") }}
+              <inline-svg src="/paystub.svg" class="mr-2" />
+              {{
+                slide.payStubs === true
+                  ? t("paystubsVerified")
+                  : slide.payStubs === false
+                    ? t("paystubsNotVerified")
+                    : t("waitingOnPaystubs")
+              }}
             </div>
             <div
-              class="docs-status px-4 py-1 bg-infoLight border border-info rounded-pill"
+              class="docs-status px-4 py-2 rounded-pill border"
+              :class="{
+                'bg-successLight border-success': slide.creditScore > 700,
+                'bg-infoLight border-info':
+                  slide.creditScore < 700 && slide.creditScore !== 0,
+                'bg-pendingLight border-pending': slide.creditScore === 0,
+              }"
             >
-              596 {{ t("creditScore") }}
-            </div>
-          </div>
-          <v-btn class="secondary-btn mt-2 w-100 py-6" flat rounded="lg">{{
-            t("sendToLandlord")
-          }}</v-btn>
-        </div>
-      </div>
-      <div class="keen-slider__slide number-slide2">
-        <div class="card-slide mr-4 pa-6 rounded-xl border border-white">
-          <div class="d-flex align-center">
-            <img src="/p2.svg" alt="" />
-            <span class="ml-2 font-weight-medium">Jaylon Philips</span>
-          </div>
-          <div class="my-6">
-            <div
-              class="docs-status px-4 py-1 bg-successLight border border-success rounded-pill"
-            >
-              {{ t("idVerfied") }}
-            </div>
-            <div
-              class="docs-status px-4 py-1 bg-successLight my-2 border border-success rounded-pill"
-            >
-              {{ t("paystubsVerified") }}
-            </div>
-            <div
-              class="docs-status px-4 py-1 bg-successLight border border-success rounded-pill"
-            >
-              782 {{ t("creditScore") }}
-            </div>
-          </div>
-          <v-btn class="secondary-btn mt-2 w-100 py-6" flat rounded="lg">{{
-            t("sendToLandlord")
-          }}</v-btn>
-        </div>
-      </div>
-      <div class="keen-slider__slide number-slide3">
-        <div class="card-slide mr-4 pa-6 rounded-xl border border-white">
-          <div class="d-flex align-center">
-            <img src="/p3.svg" alt="" />
-            <span class="ml-2 font-weight-medium">Ann Schleifer</span>
-          </div>
-          <div class="my-6">
-            <div
-              class="docs-status px-4 py-1 bg-successLight border border-success rounded-pill"
-            >
-              {{ t("idVerfied") }}
-            </div>
-            <div
-              class="docs-status px-4 py-1 bg-pendingLight my-2 border border-pending rounded-pill"
-            >
-              {{ t("waitingOnPaystubs") }}
-            </div>
-            <div
-              class="docs-status px-4 py-1 bg-pendingLight border border-pending rounded-pill"
-            >
-              {{ t("waitingOnCreditScore") }}
+              <inline-svg src="/check-read.svg" class="mr-2" />
+              {{
+                slide.creditScore !== 0
+                  ? `${slide.creditScore} ${t("creditScore")}`
+                  : t("waitingOnCreditScore")
+              }}
             </div>
           </div>
-          <v-btn class="secondary-btn mt-2 w-100 py-6" flat rounded="lg">{{
-            t("sendToLandlord")
-          }}</v-btn>
-        </div>
-      </div>
-      <div class="keen-slider__slide number-slide4">
-        <div class="card-slide mr-4 pa-6 rounded-xl border border-white">
-          <div class="d-flex align-center">
-            <img src="/p4.svg" alt="" />
-            <span class="ml-2 font-weight-medium">Dulce Vaccaro</span>
-          </div>
-          <div class="my-6">
-            <div
-              class="docs-status px-4 py-1 bg-successLight border border-success rounded-pill"
-            >
-              {{ t("idVerfied") }}
-            </div>
-            <div
-              class="docs-status px-4 py-1 bg-pendingLight my-2 border border-pending rounded-pill"
-            >
-              {{ t("waitingOnPaystubs") }}
-            </div>
-            <div
-              class="docs-status px-4 py-1 bg-infoLight border border-info rounded-pill"
-            >
-              602 {{ t("creditScore") }}
-            </div>
-          </div>
-          <v-btn class="secondary-btn mt-2 w-100 py-6" flat rounded="lg">{{
-            t("sendToLandlord")
-          }}</v-btn>
-        </div>
-      </div>
-      <div class="keen-slider__slide number-slide5">
-        <div class="card-slide mr-4 pa-6 rounded-xl border border-white">
-          <div class="d-flex align-center">
-            <img src="/p2.svg" alt="" />
-            <span class="ml-2 font-weight-medium">Jaylon Philips</span>
-          </div>
-          <div class="my-6">
-            <div
-              class="docs-status px-4 py-1 bg-successLight border border-success rounded-pill"
-            >
-              {{ t("idVerfied") }}
-            </div>
-            <div
-              class="docs-status px-4 py-1 bg-successLight my-2 border border-success rounded-pill"
-            >
-              {{ t("paystubsVerified") }}
-            </div>
-            <div
-              class="docs-status px-4 py-1 bg-successLight border border-success rounded-pill"
-            >
-              782 {{ t("creditScore") }}
-            </div>
-          </div>
-          <v-btn class="secondary-btn mt-2 w-100 py-6" flat rounded="lg">{{
-            t("sendToLandlord")
-          }}</v-btn>
+          <v-btn
+            class="secondary-btn mt-2 w-100 py-6"
+            flat
+            rounded="lg"
+            readonly
+            >{{ t("sendToLandlord") }}</v-btn
+          >
         </div>
       </div>
     </div>
@@ -230,9 +205,11 @@ const [container] = useKeenSlider({
   background: rgba(var(--v-theme-white), 0.5) !important;
 }
 .docs-status {
+  display: flex;
+  align-items: center;
   font-family: Inter;
   font-size: 16px;
   font-weight: 500;
-  display: table;
+  width: fit-content;
 }
 </style>

@@ -20,18 +20,23 @@ const { t } = useI18n();
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="6" class="d-flex align-center">
+      <v-col
+        cols="12"
+        md="6"
+        class="d-flex align-cente flex-column flex-md-row"
+      >
         <v-text-field
           hide-details="auto"
           placeholder="Kasra@gmail.com"
           type="email"
-          class="text-input"
+          class="text-input mb-2 mb-md-0 w-md-auto w-100"
           variant="solo"
           density="compact"
         />
-        <v-btn class="main-btn ml-2 py-5" rounded="lg">{{
-          t("joinTheWaitlist")
-        }}</v-btn>
+        <v-btn class="main-btn ml-md-2 ml-0 py-5" rounded="lg"
+          >{{ t("joinTheWaitlist")
+          }}<inline-svg src="/arrowRight.svg" class="ml-2"
+        /></v-btn>
       </v-col>
     </v-row>
   </v-container>
