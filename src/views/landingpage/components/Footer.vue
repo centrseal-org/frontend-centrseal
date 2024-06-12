@@ -17,7 +17,7 @@ const { t } = useI18n();
         <div
           class="d-flex align-sm-center justify-space-between flex-column flex-sm-row"
         >
-          <span class="logo-text">{{ t("centrSeal") }}</span>
+          <h4 class="text-indigo">{{ t("centrSeal") }}</h4>
           <span class="text-gray"
             >Copyright © {{ new Date().getFullYear() }} | All Rights Reserved
           </span>

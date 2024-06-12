@@ -85,6 +85,7 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   animation-name: moveLeft;
   animation-duration: 300s;
   animation-iteration-count: infinite;
+  pointer-events: none;
 }
 .shadow2 {
   position: absolute;
@@ -93,6 +94,7 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   animation-name: moveRight;
   animation-duration: 300s;
   animation-iteration-count: infinite;
+  pointer-events: none;
 }
 .vector {
   position: absolute;
@@ -103,5 +105,6 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   right: 0;
   bottom: 0;
   opacity: 0.8;
+  pointer-events: none;
 }
 </style>

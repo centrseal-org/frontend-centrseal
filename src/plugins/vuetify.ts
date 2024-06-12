@@ -24,6 +24,8 @@ const baseTheme = {
   gradientText2: "#343290",
   verified: "#0B8710",
   highlight: "#ebff0066",
+  blackText: "#111111",
+  error: "#FF1640",
 };
 
 export default createVuetify({

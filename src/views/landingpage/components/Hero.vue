@@ -6,16 +6,42 @@ Summary: Display the hero section of the landing page
 -->
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useKeenSlider } from "keen-slider/vue";
 import "keen-slider/keen-slider.min.css";
+import { mailchimp } from "../../../composables/mailchimp";
 
+const { addAudience } = mailchimp();
 const { t } = useI18n();
+
+const email = ref("");
+const submit = ref();
+const emailRules = [
+  (value: any) => {
+    if (value) return true;
+    return "E-mail is required.";
+  },
+  (value: any) => {
+    if (/.+@.+\..+/.test(value)) return true;
+    return "E-mail must be valid.";
+  },
+];
+
+const submitForm = async () => {
+  for (const rule of emailRules) {
+    const result = rule(email.value);
+    if (result !== true) {
+      return;
+    }
+  }
+  submit.value = await addAudience(email.value);
+};
 
 const slides = [
   {
     id: "1",
-    name: "Jaylon Philips",
+    name: "Jaylon Philips1",
     idCard: true,
     payStubs: true,
     creditScore: 596,
@@ -23,7 +49,7 @@ const slides = [
   },
   {
     id: "2",
-    name: "Jaylon Philips",
+    name: "Jaylon Philips2",
     idCard: false,
     payStubs: null,
     creditScore: 782,
@@ -31,7 +57,7 @@ const slides = [
   },
   {
     id: "3",
-    name: "Jaylon Philips",
+    name: "Jaylon Philips3",
     idCard: true,
     payStubs: null,
     creditScore: 0,
@@ -39,7 +65,7 @@ const slides = [
   },
   {
     id: "4",
-    name: "Jaylon Philips",
+    name: "Jaylon Philips4",
     idCard: true,
     payStubs: false,
     creditScore: 650,
@@ -47,7 +73,7 @@ const slides = [
   },
   {
     id: "5",
-    name: "Jaylon Philips",
+    name: "Jaylon Philips5",
     idCard: true,
     payStubs: true,
     creditScore: 710,
@@ -62,18 +88,8 @@ const [container] = useKeenSlider({
   renderMode: "performance",
   drag: false,
   slides: {
-    perView: () => {
-      const width = window.innerWidth;
-      if (width >= 1200) {
-        return 4;
-      } else if (width >= 992) {
-        return 3;
-      } else if (width >= 768) {
-        return 2;
-      } else {
-        return 1;
-      }
-    },
+    perView: () => "auto",
+    spacing: 32,
   },
   created(s) {
     s.moveToIdx(5, true, animation);
@@ -91,43 +107,54 @@ const [container] = useKeenSlider({
   <div class="py-16 hero">
     <v-container>
       <v-row>
-        <v-col cols="12">
-          <h2 class="text-center mb-2 gradient-text font-weight-medium">
+        <v-col cols="12" class="py-4">
+          <h1 class="text-center mb-6 gradient-text">
             {{ t("qualifyTenants") }}
-          </h2>
-          <div class="text-center font-weight-medium">
+          </h1>
+          <h5 class="text-center text-blackText">
             {{ t("aSinglePlace") }}
-          </div>
+          </h5>
         </v-col>
-        <v-col cols="12">
-          <div
-            class="d-flex align-center justify-center flex-column flex-sm-row"
-          >
-            <v-text-field
-              hide-details="auto"
-              placeholder="Kasra@gmail.com"
-              type="email"
-              class="text-input mb-2 mb-sm-0 w-sm-auto w-100"
-              variant="solo"
-              density="compact"
-            />
-            <v-btn
-              class="main-btn ml-sm-2 py-5 ml-0 w-sm-auto w-100"
-              rounded="lg"
-              >{{ t("joinTheWaitlist") }}
-              <inline-svg src="/arrowRight.svg" class="ml-2"
-            /></v-btn>
-          </div>
+        <v-col cols="12" class="py-4">
+          <v-form @submit.prevent="submitForm">
+            <div
+              class="d-flex align-start justify-center flex-column flex-sm-row"
+            >
+              <v-text-field
+                v-model="email"
+                hide-details="auto"
+                placeholder="Kasra@gmail.com"
+                type="email"
+                class="text-input mb-2 mb-sm-0 w-sm-auto w-100"
+                variant="solo"
+                density="compact"
+                :rules="emailRules"
+                required
+              />
+              <v-btn class="main-btn ml-sm-2 ml-0 w-sm-auto w-100" type="submit"
+                >{{ t("joinTheWaitlist") }}
+                <inline-svg src="/arrowRight.svg" class="ml-2"
+              /></v-btn>
+            </div>
+            <div v-if="submit" class="body1 text-center pt-4">
+              <span class="text-electricBlue">You're on the list!</span> We'll
+              keep you posted!"
+            </div>
+            <div v-if="submit === false" class="body1 text-center">
+              <span class="text-error">Whoops!</span> Something went wrong
+              there. Please try again."
+            </div>
+          </v-form>
         </v-col>
       </v-row>
     </v-container>
 
     <div ref="container" class="keen-slider mt-16">
       <div v-for="slide in slides" :key="slide.id" class="keen-slider__slide">
-        <div class="card-slide mr-4 pa-6 rounded-xl border border-white">
+        <div class="card-slide mr-4 pa-6 border border-white">
           <div class="d-flex align-center">
             <img :src="`/${slide.image}.svg`" :alt="slide.image" />
-            <span class="ml-2 font-weight-medium">{{ slide.name }}</span>
+            <h5 class="ml-2">{{ slide.name }}</h5>
           </div>
           <div class="my-6 d-flex flex-column">
             <div
@@ -181,13 +208,9 @@ const [container] = useKeenSlider({
               }}
             </div>
           </div>
-          <v-btn
-            class="secondary-btn mt-2 w-100 py-6"
-            flat
-            rounded="lg"
-            readonly
-            >{{ t("sendToLandlord") }}</v-btn
-          >
+          <v-btn class="secondary-btn mt-2 w-100 py-6" flat readonly>{{
+            t("sendToLandlord")
+          }}</v-btn>
         </div>
       </div>
     </div>
@@ -200,14 +223,28 @@ const [container] = useKeenSlider({
 }
 .text-input {
   max-width: 450px;
+  :deep(input) {
+    padding: 17px !important;
+  }
+}
+.main-btn {
+  height: auto;
+  padding: 16px 32px;
 }
 .card-slide {
   background: rgba(var(--v-theme-white), 0.5) !important;
+  border-radius: 32px !important;
+  width: 350px;
+  height: 350px;
+  backdrop-filter: blur(10px);
+}
+.keen-slider__slide {
+  min-width: 350px !important;
+  min-height: 350px !important;
 }
 .docs-status {
   display: flex;
   align-items: center;
-  font-family: Inter;
   font-size: 16px;
   font-weight: 500;
   width: fit-content;

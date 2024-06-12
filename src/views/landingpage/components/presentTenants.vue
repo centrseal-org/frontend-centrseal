@@ -56,17 +56,13 @@ const presentTenants = [
         />
         <v-card class="pa-5 rounded-lg">
           <v-card-item>
-            <v-card-title class="text-wrap" v-safe-html="presentTenant.title" />
+            <v-card-title class="text-wrap">
+              <h4 class="text-blackText" v-safe-html="presentTenant.title"></h4>
+            </v-card-title>
           </v-card-item>
           <v-card-text>
-            {{ presentTenant.text }}
+            <h6 class="text-blackText">{{ presentTenant.text }}</h6>
           </v-card-text>
-          <v-card-actions>
-            <v-btn class="main-btn py-5 px-4"
-              >{{ t("joinTheWaitlist") }}
-              <inline-svg src="/arrowRight.svg" class="ml-2"
-            /></v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>

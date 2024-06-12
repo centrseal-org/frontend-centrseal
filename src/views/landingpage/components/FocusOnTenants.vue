@@ -29,37 +29,35 @@ const copyFn = async () => {
 
 <template>
   <v-container class="py-16">
-    <v-row>
+    <v-row class="mb-12">
       <v-col cols="12">
         <h2
-          class="text-center mb-2 gradient-text font-weight-medium"
+          class="text-center mb-6 gradient-text"
           v-safe-html="t('focusOnTheRightTenants')"
         ></h2>
-        <div class="text-center font-weight-medium">
+        <h5 class="text-center text-blackText">
           {{ t("multipleScreenings") }}
-        </div>
+        </h5>
       </v-col>
     </v-row>
     <v-row class="my-8">
       <v-col cols="12" md="6" class="d-flex align-center">
         <div>
-          <h3>{{ t("chooseYourCriteria") }}</h3>
-          <span>{{ t("pickChecks") }}</span>
+          <h3 class="text-blackText">{{ t("chooseYourCriteria") }}</h3>
+          <h6 class="text-blackText mt-2">{{ t("pickChecks") }}</h6>
         </div>
       </v-col>
       <v-col cols="12" md="6">
         <div class="d-flex flex-column align-baseline">
           <div class="d-flex align-center px-4 rounded-pill switch-card">
             <v-switch inset hide-details color="indigo" :model-value="true" />
-            <span class="ml-4 font-weight-medium">{{
-              t("verifyTheirID")
-            }}</span>
+            <h6 class="ml-4 text-blackText">{{ t("verifyTheirID") }}</h6>
           </div>
 
           <div class="d-flex align-center px-4 rounded-pill switch-card my-4">
             <v-switch inset hide-details color="indigo" />
             <span class="ml-4 d-flex align-center">
-              <span class="font-weight-medium">{{ t("last") }}</span>
+              <h6 class="text-blackText">{{ t("last") }}</h6>
               <v-select
                 v-model="selectedPaystubs"
                 :items="['1', '2', '3']"
@@ -72,14 +70,16 @@ const copyFn = async () => {
                   <inline-svg src="/arrow-down.svg" />
                 </template>
               </v-select>
-              <span class="font-weight-medium">{{ t("paystubs") }}</span>
+              <h6 class="text-blackText">{{ t("paystubs") }}</h6>
             </span>
           </div>
 
           <div class="d-flex align-center px-4 rounded-pill switch-card">
             <v-switch inset hide-details color="indigo" :model-value="true" />
-            <span class="ml-4 font-weight-medium d-flex align-center"
-              >{{ t("creditReportVerifyItsOver") }}
+            <div class="ml-4 d-flex align-center">
+              <h6 class="text-blackText">
+                {{ t("creditReportVerifyItsOver") }}
+              </h6>
               <v-text-field
                 v-model="selectedCreditScore"
                 readonly
@@ -89,7 +89,7 @@ const copyFn = async () => {
                 variant="solo"
                 density="compact"
               />
-            </span>
+            </div>
           </div>
         </div>
       </v-col>
@@ -111,16 +111,16 @@ const copyFn = async () => {
       </v-col>
       <v-col cols="12" md="6" class="d-flex align-center0">
         <div>
-          <h3>{{ t("shareAsecureLink") }}</h3>
-          <span>{{ t("generateAuniqueLink") }}</span>
+          <h3 class="text-blackText">{{ t("shareAsecureLink") }}</h3>
+          <h6 class="text-blackText mt-2">{{ t("generateAuniqueLink") }}</h6>
         </div>
       </v-col>
     </v-row>
     <v-row class="my-8">
       <v-col cols="12" md="6" class="d-flex align-center">
         <div>
-          <h3>{{ t("getAreportOfYourLeads") }}</h3>
-          <span>{{ t("seeHowLeadsQualify") }}</span>
+          <h3 class="text-blackText">{{ t("getAreportOfYourLeads") }}</h3>
+          <h6 class="text-blackText mt-2">{{ t("seeHowLeadsQualify") }}</h6>
         </div>
       </v-col>
       <v-col cols="12" md="6">
@@ -128,11 +128,9 @@ const copyFn = async () => {
           <div class="d-flex align-center px-4 py-2 rounded-pill switch-card">
             <div class="d-flex align-center">
               <img src="/p1.svg" alt="" />
-              <span class="ml-2 mr-6 font-weight-medium">Chance Workman</span>
+              <h6 class="ml-2 mr-6">Chance Workman</h6>
               <inline-svg src="/dot.svg" />
-              <span class="ml-2 font-weight-medium text-verified">{{
-                t("Verified")
-              }}</span>
+              <span class="ml-2 body1 text-verified">{{ t("Verified") }}</span>
             </div>
           </div>
           <div
@@ -140,21 +138,17 @@ const copyFn = async () => {
           >
             <div class="d-flex align-center">
               <img src="/p4.svg" alt="" />
-              <span class="ml-2 mr-6 font-weight-medium">Dulce Vaccaro</span>
+              <h6 class="ml-2 mr-6">Dulce Vaccaro</h6>
               <inline-svg src="/dot.svg" class="svg-pending" />
-              <span class="ml-2 font-weight-medium text-gray">{{
-                t("waitingOn")
-              }}</span>
+              <span class="ml-2 body1 text-gray">{{ t("waitingOn") }}</span>
             </div>
           </div>
           <div class="d-flex align-center px-4 py-2 rounded-pill switch-card">
             <div class="d-flex align-center">
               <img src="/p3.svg" alt="" />
-              <span class="ml-2 mr-6 font-weight-medium">Ann Schleifer</span>
+              <h6 class="ml-2 mr-6">Ann Schleifer</h6>
               <inline-svg src="/dot.svg" />
-              <span class="ml-2 font-weight-medium text-verified">{{
-                t("Verified")
-              }}</span>
+              <span class="ml-2 body1 text-verified">{{ t("Verified") }}</span>
             </div>
           </div>
         </div>
