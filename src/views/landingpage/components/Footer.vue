@@ -11,7 +11,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <v-container class="py-4">
+  <v-container class="py-8">
     <v-row>
       <v-col cols="12">
         <div

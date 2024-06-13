@@ -249,4 +249,9 @@ const [container] = useKeenSlider({
   font-weight: 500;
   width: fit-content;
 }
+@media (max-width: 959px) {
+  .text-input {
+    max-width: 100% !important;
+  }
+}
 </style>

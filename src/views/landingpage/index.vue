@@ -23,6 +23,7 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
       <Hero />
       <FocusOnTenants />
     </div>
+    <div class="slope" />
     <div class="position-relative bg-lavender overflow-hidden">
       <img src="/s1.svg" class="shadow-b1" alt="" />
       <img src="/s2.svg" class="shadow-b2" alt="" />
@@ -106,5 +107,22 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   bottom: 0;
   opacity: 0.8;
   pointer-events: none;
+}
+.slope {
+  background: rgb(var(--v-theme-offWhite));
+  width: 100%;
+  height: 50px;
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 0 0, 100% 100%, 0 100%);
+    background: rgb(var(--v-theme-lavender));
+  }
 }
 </style>
