@@ -20,6 +20,8 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
     <div class="position-relative bg-offWhite overflow-hidden">
       <img src="/s1.svg" class="shadow1" alt="" />
       <img src="/s2.svg" class="shadow2" alt="" />
+      <img src="/s1.svg" class="shadow3" alt="" />
+      <img src="/s2.svg" class="shadow4" alt="" />
       <Hero />
       <FocusOnTenants />
     </div>
@@ -35,66 +37,82 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
 </template>
 
 <style scoped lang="scss">
-@keyframes moveLeft {
+@keyframes circleMove {
   0% {
-    right: 0px;
-    top: 0px;
+    top: 0;
+    right: 0;
   }
   25% {
-    right: 20%;
-    top: 20%;
+    top: 0;
+    right: calc(100% - 700px);
   }
   50% {
-    right: 50%;
-    top: 20%;
+    top: 500px;
+    right: calc(100% - 700px);
   }
   75% {
-    right: 80%;
-    top: 25%;
+    top: 500px;
+    right: 0;
   }
   100% {
-    right: 0;
     top: 0;
+    right: 0;
   }
 }
-@keyframes moveRight {
+@keyframes circleMove2 {
   0% {
-    left: 0px;
-    top: 20%;
+    top: 40vh;
+    left: 0;
   }
   25% {
-    left: 20%;
-    top: 5%;
+    top: 40vh;
+    left: calc(100% - 700px);
   }
   50% {
-    left: 80%;
-    top: 25%;
+    top: 0;
+    left: calc(100% - 700px);
   }
   75% {
-    left: 40;
     top: 0;
+    left: 0;
   }
   100% {
-    left: 0px;
-    top: 20%;
+    top: 40vh;
+    left: 0;
   }
 }
 .shadow1 {
   position: absolute;
-  top: 0;
   right: 0;
-  animation-name: moveLeft;
-  animation-duration: 300s;
-  animation-iteration-count: infinite;
+  top: 0;
+  width: 700px;
+  animation: circleMove 500s infinite; /* Apply animation */
   pointer-events: none;
 }
 .shadow2 {
   position: absolute;
+  right: 0;
+  top: 0;
+  width: 700px;
+  animation: circleMove 500s infinite; /* Apply animation */
+  pointer-events: none;
+}
+.shadow3 {
+  position: absolute;
   left: 0;
-  top: 20%;
-  animation-name: moveRight;
-  animation-duration: 300s;
-  animation-iteration-count: infinite;
+  top: 40vh;
+  width: 700px;
+  animation: circleMove2 500s infinite; /* Apply animation */
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+.shadow4 {
+  position: absolute;
+  left: 0;
+  top: 40vh;
+  width: 700px;
+  animation: circleMove2 500s infinite; /* Apply animation */
+  transform: rotate(80deg);
   pointer-events: none;
 }
 .vector {
@@ -104,9 +122,10 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
 .shadow-b2 {
   position: absolute;
   right: 0;
-  bottom: 0;
-  opacity: 0.8;
+  bottom: -150px;
   pointer-events: none;
+  width: 700px;
+  rotate: 140deg;
 }
 .slope {
   background: rgb(var(--v-theme-offWhite));
