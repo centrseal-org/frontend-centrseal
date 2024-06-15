@@ -18,10 +18,10 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   <main>
     <Header />
     <div class="position-relative bg-offWhite overflow-hidden">
-      <img src="/s1.svg" class="shadow1" alt="" />
-      <img src="/s2.svg" class="shadow2" alt="" />
-      <img src="/s1.svg" class="shadow3" alt="" />
-      <img src="/s2.svg" class="shadow4" alt="" />
+      <img src="/s1.svg" class="shadowTop" alt="" />
+      <img src="/s2.svg" class="shadowTop" alt="" />
+      <img src="/s1.svg" class="shadowBottom" alt="" />
+      <img src="/s2.svg" class="shadowBottom" alt="" />
       <Hero />
       <FocusOnTenants />
     </div>
@@ -39,23 +39,23 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
 <style scoped lang="scss">
 @keyframes circleMove {
   0% {
-    top: 0;
+    top: -100px;
     right: 0;
   }
   25% {
-    top: 0;
-    right: calc(100% - 700px);
+    top: -100px;
+    right: calc(100% - 500px);
   }
   50% {
     top: 500px;
-    right: calc(100% - 700px);
+    right: calc(100% - 500px);
   }
   75% {
     top: 500px;
     right: 0;
   }
   100% {
-    top: 0;
+    top: -100px;
     right: 0;
   }
 }
@@ -66,11 +66,11 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   }
   25% {
     top: 40vh;
-    left: calc(100% - 700px);
+    left: calc(100% - 500px);
   }
   50% {
     top: 0;
-    left: calc(100% - 700px);
+    left: calc(100% - 500px);
   }
   75% {
     top: 0;
@@ -82,40 +82,20 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   }
 }
 
-.shadow1 {
+.shadowTop {
   position: absolute;
-  right: 0;
-  top: 0;
   width: 700px;
-  animation: circleMove 300s infinite; /* Apply animation */
+  animation: circleMove 150s linear infinite; /* Apply animation */
   pointer-events: none;
 }
-.shadow2 {
+
+.shadowBottom {
   position: absolute;
-  right: 0;
-  top: 0;
   width: 700px;
-  animation: circleMove 300s infinite; /* Apply animation */
+  animation: circleMove2 150s linear infinite; /* Apply animation */
   pointer-events: none;
 }
-.shadow3 {
-  position: absolute;
-  left: 0;
-  top: 40vh;
-  width: 700px;
-  animation: circleMove2 300s infinite; /* Apply animation */
-  transform: rotate(45deg);
-  pointer-events: none;
-}
-.shadow4 {
-  position: absolute;
-  left: 0;
-  top: 40vh;
-  width: 700px;
-  animation: circleMove2 300s infinite; /* Apply animation */
-  transform: rotate(80deg);
-  pointer-events: none;
-}
+
 .vector {
   position: absolute;
 }
