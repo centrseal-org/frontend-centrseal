@@ -17,6 +17,7 @@ const { t } = useI18n();
 
 const email = ref("");
 const submit = ref();
+// TODO: change style of the email rules
 const emailRules = [
   (value: any) => {
     if (value) return true;
@@ -41,7 +42,7 @@ const submitForm = async () => {
 const slides = [
   {
     id: "1",
-    name: "Jaylon Philips1",
+    name: "Brandon Septimus",
     idCard: true,
     payStubs: true,
     creditScore: 596,
@@ -49,7 +50,7 @@ const slides = [
   },
   {
     id: "2",
-    name: "Jaylon Philips2",
+    name: "Jaylon Philips",
     idCard: false,
     payStubs: null,
     creditScore: 782,
@@ -57,15 +58,15 @@ const slides = [
   },
   {
     id: "3",
-    name: "Jaylon Philips3",
+    name: "Ann Schleifer",
     idCard: true,
     payStubs: null,
     creditScore: 0,
-    image: "p1",
+    image: "p3",
   },
   {
     id: "4",
-    name: "Jaylon Philips4",
+    name: "Dulce Vaccaro",
     idCard: true,
     payStubs: false,
     creditScore: 650,
@@ -73,11 +74,19 @@ const slides = [
   },
   {
     id: "5",
-    name: "Jaylon Philips5",
+    name: "Chance Workman",
     idCard: true,
     payStubs: true,
-    creditScore: 710,
-    image: "p4",
+    creditScore: 802,
+    image: "p5",
+  },
+  {
+    id: "6",
+    name: "Dulce George",
+    idCard: true,
+    payStubs: false,
+    creditScore: 752,
+    image: "p6",
   },
 ];
 
@@ -119,7 +128,9 @@ const [container] = useKeenSlider({
           <v-form @submit.prevent="submitForm">
             <div
               class="d-flex align-start justify-center flex-column flex-sm-row"
+              v-if="!submit"
             >
+              <!-- :rules="emailRules" -->
               <v-text-field
                 v-model="email"
                 hide-details="auto"
@@ -128,7 +139,6 @@ const [container] = useKeenSlider({
                 class="text-input mb-2 mb-sm-0 w-sm-auto w-100"
                 variant="solo"
                 density="compact"
-                :rules="emailRules"
                 required
               />
               <v-btn class="main-btn ml-sm-2 ml-0 w-sm-auto w-100" type="submit"
@@ -138,11 +148,11 @@ const [container] = useKeenSlider({
             </div>
             <div v-if="submit" class="body1 text-center pt-4">
               <span class="text-electricBlue">You're on the list!</span> We'll
-              keep you posted!"
+              keep you posted!
             </div>
             <div v-if="submit === false" class="body1 text-center">
               <span class="text-error">Whoops!</span> Something went wrong
-              there. Please try again."
+              there. Please try again.
             </div>
           </v-form>
         </v-col>
@@ -220,6 +230,8 @@ const [container] = useKeenSlider({
 <style scoped lang="scss">
 .hero {
   min-height: calc(100vh - 67.2px);
+  z-index: 1;
+  position: relative;
 }
 .text-input {
   max-width: 450px;

@@ -15,7 +15,7 @@ const { t } = useI18n();
     <v-row>
       <v-col cols="12">
         <div class="d-flex align-center justify-space-between">
-          <h4 class="text-indigo">{{ t("CentrSeal") }}</h4>
+          <h4 class="text-indigo">{{ t("centrSeal") }}</h4>
         </div>
       </v-col>
     </v-row>

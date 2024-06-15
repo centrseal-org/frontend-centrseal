@@ -17,12 +17,12 @@ const presentTenants = [
   },
   {
     id: "2",
-    title: "<b>1 in 4 submitted</b> documents are fake",
-    text: "That's why we run the checks and give you a seal of approval on the qualified tenants, so you can focus on what you do best, closing deals.",
+    title: "A lot of submitted documents are fake",
+    text: "That’s why we run the checks and give you a seal of approval on the qualified tenants, so you can focus on what you do best, closing deals.",
   },
   {
     id: "3",
-    title: "A <b>Seamless process</b> for tenants & landlords",
+    title: "A Seamless process for tenants & landlords",
     text: "Leads can add their information and complete a screening in minutes. When you have the right tenant, sending them to the landlord takes 10 seconds.",
   },
 ];
@@ -33,12 +33,15 @@ const presentTenants = [
     <v-row>
       <v-col cols="12" class="position-relative">
         <inline-svg src="/centreseal.svg" class="centreseal-pattern" />
-        <h2 class="text-center mb-6 gradient-text position-relative">
-          {{ t("presentTenantsWithConfidence") }}
-        </h2>
+        <div v-intersect="'animate__fadeInUp'">
+          <h2 class="text-center mb-6 gradient-text position-relative">
+            {{ t("presentTenantsWithConfidence") }}
+          </h2>
+        </div>
       </v-col>
     </v-row>
-    <v-row>
+
+    <v-row v-intersect="'animate__fadeInUp'">
       <v-col
         v-for="(presentTenant, index) in presentTenants"
         :key="presentTenant.id"
@@ -52,9 +55,9 @@ const presentTenants = [
           v-if="index === 2"
           class="arrow-pattern"
         />
-        <v-card class="pa-5 rounded-lg">
+        <v-card class="pa-5 rounded-lg fill-height">
           <v-card-item>
-            <v-card-title class="text-wrap">
+            <v-card-title class="kasraa">
               <h4 class="text-blackText" v-safe-html="presentTenant.title" />
             </v-card-title>
           </v-card-item>
@@ -75,7 +78,7 @@ const presentTenants = [
 .arrow-pattern {
   position: absolute;
   right: -50px;
-  bottom: -80px;
+  bottom: 0;
 }
 .centreseal-pattern {
   position: absolute;

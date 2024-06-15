@@ -1,4 +1,5 @@
 import "vuetify/styles";
+import "animate.css";
 import "./assets/main.scss";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -8,6 +9,7 @@ import router from "./router";
 import VueSafeHTML from "vue-safe-html";
 import i18n from "@/locales/i18n";
 import InlineSvg from "vue-inline-svg";
+import animateIntersect from "./views/landingpage/components/v-intersect";
 
 const app = createApp(App);
 
@@ -34,5 +36,6 @@ app.use(VueSafeHTML, {
   ],
 });
 app.component("InlineSvg", InlineSvg);
+app.directive("intersect", animateIntersect);
 
 app.mount("#app");

@@ -1531,6 +1531,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"animate.css@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "animate.css@npm:4.1.1"
+  checksum: c7eb91540423532c549725a6dedea993735a05eadaa49ed4d1965ce166a6db36459adcc9667c1dfe13657fab92a2875bbee34ad0d942444a731badab69f762c8
+  languageName: node
+  linkType: hard
+
 "ansi-regex@npm:^5.0.1":
   version: 5.0.1
   resolution: "ansi-regex@npm:5.0.1"
@@ -4903,6 +4910,7 @@ vue-inline-svg@next:
     "@vue/eslint-config-typescript": ^13.0.0
     "@vue/test-utils": ^2.4.5
     "@vue/tsconfig": ^0.5.1
+    animate.css: ^4.1.1
     eslint: ^8.57.0
     eslint-plugin-vue: ^9.23.0
     jsdom: ^24.0.0

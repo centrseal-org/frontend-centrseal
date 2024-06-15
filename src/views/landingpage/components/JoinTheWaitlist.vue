@@ -15,6 +15,7 @@ const { addAudience } = mailchimp();
 
 const email = ref("");
 const submit = ref();
+// TODO: change style of the email rules
 const emailRules = [
   (value: any) => {
     if (value) return true;
@@ -56,6 +57,7 @@ const submitForm = async () => {
           <div
             class="d-flex align-start justify-center flex-column flex-sm-row"
           >
+            <!-- :rules="emailRules" -->
             <v-text-field
               v-model="email"
               hide-details="auto"
@@ -64,7 +66,6 @@ const submitForm = async () => {
               class="text-input mb-2 mb-sm-0 w-100"
               variant="solo"
               density="compact"
-              :rules="emailRules"
               required
             />
             <v-btn class="main-btn ml-sm-2 ml-0 w-sm-auto w-100" type="submit"

@@ -148,3 +148,14 @@ mark {
 .svg-pending circle, .svg-pending path{
   fill:rgb(var(--v-theme-gray));
 }
+.hidden {
+  visibility: hidden;
+}
+.v-card{
+ box-shadow: none !important;
+}
+.v-card .v-card-title{
+  line-height: normal !important;
+  hyphens: none !important;
+  white-space: normal !important;
+}

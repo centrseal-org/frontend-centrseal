@@ -81,12 +81,13 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
     left: 0;
   }
 }
+
 .shadow1 {
   position: absolute;
   right: 0;
   top: 0;
   width: 700px;
-  animation: circleMove 500s infinite; /* Apply animation */
+  animation: circleMove 300s infinite; /* Apply animation */
   pointer-events: none;
 }
 .shadow2 {
@@ -94,7 +95,7 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   right: 0;
   top: 0;
   width: 700px;
-  animation: circleMove 500s infinite; /* Apply animation */
+  animation: circleMove 300s infinite; /* Apply animation */
   pointer-events: none;
 }
 .shadow3 {
@@ -102,7 +103,7 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   left: 0;
   top: 40vh;
   width: 700px;
-  animation: circleMove2 500s infinite; /* Apply animation */
+  animation: circleMove2 300s infinite; /* Apply animation */
   transform: rotate(45deg);
   pointer-events: none;
 }
@@ -111,7 +112,7 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
   left: 0;
   top: 40vh;
   width: 700px;
-  animation: circleMove2 500s infinite; /* Apply animation */
+  animation: circleMove2 300s infinite; /* Apply animation */
   transform: rotate(80deg);
   pointer-events: none;
 }
