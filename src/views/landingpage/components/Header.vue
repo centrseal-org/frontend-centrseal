@@ -11,15 +11,31 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <v-container class="py-2">
-    <v-row>
-      <v-col cols="12">
-        <div class="d-flex align-center justify-space-between">
-          <h4 class="text-indigo">{{ t("centrSeal") }}</h4>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="stickyNav bg-white">
+    <v-container class="py-2">
+      <v-row>
+        <v-col cols="12">
+          <header class="d-flex align-center justify-space-between">
+            <h4>
+              <RouterLink to="/" class="text-indigo">
+                {{ t("centrSeal") }}</RouterLink
+              >
+            </h4>
+          </header>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.stickyNav {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+a {
+  font-weight: 500 !important;
+  text-decoration: none;
+}
+</style>
