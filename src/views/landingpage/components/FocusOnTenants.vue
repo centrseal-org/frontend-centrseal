@@ -52,12 +52,18 @@ const copyFn = async () => {
         </v-col>
         <v-col cols="12" md="6">
           <div class="d-flex flex-column align-baseline">
-            <div class="d-flex align-center px-4 rounded-pill switch-card">
+            <div
+              class="d-flex align-center px-4 rounded-pill switch-card"
+              v-intersect="'animate__fadeInUp'"
+            >
               <v-switch inset hide-details color="indigo" :model-value="true" />
               <h6 class="ml-4 text-blackText">{{ t("verifyTheirID") }}</h6>
             </div>
 
-            <div class="d-flex align-center px-4 rounded-pill switch-card my-6">
+            <div
+              class="d-flex align-center px-4 rounded-pill switch-card my-6"
+              v-intersect="'animate__fadeInUp'"
+            >
               <v-switch inset hide-details color="indigo" />
               <span class="ml-4 d-flex align-center">
                 <h6 class="text-blackText">{{ t("last") }}</h6>
@@ -77,7 +83,10 @@ const copyFn = async () => {
               </span>
             </div>
 
-            <div class="d-flex align-center px-4 rounded-pill switch-card">
+            <div
+              class="d-flex align-center px-4 rounded-pill switch-card"
+              v-intersect="'animate__fadeInUp'"
+            >
               <v-switch inset hide-details color="indigo" :model-value="true" />
               <div class="ml-4 d-flex align-center">
                 <h6 class="text-blackText">
@@ -130,7 +139,10 @@ const copyFn = async () => {
         </v-col>
         <v-col cols="12" md="6">
           <div class="d-flex flex-column align-baseline">
-            <div class="d-flex align-center px-4 py-2 rounded-pill switch-card">
+            <div
+              class="d-flex align-center px-4 py-2 rounded-pill switch-card"
+              v-intersect="'animate__fadeInUp'"
+            >
               <div class="d-flex align-center">
                 <img src="/p1.svg" alt="" />
                 <h6 class="ml-2 mr-6">Chance Workman</h6>
@@ -142,6 +154,7 @@ const copyFn = async () => {
             </div>
             <div
               class="d-flex align-center px-4 py-2 rounded-pill switch-card my-4"
+              v-intersect="'animate__fadeInUp'"
             >
               <div class="d-flex align-center">
                 <img src="/p4.svg" alt="" />
@@ -150,7 +163,10 @@ const copyFn = async () => {
                 <span class="ml-2 body1 text-gray">{{ t("waitingOn") }}</span>
               </div>
             </div>
-            <div class="d-flex align-center px-4 py-2 rounded-pill switch-card">
+            <div
+              class="d-flex align-center px-4 py-2 rounded-pill switch-card"
+              v-intersect="'animate__fadeInUp'"
+            >
               <div class="d-flex align-center">
                 <img src="/p3.svg" alt="" />
                 <h6 class="ml-2 mr-6">Ann Schleifer</h6>
