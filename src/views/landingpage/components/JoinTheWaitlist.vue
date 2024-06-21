@@ -56,17 +56,18 @@ const submitForm = async () => {
         <v-form @submit.prevent="submitForm">
           <div
             class="d-flex align-start justify-center flex-column flex-sm-row"
+            v-if="!submit"
           >
-            <!-- :rules="emailRules" -->
             <v-text-field
               v-model="email"
               hide-details="auto"
-              placeholder="Kasra@gmail.com"
+              placeholder="info@centrseal.com"
               type="email"
               class="text-input mb-2 mb-sm-0 w-100"
               variant="solo"
               density="compact"
               required
+              autocomplete="email"
             />
             <v-btn class="main-btn ml-sm-2 ml-0 w-sm-auto w-100" type="submit"
               >{{ t("joinTheWaitlist") }}

@@ -14,17 +14,22 @@ const { t } = useI18n();
   <v-container class="py-8">
     <v-row>
       <v-col cols="12">
-        <div
+        <footer
           class="d-flex align-sm-center justify-space-between flex-column flex-sm-row"
         >
           <h4 class="text-indigo">{{ t("centrSeal") }}</h4>
           <span class="text-gray"
             >Copyright © {{ new Date().getFullYear() }} | All Rights Reserved
           </span>
-        </div>
+        </footer>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+footer {
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(25px) !important;
+}
+</style>
