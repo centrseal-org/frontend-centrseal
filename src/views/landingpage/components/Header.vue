@@ -33,6 +33,8 @@ const { t } = useI18n();
   position: sticky;
   top: 0;
   z-index: 2;
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(25px) !important;
 }
 a {
   font-weight: 500 !important;

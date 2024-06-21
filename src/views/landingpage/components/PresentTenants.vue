@@ -33,10 +33,12 @@ const presentTenants = [
     <v-row>
       <v-col cols="12" class="position-relative">
         <inline-svg src="/centreseal.svg" class="centreseal-pattern" />
-        <div v-intersect="'animate__fadeInUp'">
-          <h2 class="text-center mb-6 gradient-text position-relative">
-            {{ t("presentTenantsWithConfidence") }}
-          </h2>
+        <div class="zindexHelper">
+          <div v-intersect="'animate__fadeInUp'">
+            <h2 class="text-center mb-6 gradient-text position-relative">
+              {{ t("presentTenantsWithConfidence") }}
+            </h2>
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -85,7 +87,8 @@ const presentTenants = [
   right: 20%;
   top: -20%;
 }
-h2 {
+.zindexHelper {
   z-index: 1;
+  position: relative;
 }
 </style>

@@ -13,9 +13,33 @@ import useClipboard from "vue-clipboard3";
 const { t } = useI18n();
 const { toClipboard } = useClipboard();
 const snackbar = ref(false);
-const text = ref("https://centrseal.com/jk9420kd");
+const text = ref(
+  "I'll be using CentrSeal to verify my Tenants soon. Check it out: https://centrseal.com"
+);
 const selectedPaystubs = ref<string>("1");
 const selectedCreditScore = ref<string>("700");
+
+// Function to ensure the input is numeric and at most 3 characters long
+const onInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  let value = target.value;
+
+  // Remove non-digit characters
+  value = value.replace(/\D/g, "");
+
+  // Limit to 3 characters
+  if (value.length > 3) {
+    value = value.slice(0, 3);
+  }
+
+  selectedCreditScore.value = value;
+};
+// Handler to set default value if input is empty on blur
+const onBlur = () => {
+  if (selectedCreditScore.value === "") {
+    selectedCreditScore.value = "700";
+  }
+};
 
 const copyFn = async () => {
   try {
@@ -94,12 +118,13 @@ const copyFn = async () => {
                 </h6>
                 <v-text-field
                   v-model="selectedCreditScore"
-                  readonly
                   hide-details="auto"
                   type="text"
                   class="text-input ml-2"
                   variant="solo"
                   density="compact"
+                  @input="onInput"
+                  @blur="onBlur"
                 />
               </div>
             </div>
@@ -109,13 +134,16 @@ const copyFn = async () => {
       <v-row class="my-16 py-16" v-intersect="'animate__fadeInUp'">
         <v-col cols="12" md="6" class="d-flex align-center order-md-0 order-1">
           <div class="d-flex flex-column align-baseline">
-            <div class="d-flex align-center px-4 py-3 rounded-pill switch-card">
+            <div
+              class="d-flex align-center px-4 py-3 rounded-pill switch-card cursor-pointer hoverStyle"
+              @click="copyFn"
+            >
               <span>
                 <span class="text-gray font-weight-medium"
                   >https://centrseal.com/</span
                 >jk9420kd
               </span>
-              <span @click="copyFn" class="ml-4 d-flex cursor-pointer">
+              <span class="ml-4 d-flex">
                 <inline-svg src="/copy-double.svg" />
               </span>
             </div>
@@ -182,10 +210,7 @@ const copyFn = async () => {
     </div>
   </v-container>
   <v-snackbar v-model="snackbar" :timeout="5000">
-    I'll be using CentrSeal to verify my Tenants soon. <br />Check it out:
-    <a href="https://centrseal.com" class="text-white" target="blank"
-      >https://centrseal.com
-    </a>
+    {{ t("copied") }}
   </v-snackbar>
 </template>
 
@@ -199,5 +224,13 @@ const copyFn = async () => {
 .lgScreenWidth {
   max-width: 1200px;
   margin: 0 auto;
+}
+.hoverStyle {
+  transition: all ease 0.3s;
+}
+.hoverStyle:hover,
+.hoverStyle:focus {
+  transform: scale(1.02);
+  box-shadow: 0px 20px 40px 0px rgba(var(--v-theme-indigo), 0.13);
 }
 </style>
