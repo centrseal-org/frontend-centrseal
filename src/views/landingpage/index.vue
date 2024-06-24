@@ -38,46 +38,86 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
 
 <style scoped lang="scss">
 @keyframes circleMove {
+  // 0% {
+  //   top: -100px;
+  //   right: 0;
+  // }
+  // 25% {
+  //   top: -100px;
+  //   right: calc(100% - 500px);
+  // }
+  // 50% {
+  //   top: 500px;
+  //   right: calc(100% - 500px);
+  // }
+  // 75% {
+  //   top: 500px;
+  //   right: 0;
+  // }
+  // 100% {
+  //   top: -100px;
+  //   right: 0;
+  // }
   0% {
-    top: -100px;
+    top: 200px;
     right: 0;
   }
   25% {
     top: -100px;
-    right: calc(100% - 500px);
+    right: calc(50% - 350px);
   }
   50% {
-    top: 500px;
-    right: calc(100% - 500px);
+    top: 200px;
+    right: calc(100% - 350px);
   }
   75% {
-    top: 500px;
-    right: 0;
+    top: 400px;
+    right: calc(50% - 350px);
   }
   100% {
-    top: -100px;
+    top: 200px;
     right: 0;
   }
 }
 @keyframes circleMove2 {
+  // 0% {
+  //   top: 40vh;
+  //   left: 0;
+  // }
+  // 25% {
+  //   top: 40vh;
+  //   left: calc(100% - 500px);
+  // }
+  // 50% {
+  //   top: 0;
+  //   left: calc(100% - 500px);
+  // }
+  // 75% {
+  //   top: 0;
+  //   left: 0;
+  // }
+  // 100% {
+  //   top: 40vh;
+  //   left: 0;
+  // }
   0% {
-    top: 40vh;
+    top: 200px;
     left: 0;
   }
   25% {
-    top: 40vh;
-    left: calc(100% - 500px);
+    top: 400px;
+    left: calc(50% - 350px);
   }
   50% {
-    top: 0;
-    left: calc(100% - 500px);
+    top: 200px;
+    left: calc(100% - 350px);
   }
   75% {
     top: 0;
-    left: 0;
+    left: calc(50% - 350px);
   }
   100% {
-    top: 40vh;
+    top: 200px;
     left: 0;
   }
 }
@@ -85,14 +125,14 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
 .shadowTop {
   position: absolute;
   width: 700px;
-  animation: circleMove 150s linear infinite; /* Apply animation */
+  animation: circleMove 50s linear infinite; /* Apply animation */
   pointer-events: none;
 }
 
 .shadowBottom {
   position: absolute;
   width: 700px;
-  animation: circleMove2 150s linear infinite; /* Apply animation */
+  animation: circleMove2 50s linear infinite; /* Apply animation */
   pointer-events: none;
 }
 

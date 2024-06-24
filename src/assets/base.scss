@@ -70,40 +70,67 @@ body {
   border: 1px solid rgb(var(--v-theme-white));
 }
 h1{
-  font-size: 61px;
+  font-size: $font-size-h1-lg;
   font-weight: 500;
+  @media (max-width: 600px) {
+    font-size: $font-size-h1-sm;
+  }
 }
 h2{
-  font-size: 49px;
+  font-size: $font-size-h2-lg;
   font-weight: 500;
+  @media (max-width: 600px) {
+    font-size: $font-size-h2-lg;
+  }
 }
 h3{
-  font-size: 39px;
+  font-size: $font-size-h3-lg;
   font-weight: 500;
+  @media (max-width: 600px) {
+    font-size: $font-size-h3-lg;
+  }
 }
 h4{
-  font-size: 31px;
+  font-size: $font-size-h4-lg;
   font-weight: 500;
+  @media (max-width: 600px) {
+    font-size: $font-size-h4-lg;
+  }
 }
 h5{
-  font-size: 25px;
+  font-size: $font-size-h5-lg;
   font-weight: 500;
+  @media (max-width: 600px) {
+    font-size: $font-size-h5-lg;
+  }
 }
 h6{
-  font-size: 20px;
+  font-size: $font-size-h6-lg;
   font-weight: 400;
+  @media (max-width: 600px) {
+    font-size: $font-size-h6-lg;
+  }
 }
 .body1{
-  font-size: 18px;
+  font-size: $font-size-body1-lg;
   font-weight: 500;
+  @media (max-width: 600px) {
+    font-size: $font-size-body1-lg;
+  }
 }
 .body2{
-  font-size: 16px;
+  font-size: $font-size-body2-lg;
   font-weight: 500;
+  @media (max-width: 600px) {
+    font-size: $font-size-body2-lg;
+  }
 }
 .body3{
-  font-size: 14px;
+  font-size: $font-size-body3-lg;
   font-weight: 500;
+  @media (max-width: 600px) {
+    font-size: $font-size-body3-lg;
+  }
 }
 
 .v-field--variant-solo{
@@ -121,13 +148,7 @@ h6{
   }
 }
 
-// .simple-text{
-//   font-size: 24px;
-//   font-style: normal;
-//   font-weight: 500;
-//   line-height: normal;
-//   color: rgb(var(--v-theme-blackText));
-// }
+
 .select-drop-down{
 .v-field--variant-solo {
     box-shadow: unset;
