@@ -216,7 +216,7 @@ const copyFn = async () => {
 
 <style scoped lang="scss">
 .text-input {
-  width: 65px;
+  min-width: 65px;
 }
 .switch-card {
   box-shadow: 0px 20px 40px 0px rgba(var(--v-theme-indigo), 0.08);
