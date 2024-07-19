@@ -21,6 +21,19 @@ const { t } = useI18n();
                 {{ t("centrSeal") }}</RouterLink
               >
             </h4>
+            <nav>
+              <RouterLink to="/faq"> {{ t("FAQ") }}</RouterLink>
+              <RouterLink to="/login" class="mx-2">
+                {{ t("Login") }}</RouterLink
+              >
+              <RouterLink to="/signup">
+                <v-btn
+                  class="main-btn ml-sm-2 ml-0 w-sm-auto w-100"
+                  type="button"
+                  >{{ t("Sign Up") }}
+                </v-btn></RouterLink
+              >
+            </nav>
           </header>
         </v-col>
       </v-row>
