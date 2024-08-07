@@ -22,7 +22,7 @@ const submitForm = async () => {
       lastName: lastName.value,
       brokerageName: brokerageName.value,
     });
-    router.push("/login");
+    router.push("/signin");
   } catch (error) {
     console.error("Failed to complete signup", error);
   }

@@ -35,6 +35,7 @@ app.use(VueSafeHTML, {
     "mark",
   ],
 });
+
 app.component("InlineSvg", InlineSvg);
 app.directive("intersect", animateIntersect);
 

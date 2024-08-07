@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import httpHelper from "../../../helpers/httpHelpers";
+import { useRouter } from "vue-router";
 
 const { t } = useI18n();
 const router = useRouter();
 
-const visible = ref(false);
 const email = ref("");
 const password = ref("");
+const visible = ref(false);
 const errorMessage = ref("");
+const isVerifyEmail = ref(false);
+
+const validateEmail = (email: string) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
 
 const submitForm = async () => {
   if (!email.value || !password.value) {
@@ -18,40 +24,58 @@ const submitForm = async () => {
     return;
   }
 
+  if (!validateEmail(email.value)) {
+    errorMessage.value = "Please enter a valid email address.";
+    return;
+  }
+
+  if (password.value.length < 8) {
+    errorMessage.value = "Password must be at least 8 characters long.";
+    return;
+  }
+  /* TODO: add all these conditions in the BK. */
+
   try {
-    const response: any = await httpHelper.post("auth/login", {
+    const response: any = await httpHelper.post("auth/signup", {
       username: email.value,
       password: password.value,
     });
-
-    if (response.code === 200 && response.data) {
+    if (response.data?.status === "logged_in") {
       localStorage.setItem("token", response.data.access_token);
       router.push({ name: "dashboard" });
+    } else if (response.data?.status === "verification_email_sent") {
+      isVerifyEmail.value = true;
     } else {
-      errorMessage.value =
-        response.error?.message ||
-        "Login failed. Please check your email and password.";
+      errorMessage.value = response.error.message;
     }
-  } catch (error) {
+  } catch (error: any) {
     errorMessage.value = "An error occurred. Please try again.";
+  }
+};
+
+const resendVerificationEmail = async () => {
+  try {
+    await httpHelper.post("auth/resend-verification-email", {
+      email: email.value,
+    });
+  } catch (error) {
+    errorMessage.value =
+      "Failed to resend verification email. Please try again.";
   }
 };
 </script>
 
 <template>
-  <div class="py-16 loginPage">
+  <div class="py-16 signup-page">
     <v-container>
-      <v-row>
+      <v-row v-if="!isVerifyEmail">
         <v-col cols="12" class="py-4">
-          <v-form @submit.prevent="submitForm" class="login-form">
+          <v-form @submit.prevent="submitForm" class="signup-form">
             <div class="card-slide mr-4 pa-6 border border-white">
               <div class="d-flex flex-column align-center">
                 <h4 class="gradient-text text-center">
-                  {{ t("Welcome Back!") }}
+                  {{ t("Sign in or create an account") }}
                 </h4>
-                <h6 class="text-blackText text-center mt-2">
-                  {{ t("Log in to manage your properties") }}
-                </h6>
               </div>
 
               <div class="mt-10">
@@ -102,7 +126,7 @@ const submitForm = async () => {
                 type="submit"
               >
                 <div class="d-flex align-center justify-space-between w-100">
-                  <span> {{ t("Log In") }} </span>
+                  <span> {{ t("Continue") }} </span>
                   <inline-svg src="/arrowRight.svg" class="ml-2" />
                 </div>
               </v-btn>
@@ -116,15 +140,52 @@ const submitForm = async () => {
               </div>
 
               <div class="body3 text-gray mb-2 text-center">
-                Don't have an account yet?
+                By continuing up, you agree to our
                 <a
-                  href="/signup"
-                  class="text-indigo font-weight-bold text-decoration-none"
-                  >Sign Up</a
+                  href="/terms-of-service"
+                  class="text-grey font-weight-bold text-decoration-none"
+                  target="_blank"
+                  >Terms of Service</a
                 >
+                and
+                <a
+                  href="/privacy-policy"
+                  class="text-grey font-weight-bold text-decoration-none"
+                  target="_blank"
+                  >Privacy Policy</a
+                >.
               </div>
             </div>
           </v-form>
+        </v-col>
+      </v-row>
+      <v-row v-if="isVerifyEmail">
+        <v-col cols="12" class="py-4">
+          <div class="verify-email">
+            <div class="card-slide mr-4 pa-6 border border-white">
+              <div class="d-flex flex-column align-center mb-10 pb-10">
+                <h4 class="gradient-text text-center">
+                  {{ t("Let's Verify Your Email") }}
+                </h4>
+                <h6 class="text-blackText text-center mt-2">
+                  {{
+                    t(
+                      "Please click the link in your email to verify your email and finish signing up."
+                    )
+                  }}
+                </h6>
+              </div>
+
+              <div class="body3 text-gray mb-2 text-center mt-10 pt-10">
+                Didn't receive the verification email?
+                <a
+                  href="javascript:void(0)"
+                  @click.prevent="resendVerificationEmail"
+                  >Send it again</a
+                >
+              </div>
+            </div>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -132,30 +193,31 @@ const submitForm = async () => {
 </template>
 
 <style scoped lang="scss">
-.loginPage {
+.signup-page {
   min-height: calc(100vh - 57px);
   position: relative;
 }
-.login-form {
+.signup-form,
+.verify-email {
   width: 540px;
   min-width: 350px;
   min-height: 350px;
   margin: 0 auto;
-  .card-slide {
-    background: rgba(var(--v-theme-white), 0.75) !important;
-    border-radius: 32px !important;
-    backdrop-filter: blur(10px);
-    box-shadow: 0px 20px 40px 0px rgba(65, 61, 255, 0.08);
-  }
-  :deep(input) {
-    min-height: 52px !important;
-  }
-  .main-btn {
-    min-height: 52px;
-    :deep(.v-btn__content) {
-      font-size: 18px;
-      width: 100%;
-    }
+}
+.card-slide {
+  background: rgba(var(--v-theme-white), 0.75) !important;
+  border-radius: 32px !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 20px 40px 0px rgba(65, 61, 255, 0.08);
+}
+:deep(input) {
+  min-height: 52px !important;
+}
+.main-btn {
+  min-height: 52px;
+  :deep(.v-btn__content) {
+    font-size: 18px;
+    width: 100%;
   }
 }
 .divider-container {

@@ -26,6 +26,8 @@ const baseTheme = {
   highlight: "#ebff0066",
   blackText: "#111111",
   error: "#FF1640",
+  periwinkle: "#9694FF",
+  lightPeriwinkle: "#E8E8FF",
 };
 
 export default createVuetify({

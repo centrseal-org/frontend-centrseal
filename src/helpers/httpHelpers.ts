@@ -29,6 +29,10 @@ const axiosInstance: AxiosInstance = axios.create({
 // This can be helpful for debugging, analytics, or other monitoring purposes.
 axiosInstance.interceptors.request.use(
   (request: any) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      request.headers["Authorization"] = `Bearer ${token}`;
+    }
     const currentUrl = window.location.href;
     request.headers["Current-UI-Url"] = currentUrl;
     return request;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Header from "../../components/Header.vue";
-import SignupForm from "./components/SignupForm.vue";
+import SigninForm from "./components/SigninForm.vue";
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import SignupForm from "./components/SignupForm.vue";
       <img src="/s2.svg" class="shadowTop" alt="" />
       <img src="/s1.svg" class="shadowBottom" alt="" />
       <img src="/s2.svg" class="shadowBottom" alt="" />
-      <SignupForm />
+      <SigninForm />
     </div>
   </main>
 </template>

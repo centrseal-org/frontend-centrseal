@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../views/landingpage/index.vue";
-import Login from "../views/login/index.vue";
-import Signup from "../views/signup/index.vue";
+// import Login from "../views/login/index.vue";
+import Signin from "../views/signin/index.vue";
 import Dashboard from "../views/dashboard/dashboard.vue";
 
 const router = createRouter({
@@ -12,20 +12,20 @@ const router = createRouter({
       name: "landingpage",
       component: LandingPage,
     },
+    // {
+    //   path: "/login",
+    //   name: "login",
+    //   component: Login,
+    // },
     {
-      path: "/login",
-      name: "login",
-      component: Login,
-    },
-    {
-      path: "/signup",
-      name: "signup",
-      component: Signup,
+      path: "/signin",
+      name: "signin",
+      component: Signin,
     },
     {
       path: "/signup/profile",
       name: "profile",
-      component: () => import("@/views/signup/profile.vue"),
+      component: () => import("@/views/signin/profile.vue"),
     },
     {
       path: "/dashboard",
