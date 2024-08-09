@@ -53,7 +53,7 @@ const handleDashboardClick = () => {
               <v-menu v-if="isLoggedIn">
                 <template v-slot:activator="{ props }">
                   <v-btn v-bind="props" class="menuDropdown">
-                    <i class="hgi-stroke hgi-user-circle-02" />
+                    <inline-svg src="/user.svg" class="mr-2" />
                     Kasra Jannati
                   </v-btn>
                 </template>

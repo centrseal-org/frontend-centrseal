@@ -582,22 +582,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fawmi/vue-google-maps@npm:0.9.67":
-  version: 0.9.67
-  resolution: "@fawmi/vue-google-maps@npm:0.9.67"
-  dependencies:
-    "@googlemaps/markerclustererplus": ^1.2.10
-  checksum: 4bf15feef383139e64357bc51bd3133bdfcf71b357be61d3ad3cdd2e2e1f783009abab4257955fe280ae0d7c1cd4945202b28b8092519ba23871085336b40577
-  languageName: node
-  linkType: hard
-
-"@googlemaps/markerclustererplus@npm:^1.2.10":
-  version: 1.2.10
-  resolution: "@googlemaps/markerclustererplus@npm:1.2.10"
-  checksum: 14e882db8cffbae057abc58a4db0467172e74b96b09cf564b295911f8406c336780b2628311d58d736e59e11fe9a17d8a5ce5660a445bf8d76015bf18cdfc732
-  languageName: node
-  linkType: hard
-
 "@humanwhocodes/config-array@npm:^0.11.14":
   version: 0.11.14
   resolution: "@humanwhocodes/config-array@npm:0.11.14"
@@ -1770,6 +1754,13 @@ __metadata:
   version: 1.0.30001649
   resolution: "caniuse-lite@npm:1.0.30001649"
   checksum: 7952512a243f22c942e0e99249def19d781ad1900db101f2d8de9d83de37db000a7dc7f226c9c99134001975e22852becf1677539c24c7ecae53467b681c400f
+  languageName: node
+  linkType: hard
+
+"canvas-confetti@npm:^1.9.3":
+  version: 1.9.3
+  resolution: "canvas-confetti@npm:1.9.3"
+  checksum: db044a9c9ca0e58eafd115f7dfc2f9ecc377be34d8a5dd75901dae0dafd4fb0b75fbbf8edd48bbefad2468653c5838348f0e768b79727a924259a9ada343ea30
   languageName: node
   linkType: hard
 
@@ -4998,7 +4989,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vue-project@workspace:."
   dependencies:
-    "@fawmi/vue-google-maps": 0.9.67
     "@rushstack/eslint-patch": ^1.8.0
     "@tsconfig/node20": ^20.1.4
     "@types/jsdom": ^21.1.6
@@ -5010,6 +5000,7 @@ __metadata:
     "@vue/tsconfig": ^0.5.1
     animate.css: ^4.1.1
     axios: ^1.7.2
+    canvas-confetti: ^1.9.3
     eslint: ^8.57.0
     eslint-plugin-vue: ^9.23.0
     jsdom: ^24.0.0

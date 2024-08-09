@@ -7,11 +7,16 @@ import Step2 from "./components/Step2.vue";
 import Step3 from "./components/Step3.vue";
 import type { VStepper } from "vuetify/components";
 import { useRouter } from "vue-router";
+import useClipboard from "vue-clipboard3";
+import { useI18n } from "vue-i18n";
 
 const user: any = ref(null);
 const properties: any = ref(null);
 const errorMessage = ref("");
 const router = useRouter();
+const { toClipboard } = useClipboard();
+const snackbar = ref(false);
+const { t } = useI18n();
 
 const fetchUserProfile = async () => {
   try {
@@ -29,7 +34,7 @@ const fetchUserProfile = async () => {
 
 const fetchProperties = async () => {
   try {
-    const response: any = await httpHelper.get("properties");
+    const response: any = await httpHelper.get("properties/user-properties");
     if (response.code === 200 && response.data) {
       properties.value = response.data;
     } else {
@@ -99,6 +104,15 @@ const resetPropertyFlag = () => {
     credit: false,
   };
 };
+
+const copyFn = async (url: string) => {
+  try {
+    await toClipboard(`https://centrseal.com/${url}`);
+    snackbar.value = true;
+  } catch (e) {
+    console.error(e);
+  }
+};
 </script>
 
 <template>
@@ -106,11 +120,15 @@ const resetPropertyFlag = () => {
     <Header @resetPropertyFlag="resetPropertyFlag" />
     <div class="position-relative bg-offWhite overflow-hidden dashboard-page">
       <v-container v-if="properties?.length > 0 && !isAddingProperty">
-        <v-row>
+        <v-row class="mt-4">
           <v-col cols="12">
             <section class="d-flex align-center justify-space-between">
               <h4>properties</h4>
-              <v-btn @click="isAddingProperty = true">Add a Property</v-btn>
+              <v-btn
+                @click="isAddingProperty = true"
+                class="body1 main-btn addProperty px-6"
+                >Add a Property <inline-svg src="/home.svg" class="ml-2"
+              /></v-btn>
             </section>
           </v-col>
         </v-row>
@@ -153,14 +171,18 @@ const resetPropertyFlag = () => {
               <div>
                 <div
                   class="d-flex align-center px-4 py-3 rounded-pill switch-card cursor-pointer hoverStyle"
+                  @click="copyFn(pro.uniqueUrl)"
                 >
                   <span>
                     <span class="text-gray font-weight-medium"
                       >https://centrseal.com/</span
-                    >{{ pro.uniqueUrl }}
+                    >
+                    {{ pro.uniqueUrl }}
                   </span>
-                  <span class="ml-4 d-flex">
+
+                  <span class="ml-4 d-flex align-center">
                     <inline-svg src="/copy-double.svg" />
+                    <span class="body2 text-electricBlue">Copy</span>
                   </span>
                 </div>
               </div>
@@ -258,6 +280,9 @@ const resetPropertyFlag = () => {
       </v-container>
     </div>
   </main>
+  <v-snackbar v-model="snackbar" :timeout="2000">
+    {{ t("copied") }}
+  </v-snackbar>
 </template>
 <style scoped lang="scss">
 .dashboard-page {
@@ -288,5 +313,39 @@ const resetPropertyFlag = () => {
   font-size: 16px;
   font-weight: 500;
   width: fit-content;
+}
+.main-btn.addProperty {
+  // border: 1px solid var(--White-Border, #fff) !important;
+  border: none !important;
+  background: linear-gradient(93deg, #595968 0%, #484852 100%) !important;
+  box-shadow:
+    0px 4px 10px 0px rgba(57, 57, 67, 0.32),
+    0px 2px 4px 0px rgba(255, 255, 255, 0.75) inset !important;
+}
+.main-btn.addProperty::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 10px; /* Match the button's border radius */
+  background: linear-gradient(
+    180deg,
+    #fff,
+    #fff,
+    rgba(89, 89, 104, 0.2),
+    rgba(89, 89, 104, 0.5)
+  );
+  z-index: -1; /* Place it behind the button */
+  padding: 2px; /* Create space for the gradient border */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
 </style>

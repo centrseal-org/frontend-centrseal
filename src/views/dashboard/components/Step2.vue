@@ -41,8 +41,9 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
       <div>
         <h4 class="gradient-text mb-2">Paystub Check</h4>
         <span>
-          We'll check the last 2 paystubs and verify it's valid using a secure
-          bank connection.
+          We'll check the
+          <span class="font-weight-bold">last 2 paystubs</span> and verify it's
+          valid using a secure bank connection.
         </span>
       </div>
       <div class="d-flex align-center justify-space-between mt-4">

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import useClipboard from "vue-clipboard3";
 import { useI18n } from "vue-i18n";
+import confetti from "canvas-confetti";
 
 const { toClipboard } = useClipboard();
 const snackbar = ref(false);
@@ -18,6 +19,22 @@ const copyFn = async () => {
     console.error(e);
   }
 };
+const confettiButton = ref<HTMLElement | null>(null);
+onMounted(async () => {
+  setTimeout(() => {
+    if (confettiButton.value) {
+      const rect = confettiButton.value.getBoundingClientRect();
+      const x = (rect.left + rect.right) / 2 / window.innerWidth;
+      const y = (rect.top + rect.bottom) / 2 / window.innerHeight;
+
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: x, y: y },
+      });
+    }
+  }, 300); // Adjust the delay if necessary
+});
 </script>
 
 <template>
@@ -68,6 +85,7 @@ const copyFn = async () => {
       <div
         class="d-flex align-center px-4 py-3 rounded-pill switch-card cursor-pointer hoverStyle"
         @click="copyFn"
+        ref="confettiButton"
       >
         <span>
           <span class="text-gray font-weight-medium"
@@ -83,12 +101,9 @@ const copyFn = async () => {
   </div>
 
   <div class="progressBar d-flex align-center mt-6 mb-2">
-    <v-progress-linear
-      color="dark-blue"
-      model-value="100"
-      :height="14"
-      rounded
-    ></v-progress-linear>
+    <v-progress-linear color="dark-blue" model-value="100" :height="14" rounded>
+      <inline-svg src="/mark.svg" />
+    </v-progress-linear>
     <span class="ml-2 body1">Step 3/3</span>
   </div>
 
