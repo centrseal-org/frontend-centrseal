@@ -240,12 +240,19 @@ const copyFn = async (url: string) => {
                       :property="property"
                     />
                     <v-stepper-actions>
-                      <template #prev><div class="d-none"></div></template>
+                      <template #prev>
+                        <v-btn
+                          class="main-btn d-flex align-center body1 backbtn"
+                          type="button"
+                          @click="stepperRef?.prev()"
+                          >Back</v-btn
+                        >
+                      </template>
                       <template #next>
                         <div class="stepperActions">
                           <!-- @click="stepperRef?.next()" -->
                           <v-btn
-                            class="main-btn w-100 d-flex align-center my-2"
+                            class="main-btn w-100 d-flex align-center my-2 ml-2"
                             type="button"
                             :disabled="!property.paystub"
                             @click="addProperty"
@@ -347,5 +354,17 @@ const copyFn = async (url: string) => {
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+}
+.v-stepper-actions {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+.main-btn.backbtn {
+  border: 1px solid white !important;
+  background: linear-gradient(93deg, #595968 0%, #484852 100%) !important;
+  box-shadow:
+    0px 4px 10px 0px rgba(57, 57, 67, 0.32),
+    0px 2px 4px 0px rgba(255, 255, 255, 0.75) inset;
 }
 </style>

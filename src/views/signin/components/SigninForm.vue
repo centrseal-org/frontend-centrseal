@@ -18,6 +18,12 @@ const validateEmail = (email: string) => {
   return re.test(email);
 };
 
+const validatePassword = (password: string) => {
+  const hasNumber = /[0-9]/.test(password);
+  const hasUpperCase = /[A-Z]/.test(password);
+  return hasNumber && hasUpperCase;
+};
+
 const submitForm = async () => {
   if (!email.value || !password.value) {
     errorMessage.value = "Email and password are required.";
@@ -31,6 +37,12 @@ const submitForm = async () => {
 
   if (password.value.length < 8) {
     errorMessage.value = "Password must be at least 8 characters long.";
+    return;
+  }
+
+  if (!validatePassword(password.value)) {
+    errorMessage.value =
+      "Password must contain at least one number and one uppercase letter.";
     return;
   }
   /* TODO: add all these conditions in the BK. */

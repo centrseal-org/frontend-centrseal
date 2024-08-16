@@ -50,10 +50,12 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
         <v-btn
           class="main-btn mt-8"
           :class="{ active: isPaystub }"
+          :ripple="false"
           type="button"
           @click="isPaystub = !isPaystub"
         >
           {{ isPaystub ? "Added" : "Add" }}
+          <inline-svg src="/check.svg" v-if="isPaystub" class="ml-1" />
         </v-btn>
         <img src="/3DImage1.png" class="dimage" />
       </div>
@@ -65,8 +67,9 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
       <div>
         <h4 class="gradient-text mb-2">ID Check</h4>
         <div>
-          We'll check the last 2 paystubs and verify it's valid using a secure
-          bank connection
+          We'll collect a photo ID and verify it against a face scan. This
+          feature is still not ready to be used. We'll email you once it's
+          ready.
         </div>
       </div>
       <div class="d-flex align-center justify-space-between mt-4">
@@ -78,7 +81,7 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
         >
           {{ isIdCard ? "Added" : "Add" }}
         </v-btn> -->
-        <span>Not Available</span>
+        <span>Coming Soon</span>
         <img src="/3DImage2.png" class="dimage" />
       </div>
     </div>
@@ -89,8 +92,8 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
       <div>
         <h4 class="gradient-text mb-2">Credit Check</h4>
         <div>
-          We’ll identify the credit score from the lead and make sure it’s above
-          your standard.
+          We'll identify the credit score and make sure they meet your
+          standards.
         </div>
       </div>
       <div class="d-flex align-center justify-space-between mt-4">
@@ -102,7 +105,7 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
         >
           {{ isCredit ? "Added" : "Add" }}
         </v-btn> -->
-        <span>Not Available</span>
+        <span>Coming Soon</span>
         <img src="/3DImage3.png" class="dimage" />
       </div>
     </div>
@@ -137,6 +140,7 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
 .main-btn {
   width: 99px;
   height: 52px;
+  color: red;
 }
 .main-btn.active {
   border: 1px solid var(--Blue-blue-900, #0b096b) !important;
@@ -144,6 +148,15 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
   box-shadow:
     0px 4px 10px 0px rgba(31, 30, 61, 0.32),
     0px 2px 4px 0px rgba(255, 255, 255, 0.75) inset !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  :deep(.v-btn__content) {
+    color: rgb(var(--v-theme-electricBlue)) !important;
+  }
+  &:hover :deep(.v-btn__overlay) {
+    opacity: 0 !important;
+  }
 }
 .progressBar {
   .v-progress-linear {
