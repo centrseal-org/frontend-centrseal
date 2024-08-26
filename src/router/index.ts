@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../views/landingpage/index.vue";
-// import Login from "../views/login/index.vue";
 import Signin from "../views/signin/index.vue";
 import Dashboard from "../views/dashboard/dashboard.vue";
+import Faq from "../views/faq/faq.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,11 +12,7 @@ const router = createRouter({
       name: "landingpage",
       component: LandingPage,
     },
-    // {
-    //   path: "/login",
-    //   name: "login",
-    //   component: Login,
-    // },
+
     {
       path: "/signin",
       name: "signin",
@@ -33,6 +29,11 @@ const router = createRouter({
       component: Dashboard,
       meta: { requiresAuth: true },
     },
+    {
+      path: "/faq",
+      name: "faq",
+      component: Faq,
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
@@ -47,7 +48,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     const token = localStorage.getItem("token");
     if (!token) {
-      next({ name: "login" });
+      next({ name: "landingpage" });
     } else {
       next();
     }

@@ -6,20 +6,30 @@ Summary: Display teh header section of the landing page
 -->
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { usePropertyStore } from "@/stores/useProperty";
+import { useUserStore } from "@/stores/useUser";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 const { t } = useI18n();
 const router = useRouter();
 
+/* Store */
+const userStore = useUserStore();
+const propertyStore = usePropertyStore();
+const user: any = computed(() => userStore.user);
+
 // Example of authentication state (replace with your actual implementation)
 const isLoggedIn = ref(!!localStorage.getItem("token"));
 console.log(localStorage.getItem("token"), "fix it!");
+console.log(isLoggedIn.value, "isLoggedIn");
 
 // Log out the user
 const logout = () => {
   isLoggedIn.value = false;
   localStorage.removeItem("token");
+  userStore.$reset();
+  propertyStore.$reset();
   router.push("/");
 };
 
@@ -37,12 +47,16 @@ const handleDashboardClick = () => {
         <v-col cols="12">
           <header class="d-flex align-center justify-space-between">
             <h4>
-              <RouterLink to="/" class="text-indigo">
+              <RouterLink
+                to="/dashboard"
+                class="text-indigo"
+                @click.prevent="handleDashboardClick"
+              >
                 {{ t("centrSeal") }}
               </RouterLink>
             </h4>
             <nav>
-              <RouterLink to="/faq" class="mr-2"> {{ t("FAQ") }}</RouterLink>
+              <RouterLink to="/faq" class="mr-4"> {{ t("FAQ") }}</RouterLink>
               <RouterLink to="/signin" v-if="!isLoggedIn">
                 <v-btn
                   class="main-btn ml-sm-2 ml-0 w-sm-auto w-100"
@@ -54,7 +68,7 @@ const handleDashboardClick = () => {
                 <template v-slot:activator="{ props }">
                   <v-btn v-bind="props" class="menuDropdown">
                     <inline-svg src="/user.svg" class="mr-2" />
-                    Kasra Jannati
+                    {{ user?.firstName }} {{ user?.lastName }}
                   </v-btn>
                 </template>
                 <v-list>

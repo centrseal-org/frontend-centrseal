@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import httpHelper from "../../../helpers/httpHelpers";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/useUser";
+import httpHelper from "../../../helpers/httpHelpers";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -12,6 +13,8 @@ const password = ref("");
 const visible = ref(false);
 const errorMessage = ref("");
 const isVerifyEmail = ref(false);
+
+const userStore = useUserStore();
 
 const validateEmail = (email: string) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,15 +48,19 @@ const submitForm = async () => {
       "Password must contain at least one number and one uppercase letter.";
     return;
   }
-  /* TODO: add all these conditions in the BK. */
 
   try {
-    const response: any = await httpHelper.post("auth/signup", {
-      username: email.value,
-      password: password.value,
-    });
-    if (response.data?.status === "logged_in") {
+    const response: any = await httpHelper.post(
+      "auth/signup",
+      {
+        username: email.value,
+        password: password.value,
+      },
+      { withCredentials: true }
+    );
+    if (response.data?.status === "logged_in" && response.data.access_token) {
       localStorage.setItem("token", response.data.access_token);
+      userStore.setUser(response.data.user);
       router.push({ name: "dashboard" });
     } else if (response.data?.status === "verification_email_sent") {
       isVerifyEmail.value = true;
@@ -145,13 +152,13 @@ const resendVerificationEmail = async () => {
               <div v-if="errorMessage" class="mt-4 text-danger">
                 {{ errorMessage }}
               </div>
-              <div class="divider-container">
+              <!-- <div class="divider-container">
                 <v-divider></v-divider>
                 <span class="or-text">OR</span>
                 <v-divider></v-divider>
-              </div>
+              </div> -->
 
-              <div class="body3 text-gray mb-2 text-center">
+              <div class="body3 text-gray mb-2 text-center mt-4">
                 By continuing up, you agree to our
                 <a
                   href="/terms-of-service"

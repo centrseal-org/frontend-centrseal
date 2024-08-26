@@ -1,45 +1,38 @@
+import httpHelper from "@/helpers/httpHelpers";
 import { defineStore } from "pinia";
+import { ref } from "vue";
 
-export const usePropertyStore = defineStore("property", {
-  state: () => ({
-    image: null as File | null,
-    address: "",
-  }),
-  actions: {
-    setImage(image: File) {
-      this.image = image;
-    },
-    setAddress(address: string) {
-      this.address = address;
-      console.log(this.address, "this.address");
-    },
-    async submitProperty() {
-      // Replace with your backend API endpoint
-      const endpoint = "https://your-backend.com/api/properties";
+export const usePropertyStore = defineStore("propertyStore", () => {
+  const properties = ref<any[]>([]);
+  const errorMessage = ref("");
 
-      const formData = new FormData();
-      if (this.image) {
-        formData.append("image", this.image);
+  const setProperties = (newProperties: any[]) => {
+    properties.value = newProperties;
+  };
+
+  const fetchProperties = async () => {
+    try {
+      const response: any = await httpHelper.get("property/user-properties");
+      if (response.code === 200 && response.data) {
+        setProperties(response.data);
+      } else {
+        errorMessage.value =
+          response.error?.message || "Failed to fetch user profile.";
       }
-      formData.append("address", this.address);
+    } catch (error) {
+      errorMessage.value = "An error occurred while fetching user profile.";
+    }
+  };
 
-      try {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          body: formData,
-        });
+  const $reset = () => {
+    properties.value = [];
+  };
 
-        if (!response.ok) {
-          throw new Error("Failed to submit property");
-        }
-
-        const data = await response.json();
-        // Handle successful response (e.g., clear store, show success message)
-        console.log("Property submitted successfully:", data);
-      } catch (error) {
-        // Handle error (e.g., show error message)
-        console.error("Error submitting property:", error);
-      }
-    },
-  },
+  return {
+    properties,
+    errorMessage,
+    setProperties,
+    fetchProperties,
+    $reset,
+  };
 });

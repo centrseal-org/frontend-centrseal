@@ -70,15 +70,28 @@ async function request<T, D = unknown>(
 }
 
 const httpHelper = {
-  get: <T>(path: string) => request<T>("get", path),
-  post: <T, D = unknown>(path: string, payload?: D) =>
-    request<T, D>("post", path, payload),
-  put: <T, D = unknown>(path: string, payload?: D) =>
-    request<T, D>("put", path, payload),
-  patch: <T, D = unknown>(path: string, payload?: D) =>
-    request<T, D>("patch", path, payload),
-  delete: <T, D = unknown>(path: string, payload?: D) =>
-    request<T, D>("delete", path, payload),
+  get: <T>(path: string, config?: AxiosRequestConfig) =>
+    request<T>("get", path, undefined, config),
+  post: <T, D = unknown>(
+    path: string,
+    payload?: D,
+    config?: AxiosRequestConfig
+  ) => request<T, D>("post", path, payload, config),
+  put: <T, D = unknown>(
+    path: string,
+    payload?: D,
+    config?: AxiosRequestConfig
+  ) => request<T, D>("put", path, payload, config),
+  patch: <T, D = unknown>(
+    path: string,
+    payload?: D,
+    config?: AxiosRequestConfig
+  ) => request<T, D>("patch", path, payload, config),
+  delete: <T, D = unknown>(
+    path: string,
+    payload?: D,
+    config?: AxiosRequestConfig
+  ) => request<T, D>("delete", path, payload, config),
 };
 
 export default httpHelper;

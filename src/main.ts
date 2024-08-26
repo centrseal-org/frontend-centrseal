@@ -10,10 +10,14 @@ import VueSafeHTML from "vue-safe-html";
 import i18n from "@/locales/i18n";
 import InlineSvg from "vue-inline-svg";
 import animateIntersect from "./views/landingpage/components/v-intersect";
+import piniaPluginPersistedState from "pinia-plugin-persistedstate";
 
 const app = createApp(App);
 
-app.use(createPinia());
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedState);
+app.use(pinia);
+
 app.use(router);
 app.use(vuetify);
 app.use(i18n);
@@ -38,5 +42,6 @@ app.use(VueSafeHTML, {
 
 app.component("InlineSvg", InlineSvg);
 app.directive("intersect", animateIntersect);
+// app.use(createPinia());
 
 app.mount("#app");

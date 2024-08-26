@@ -5,12 +5,14 @@ import { useI18n } from "vue-i18n";
 import confetti from "canvas-confetti";
 
 const { toClipboard } = useClipboard();
-const snackbar = ref(false);
 const { t } = useI18n();
+const snackbar = ref(false);
+const confettiButton = ref<HTMLElement | null>(null);
 
 const props = defineProps<{
   response: any;
 }>();
+
 const copyFn = async () => {
   try {
     await toClipboard(`https://centrseal.com/${props.response.uniqueUrl}`);
@@ -19,28 +21,27 @@ const copyFn = async () => {
     console.error(e);
   }
 };
-const confettiButton = ref<HTMLElement | null>(null);
+
 onMounted(async () => {
   setTimeout(() => {
     if (confettiButton.value) {
       const rect = confettiButton.value.getBoundingClientRect();
       const x = (rect.left + rect.right) / 2 / window.innerWidth;
       const y = (rect.top + rect.bottom) / 2 / window.innerHeight;
-
       confetti({
         particleCount: 100,
         spread: 70,
         origin: { x: x, y: y },
       });
     }
-  }, 300); // Adjust the delay if necessary
+  }, 300);
 });
 </script>
 
 <template>
-  <h4 class="text-blackText">All Ready! Let’s Get Some Tenants</h4>
+  <h4 class="text-blackText">All Ready! Let's Get Some Tenants</h4>
   <h6 class="text-blackText mt-2">
-    Your property is added and we’re ready to invite tenants to verify.
+    Your property is added and we're ready to invite tenants to verify.
   </h6>
 
   <div class="d-flex my-10">
@@ -49,14 +50,14 @@ onMounted(async () => {
       class="imageUploaded"
       v-if="props.response?.image[0]?.url"
     />
-
-    <img src="/uploadfile.png" v-else />
-
+    <img src="/uploadfile.png" v-else class="imageUploaded" />
     <div class="d-flex flex-column ml-4">
-      <span class="font-weight-bold">{{
-        props.response.address.data.properties.address_line1
-      }}</span>
-      <span>{{ props.response.address.data.properties.address_line2 }}</span>
+      <span class="font-weight-bold">
+        {{ props.response.address.data.properties.address_line1 }}
+      </span>
+      <span>
+        {{ props.response.address.data.properties.address_line2 }}
+      </span>
 
       <div class="mt-4 d-flex">
         <span
@@ -76,11 +77,10 @@ onMounted(async () => {
   </div>
 
   <div class="invitationLink">
-    <span
-      >Share the link below to invite tenants to verify themselves for this
-      property.</span
-    >
-
+    <span>
+      Share the link below to invite tenants to verify themselves for this
+      property.
+    </span>
     <div class="d-flex flex-column align-baseline my-4">
       <div
         class="d-flex align-center px-4 py-3 rounded-pill switch-card cursor-pointer hoverStyle"
@@ -139,6 +139,9 @@ onMounted(async () => {
 .imageUploaded {
   width: 150px;
   max-height: 200px;
+  border-radius: 8px;
+  border: 1px solid var(--Blue-blue-300, #6663ff);
+  background: url(<path-to-image>) lightgray 50% / cover no-repeat;
 }
 .docs-status {
   display: flex;

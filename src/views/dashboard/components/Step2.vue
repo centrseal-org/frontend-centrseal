@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const isPaystub = ref(false);
-const isIdCard = ref(false);
-const isCredit = ref(false);
 const props = defineProps<{
   property: any;
 }>();
+
+const isPaystub = ref(props.property.paystub);
+const isIdCard = ref(props.property.idCard);
+const isCredit = ref(props.property.credit);
+
 const emit = defineEmits(["updatePropertyChecks"]);
 emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
 </script>
@@ -24,8 +26,7 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
       class="imageUploaded"
       v-if="props.property?.image[0]?.url"
     />
-    <img src="/uploadfile.png" v-else />
-
+    <img src="/uploadfile.png" v-else class="imageUploaded" />
     <div class="d-flex flex-column ml-4">
       <span class="font-weight-bold">{{
         props.property.address.data.properties.address_line1
@@ -37,9 +38,10 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
   <div class="checks d-flex mb-6">
     <div
       class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between"
+      :class="{ active: isPaystub }"
     >
       <div>
-        <h4 class="gradient-text mb-2">Paystub Check</h4>
+        <h4 class="text-slateBlue mb-2">Paystub Check</h4>
         <span>
           We'll check the
           <span class="font-weight-bold">last 2 paystubs</span> and verify it's
@@ -65,7 +67,7 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
       class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between"
     >
       <div>
-        <h4 class="gradient-text mb-2">ID Check</h4>
+        <h4 class="text-slateBlue mb-2">ID Check</h4>
         <div>
           We'll collect a photo ID and verify it against a face scan. This
           feature is still not ready to be used. We'll email you once it's
@@ -73,15 +75,17 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
         </div>
       </div>
       <div class="d-flex align-center justify-space-between mt-4">
-        <!-- TODO: future feature -->
-        <!-- <v-btn
+        <v-btn
           class="main-btn mt-8"
+          :class="{ active: isIdCard }"
           type="button"
-          @click="isIdCard = !isIdCard"
+          :ripple="false"
+          @click="isIdCard = true"
         >
-          {{ isIdCard ? "Added" : "Add" }}
-        </v-btn> -->
-        <span>Coming Soon</span>
+          <span :class="{ 'text-gray body1 ml-6': isIdCard }">{{
+            isIdCard ? "Coming Soon" : "Add"
+          }}</span>
+        </v-btn>
         <img src="/3DImage2.png" class="dimage" />
       </div>
     </div>
@@ -90,22 +94,24 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
       class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between"
     >
       <div>
-        <h4 class="gradient-text mb-2">Credit Check</h4>
+        <h4 class="text-slateBlue mb-2">Credit Check</h4>
         <div>
           We'll identify the credit score and make sure they meet your
           standards.
         </div>
       </div>
       <div class="d-flex align-center justify-space-between mt-4">
-        <!-- TODO: future feature -->
-        <!-- <v-btn
+        <v-btn
           class="main-btn mt-8"
           type="button"
-          @click="isCredit = !isCredit"
+          :ripple="false"
+          :class="{ active: isCredit }"
+          @click="isCredit = true"
         >
-          {{ isCredit ? "Added" : "Add" }}
-        </v-btn> -->
-        <span>Coming Soon</span>
+          <span :class="{ 'text-gray body1 ml-6': isCredit }">{{
+            isCredit ? "Coming Soon" : "Add"
+          }}</span>
+        </v-btn>
         <img src="/3DImage3.png" class="dimage" />
       </div>
     </div>
@@ -124,13 +130,20 @@ emit("updatePropertyChecks", { isPaystub, isIdCard, isCredit });
 <style scoped lang="scss">
 .card-slide {
   background: rgba(var(--v-theme-white), 0.75) !important;
-  border-radius: 32px !important;
+  border-radius: 12px !important;
   backdrop-filter: blur(10px);
   width: 350px;
+  &.active {
+    border: 1px solid rgb(var(--v-theme-electricBlue)) !important;
+  }
 }
 .imageUploaded {
   width: 150px;
   max-height: 200px;
+
+  border-radius: 8px;
+  border: 1px solid var(--Blue-blue-300, #6663ff);
+  background: url(<path-to-image>) lightgray 50% / cover no-repeat;
 }
 .dimage {
   width: 80px;

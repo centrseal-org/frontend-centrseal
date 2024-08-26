@@ -20,6 +20,7 @@ const baseTheme = {
   textWhite: "#ffffff",
   lightGray: "#C7C7C7",
   gray: "#949494",
+  darkGray: "#454545",
   gradientText1: "#701B41",
   gradientText2: "#343290",
   verified: "#0B8710",

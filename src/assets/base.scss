@@ -36,13 +36,11 @@ body {
   border-color: rgb(var(--v-theme-periwinkle)) !important;
 }
 .main-btn {
-  // display: flex !important;
   border: 1px solid rgb(var(--v-theme-electricBlue)) !important;
   background: linear-gradient(93deg, rgb(var(--v-theme-slateBlue)) 0%, rgb(var(--v-theme-indigo)) 100%) !important;
   box-shadow: 0px 4px 10px 0px rgba(var(--v-theme-slateBlue), 0.32), 0px 2px 4px 0px rgba(var(--v-theme-white), 0.50) inset !important;
   border-radius: 8px !important;
-  // height: auto !important;
-  // padding: 16px 32px !important;
+  transition: all ease 1s;
   .v-btn__content {
     font-weight: 500;
     color: rgb(var(--v-theme-textWhite));
@@ -50,6 +48,16 @@ body {
     font-style: normal;
     line-height: normal;
   } 
+  .v-btn__overlay, .v-btn__underlay{
+    display: none ;
+  }
+  &:hover > .v-btn__overlay{
+    opacity: 0 !important;
+  }
+  &:hover{
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), linear-gradient(93deg, #7B78FF 0%, #413DFF 100%) !important;
+    box-shadow: 0px 4px 10px 0px rgba(91, 87, 255, 0.32) !important;
+  }
 }
 .secondary-btn {
   display: flex !important;

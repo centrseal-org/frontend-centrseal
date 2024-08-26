@@ -1,16 +1,27 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import axios from "axios";
+import { usePropertyStore } from "@/stores/useProperty";
+import { useUserStore } from "@/stores/useUser";
 
-const props = defineProps<{
-  user: any;
-}>();
+const props = defineProps({
+  property: {
+    type: Object,
+    required: true,
+  },
+});
 
 const isUploading = ref(false);
-const uploadedFiles = ref<any>([]);
+const uploadedFiles = ref<any>(props.property.image || []);
 const fileInput = ref<HTMLInputElement | null>(null);
-const propertyAddress = ref();
+const propertyAddress = ref(props.property.address);
 const addressSuggestions = ref<any[]>([]);
+
+/* Store */
+const propertyStore = usePropertyStore();
+const properties = computed(() => propertyStore.properties);
+const userStore = useUserStore();
+const user: any = computed(() => userStore.user);
 
 const handleDragOver = (event: DragEvent) => {
   event.preventDefault();
@@ -52,7 +63,6 @@ const sendFiles = async () => {
 
     console.log(formData);
     // const response = await httpHelper.post("upload", formData);
-    // console.log("Files sent successfully:", response);
     // uploadedFiles.value = []; // Clear the files after sending
   } catch (error) {
     console.error("Error sending files:", error);
@@ -62,12 +72,12 @@ const sendFiles = async () => {
 };
 
 // Function to fetch address suggestions from Geoapify
+// TODO: change API key in prodcut
 const fetchAddressSuggestions = async (query: string) => {
   if (query.length < 3) {
     addressSuggestions.value = [];
     return;
   }
-
   const apiKey = "e0ce9f3ec874464abe49c4a64a7195d8";
   const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${query}&apiKey=${apiKey}`;
   try {
@@ -82,14 +92,7 @@ const fetchAddressSuggestions = async (query: string) => {
   }
 };
 
-// Watch propertyAddress and fetch suggestions
-// watch(propertyAddress, (newAddress) => {
-//   console.log("1");
-//   fetchAddressSuggestions(newAddress);
-// });
-
 const onConditionChange = (newAddress: any) => {
-  console.log("111");
   fetchAddressSuggestions(newAddress);
 };
 
@@ -99,9 +102,10 @@ emit("updatePropertyInfo", { propertyAddress, uploadedFiles });
 </script>
 
 <template>
-  <h4 class="text-blackText">Hey, {{ props.user.firstName }}! 😁</h4>
+  <h4 class="text-blackText">Hey, {{ user?.firstName }}! 😁</h4>
   <h6 class="text-blackText mt-2">
-    Welcome! Let's add your first property
+    <span v-if="properties.length"> Let's add a property </span>
+    <span v-else> Welcome! Let's add your first property </span>
     <span class="text-gray">(it takes 30 seconds).</span>
   </h6>
   <div class="upload-container pa-10 my-8">
@@ -135,16 +139,6 @@ emit("updatePropertyInfo", { propertyAddress, uploadedFiles });
 
   <div class="propertyStreet">
     <label class="body2 text-gray">Property Street Address</label>
-    <!-- <v-text-field
-      id="autocomplete"
-      hide-details="auto"
-      type="text"
-      class="text-input my-2"
-      variant="solo"
-      density="compact"
-      placeholder="21 Park Ln Cir."
-      v-model="propertyAddress"
-    /> -->
     <v-autocomplete
       v-model="propertyAddress"
       @update:search="onConditionChange"
@@ -160,13 +154,6 @@ emit("updatePropertyInfo", { propertyAddress, uploadedFiles });
       return-object
     >
     </v-autocomplete>
-
-    <!-- <v-autocomplete
-      label="Autocomplete"
-      :items="suggestions"
-      id="autocomplete"
-      v-model="propertyAddress"
-    ></v-autocomplete> -->
   </div>
   <div class="progressBar d-flex align-center mt-6 mb-2">
     <v-progress-linear
@@ -193,7 +180,6 @@ emit("updatePropertyInfo", { propertyAddress, uploadedFiles });
   max-width: 200px;
   margin-right: 10px;
 }
-
 .progressBar {
   .v-progress-linear {
     width: 48px;
