@@ -38,6 +38,15 @@ const handleDashboardClick = () => {
   emit("resetPropertyFlag");
   router.push("/dashboard");
 };
+
+const handleLogoClick = async () => {
+  emit("resetPropertyFlag");
+  if (router.currentRoute.value.fullPath === "/") {
+    return;
+  } else {
+    await router.push("/dashboard");
+  }
+};
 </script>
 
 <template>
@@ -48,9 +57,9 @@ const handleDashboardClick = () => {
           <header class="d-flex align-center justify-space-between">
             <h4>
               <RouterLink
-                to="/dashboard"
+                to="/"
                 class="text-indigo"
-                @click.prevent="handleDashboardClick"
+                @click.prevent="handleLogoClick"
               >
                 {{ t("centrSeal") }}
               </RouterLink>

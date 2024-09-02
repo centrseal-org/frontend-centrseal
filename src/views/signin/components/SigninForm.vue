@@ -13,6 +13,7 @@ const password = ref("");
 const visible = ref(false);
 const errorMessage = ref("");
 const isVerifyEmail = ref(false);
+const _isTenant = ref(false);
 
 const userStore = useUserStore();
 
@@ -28,6 +29,23 @@ const validatePassword = (password: string) => {
 };
 
 const submitForm = async () => {
+  const uniqueUrl = router.currentRoute.value.params.uniqueUrl;
+  _isTenant.value = false;
+  if (uniqueUrl) {
+    try {
+      const response = await httpHelper.get(`property/${uniqueUrl}`);
+      if (response && response.data) {
+        _isTenant.value = true;
+      } else {
+        _isTenant.value = false;
+        errorMessage.value = "The uniqueURL is wrong!";
+        return;
+      }
+    } catch (error) {
+      console.error("Error fetching property data:", error);
+      _isTenant.value = false;
+    }
+  }
   if (!email.value || !password.value) {
     errorMessage.value = "Email and password are required.";
     return;
@@ -60,8 +78,18 @@ const submitForm = async () => {
     );
     if (response.data?.status === "logged_in" && response.data.access_token) {
       localStorage.setItem("token", response.data.access_token);
-      userStore.setUser(response.data.user);
-      router.push({ name: "dashboard" });
+      if (_isTenant.value) {
+        userStore.setUser({
+          ...response.data.user,
+          tenant: {
+            uniqueUrl: uniqueUrl,
+          },
+        });
+        router.push({ name: "tenant" });
+      } else {
+        userStore.setUser(response.data.user);
+        router.push({ name: "dashboard" });
+      }
     } else if (response.data?.status === "verification_email_sent") {
       isVerifyEmail.value = true;
     } else {

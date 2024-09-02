@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../views/landingpage/index.vue";
 import Signin from "../views/signin/index.vue";
 import Dashboard from "../views/dashboard/dashboard.vue";
+import Tenant from "../views/tenant/tenant.vue";
 import Faq from "../views/faq/faq.vue";
 
 const router = createRouter({
@@ -12,7 +13,6 @@ const router = createRouter({
       name: "landingpage",
       component: LandingPage,
     },
-
     {
       path: "/signin",
       name: "signin",
@@ -30,9 +30,21 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/tenant",
+      name: "tenant",
+      component: Tenant,
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/faq",
       name: "faq",
       component: Faq,
+    },
+    {
+      path: "/:uniqueUrl",
+      name: "PropertyDetail",
+      component: Signin,
+      props: true,
     },
   ],
   scrollBehavior(to, from, savedPosition) {

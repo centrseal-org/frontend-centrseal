@@ -5,7 +5,7 @@ import { ref } from "vue";
 export const useUserStore = defineStore(
   "userStore",
   () => {
-    const user = ref(null);
+    const user: any = ref(null);
     const errorMessage = ref("");
 
     const setUser = (newUser: any) => {

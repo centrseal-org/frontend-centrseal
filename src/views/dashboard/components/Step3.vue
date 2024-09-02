@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import useClipboard from "vue-clipboard3";
 import { useI18n } from "vue-i18n";
 import confetti from "canvas-confetti";
