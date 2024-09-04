@@ -4,6 +4,7 @@ import Signin from "../views/signin/index.vue";
 import Dashboard from "../views/dashboard/dashboard.vue";
 import Tenant from "../views/tenant/tenant.vue";
 import Faq from "../views/faq/faq.vue";
+import VerifyDocs from "../views/tenant/verifyDocs.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,21 @@ const router = createRouter({
       path: "/tenant",
       name: "tenant",
       component: Tenant,
+      meta: { requiresAuth: true },
+      // children: [
+      //   {
+      //     path: "verify", // Notice that the path is relative to the parent path
+      //     name: "verifyDocs",
+      //     component: VerifyDocs,
+      //     meta: { requiresAuth: true },
+      //   },
+      // ],
+      // add <router-view />  in tenant page
+    },
+    {
+      path: "/tenant/verify", // Add the new route here
+      name: "verifyDocs",
+      component: VerifyDocs,
       meta: { requiresAuth: true },
     },
     {

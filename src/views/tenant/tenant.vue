@@ -5,10 +5,34 @@ import httpHelper from "../../helpers/httpHelpers";
 import Header from "../../components/Header.vue";
 import Upload from "./components/Upload.vue";
 import Bank from "./components/Bank.vue";
+import Ready from "./components/Ready.vue";
 
 const userStore = useUserStore();
 const user: any = computed(() => userStore.user);
 const property = ref();
+const _uploadedFiles = ref(false);
+const _connectedBank = ref(false);
+const files = ref();
+const transactions = ref();
+
+const uploadedFiles = (filesEmit: any) => {
+  console.log(filesEmit, "filesEmit");
+  if (filesEmit.length === 2) {
+    _uploadedFiles.value = true;
+    files.value = filesEmit;
+    return;
+  }
+  _uploadedFiles.value = false;
+};
+
+const connectedBank = (transactionsEmit: any) => {
+  if (transactionsEmit.length) {
+    _connectedBank.value = true;
+    transactions.value = transactionsEmit;
+    return;
+  }
+  _connectedBank.value = false;
+};
 
 onMounted(async () => {
   try {
@@ -22,15 +46,6 @@ onMounted(async () => {
     console.error("Error fetching property data:", error);
   }
 });
-
-const _uploadedFiles = ref(false);
-const uploadedFiles = (val: any) => {
-  if (val.length === 2) {
-    _uploadedFiles.value = true;
-    return;
-  }
-  _uploadedFiles.value = false;
-};
 </script>
 
 <template>
@@ -78,7 +93,15 @@ const uploadedFiles = (val: any) => {
           </v-col>
         </v-row>
         <Upload @uploadedFiles="uploadedFiles" v-if="!_uploadedFiles" />
-        <Bank v-if="_uploadedFiles" />
+        <Bank
+          @connectedBank="connectedBank"
+          v-if="_uploadedFiles && !_connectedBank"
+        />
+        <Ready
+          :files="files"
+          :transactions="transactions"
+          v-if="_connectedBank && _uploadedFiles"
+        />
       </v-container>
     </div>
   </main>

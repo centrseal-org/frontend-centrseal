@@ -11,6 +11,7 @@ import httpHelper from "@/helpers/httpHelpers";
 const data = ref<{ link_token: string } | null>(null);
 const accessToken = ref<string | null>(null); ////
 const transactions = ref<any[]>([]); ////
+const emit = defineEmits(["connectedBank"]);
 
 const token = computed(() => {
   return data.value?.link_token || "";
@@ -28,6 +29,8 @@ const fetchTransactions = async () => {
         end_date: "2024-09-01",
       });
       transactions.value = response?.data?.transactions;
+      // Emit events to the parent component
+      emit("connectedBank", transactions.value);
       console.log("Transactions:", transactions.value);
     } catch (error) {
       console.error("Error fetching transactions:", error);
@@ -47,6 +50,7 @@ const onSuccess: PlaidLinkOnSuccess = async (publicToken, metadata) => {
         public_token: publicToken,
       }
     );
+    console.log("responseresponse", response);
     accessToken.value = response.data.access_token;
     console.log("Access Token:", accessToken.value);
     await fetchTransactions();
