@@ -4,6 +4,7 @@ import Signin from "../views/signin/index.vue";
 import Dashboard from "../views/dashboard/dashboard.vue";
 import Tenant from "../views/tenant/tenant.vue";
 import Faq from "../views/faq/faq.vue";
+import Error from "../views/error/error.vue";
 import VerifyDocs from "../views/tenant/verifyDocs.vue";
 
 const router = createRouter({
@@ -55,6 +56,17 @@ const router = createRouter({
       path: "/faq",
       name: "faq",
       component: Faq,
+    },
+    {
+      path: "/error",
+      name: "ErrorPage",
+      component: Error,
+      props: (route) => ({
+        title: route.query.title || "Default Title",
+        subtitle: route.query.subtitle || "Default Subtitle",
+        btnText: route.query.btnText,
+        btnUrl: route.query.btnUrl,
+      }),
     },
     {
       path: "/:uniqueUrl",

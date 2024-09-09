@@ -29,6 +29,7 @@ const baseTheme = {
   error: "#FF1640",
   periwinkle: "#9694FF",
   lightPeriwinkle: "#E8E8FF",
+  shadeOfPurple: "#6663ff",
 };
 
 export default createVuetify({

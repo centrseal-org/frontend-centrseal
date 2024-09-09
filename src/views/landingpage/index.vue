@@ -12,6 +12,7 @@ import Footer from "./components/Footer.vue";
 import Header from "../../components/Header.vue";
 import Hero from "./components/Hero.vue";
 import FocusOnTenants from "./components/FocusOnTenants.vue";
+import Video from "./components/Video.vue";
 </script>
 
 <template>
@@ -23,6 +24,7 @@ import FocusOnTenants from "./components/FocusOnTenants.vue";
       <img src="/s1.svg" class="shadowBottom" alt="" />
       <img src="/s2.svg" class="shadowBottom" alt="" />
       <Hero />
+      <Video />
       <FocusOnTenants />
     </div>
     <div class="slope" />

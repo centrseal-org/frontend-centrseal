@@ -1,23 +1,31 @@
+<!--
+Summary: Index of the tenant page
+@copyright Copyright (c) 2024 CentrSeal. All rights reserved.
+@file This file defines the tenant component.
+@author Kasra Jannati
+-->
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { useUserStore } from "@/stores/useUser";
-import httpHelper from "../../helpers/httpHelpers";
-import Header from "../../components/Header.vue";
+import { useI18n } from "vue-i18n";
+import httpHelper from "@/helpers/httpHelpers";
+import Header from "@/components/Header.vue";
 import Upload from "./components/Upload.vue";
 import Bank from "./components/Bank.vue";
 import Ready from "./components/Ready.vue";
 
+const { t } = useI18n();
 const userStore = useUserStore();
-const user: any = computed(() => userStore.user);
+const user = computed(() => userStore.user);
 const property = ref();
-const _uploadedFiles = ref(false);
-const _connectedBank = ref(false);
 const files = ref();
 const transactions = ref();
+const maxFiles = 2;
+const _uploadedFiles = ref(false);
+const _connectedBank = ref(false);
 
 const uploadedFiles = (filesEmit: any) => {
-  console.log(filesEmit, "filesEmit");
-  if (filesEmit.length === 2) {
+  if (filesEmit.length === maxFiles) {
     _uploadedFiles.value = true;
     files.value = filesEmit;
     return;
@@ -36,8 +44,9 @@ const connectedBank = (transactionsEmit: any) => {
 
 onMounted(async () => {
   try {
+    console.log(userStore.user?.tenant, "userStore.user?.tenant");
     const response = await httpHelper.get(
-      `property/${userStore.user?.tenant.uniqueUrl}`
+      `property/${userStore.user?.tenant.property.uniqueUrl}`
     );
     if (response && response.data) {
       property.value = response.data;
@@ -56,35 +65,42 @@ onMounted(async () => {
         <v-row class="mt-4">
           <v-col cols="12">
             <section>
-              <h4 class="text-blackText">Hi, {{ user?.firstName }}!</h4>
+              <h4 class="text-blackText">
+                {{
+                  t("tenant.hi", {
+                    firstName: user?.firstName,
+                  })
+                }}
+              </h4>
               <h6 class="text-blackText mt-2">
                 <span>
-                  You've been invited to submit your paystubs and verify your
-                  income.
+                  {{ t("tenant.youHaveBeenInvited") }}
                 </span>
               </h6>
             </section>
           </v-col>
           <v-col cols="12">
             <section class="d-flex align-center justify-space-between">
-              <div class="d-flex my-10">
+              <div class="d-flex my-10 flex-sm-row flex-column">
                 <img src="/uploadfile.png" class="imgProperty" />
-                <div class="d-flex flex-column justify-space-between ml-4">
-                  <div>
+                <div
+                  class="d-flex flex-column justify-space-between ml-sm-4 ml-0"
+                >
+                  <div v-if="property?.address.data.properties">
                     <div class="body1">
-                      {{ property?.address?.data?.properties?.address_line1 }}
+                      {{ property.address.data.properties?.address_line1 }}
                     </div>
-                    <div class="body3 mt-2">
-                      {{ property?.address?.data?.properties?.address_line2 }}
+                    <div class="body3 mt-sm-2 mt-0">
+                      {{ property.address.data.properties?.address_line2 }}
                     </div>
                   </div>
                   <div>
                     <span
                       v-if="property?.paystub"
-                      class="px-4 py-2 rounded-pill border bg-successLight border-success d-flex align-center"
+                      class="px-6 py-2 rounded-pill border bg-successLight border-success d-flex align-center font-weight-medium mt-2 mt-sm-0"
                     >
                       <inline-svg src="/paystub.svg" class="mr-2" />
-                      Requires Paystubs
+                      {{ t("tenant.requiresPaystubs") }}
                     </span>
                   </div>
                 </div>

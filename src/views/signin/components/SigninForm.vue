@@ -14,6 +14,7 @@ const visible = ref(false);
 const errorMessage = ref("");
 const isVerifyEmail = ref(false);
 const _isTenant = ref(false);
+const property = ref();
 
 const userStore = useUserStore();
 
@@ -36,6 +37,7 @@ const submitForm = async () => {
       const response = await httpHelper.get(`property/${uniqueUrl}`);
       if (response && response.data) {
         _isTenant.value = true;
+        property.value = response.data;
       } else {
         _isTenant.value = false;
         errorMessage.value = "The uniqueURL is wrong!";
@@ -82,7 +84,7 @@ const submitForm = async () => {
         userStore.setUser({
           ...response.data.user,
           tenant: {
-            uniqueUrl: uniqueUrl,
+            property: property.value,
           },
         });
         router.push({ name: "tenant" });

@@ -25,7 +25,7 @@ console.log(localStorage.getItem("token"), "fix it!");
 console.log(isLoggedIn.value, "isLoggedIn");
 
 // Log out the user
-const logout = () => {
+const logout = async () => {
   isLoggedIn.value = false;
   localStorage.removeItem("token");
   userStore.$reset();

@@ -191,3 +191,9 @@ mark {
   hyphens: none !important;
   white-space: normal !important;
 }
+.imgProperty {
+  border-radius: 8px;
+  border: 1px solid rgb(var(--v-theme-periwinkle));
+  max-width: 180px;
+  object-fit: cover;
+}

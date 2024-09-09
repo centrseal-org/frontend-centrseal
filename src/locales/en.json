@@ -29,5 +29,25 @@
   "waitingOn": "Waiting On",
   "waitingOnCreditScore": "Waiting on Credit Score",
   "waitingOnIdCard": "Waiting on ID Card",
-  "WeWillLetYouKnowOnce": "We'll let you know once we launch and occasionally send updates"
+  "WeWillLetYouKnowOnce": "We'll let you know once we launch and occasionally send updates",
+  "tenant": {
+    "hi": "Hi, {firstName}!",
+    "youHaveBeenInvited": "You've been invited to submit your paystubs and verify your income.",
+    "requiresPaystubs": "Requires Paystubs",
+    "uploadLast2Paystubs": "Upload Last 2 Paystubs",
+    "pleaseUploadYourLast": "Please upload your last 2 paystubs that you've received from your employer. We'll use it to verify your income.",
+    "chooseAFileOrDragAndDropItHere": "Choose a file or drag & drop it here",
+    "pdfJpegPng": "PDF, JPEG, PNG, formats, up to 2MB",
+    "uploadFiles": "Upload Files",
+    "next": "Next",
+    "connectYourBankAccount": "Connect Your Bank Account",
+    "connectYourBank": "Connect Your Bank",
+    "weConnectToYourBankSecurely": "We connect to your bank securely via <strong>Plaid</strong> to verify your income. Please connect<br /> the same bank account where you receive your income.",
+    "interestingFactAboutPlaid": " <strong>Interesting fact about Plaid:</strong> 1 in 3 US adults has connected a<br /> financial account to an app with Plaid",
+    "youAreAllSetToGetVerified": "You're All Set to Get Verified!",
+    "pleaseCheckWeHaveTheRightInfoHere": "Please check we have the right info here.",
+    "kb": "KB",
+    "connected": "Connected",
+    "submit": "Submit"
+  }
 }

@@ -1,48 +1,31 @@
+<!--
+Summary: Display the bank information of the tenant
+@copyright Copyright (c) 2024 CentrSeal. All rights reserved.
+@file This file defines the Bank component.
+@author Kasra Jannati
+-->
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import {
   usePlaidLink,
   type PlaidLinkOnSuccess,
   type PlaidLinkOptions,
 } from "@jcss/vue-plaid-link";
-import { useFetch } from "@vueuse/core";
 import httpHelper from "@/helpers/httpHelpers";
 
+const { t } = useI18n();
 const data = ref<{ link_token: string } | null>(null);
-const accessToken = ref<string | null>(null); ////
-const transactions = ref<any[]>([]); ////
-const emit = defineEmits(["connectedBank"]);
-
+const accessToken = ref();
+const transactions = ref();
 const token = computed(() => {
   return data.value?.link_token || "";
 });
 
-/////
-const fetchTransactions = async () => {
-  console.log("Fetching transactions...");
+const emit = defineEmits(["connectedBank"]);
 
-  if (accessToken.value) {
-    try {
-      const response = await httpHelper.post("plaid/get-transactions", {
-        access_token: accessToken.value,
-        start_date: "2024-08-01",
-        end_date: "2024-09-01",
-      });
-      transactions.value = response?.data?.transactions;
-      // Emit events to the parent component
-      emit("connectedBank", transactions.value);
-      console.log("Transactions:", transactions.value);
-    } catch (error) {
-      console.error("Error fetching transactions:", error);
-    }
-  } else {
-    console.error("No access token available");
-  }
-};
-
-/////
+/* connect to Bank */
 const onSuccess: PlaidLinkOnSuccess = async (publicToken, metadata) => {
-  console.log("onSuccessonSuccessonSuccess");
   try {
     const response = await httpHelper.post<{ access_token: string }>(
       "plaid/exchange-public-token",
@@ -50,15 +33,14 @@ const onSuccess: PlaidLinkOnSuccess = async (publicToken, metadata) => {
         public_token: publicToken,
       }
     );
-    console.log("responseresponse", response);
-    accessToken.value = response.data.access_token;
-    console.log("Access Token:", accessToken.value);
-    await fetchTransactions();
+    if (response.data) {
+      accessToken.value = response.data.access_token;
+      await fetchTransactions();
+    }
   } catch (error) {
     console.error("Error exchanging public token:", error);
   }
 };
-
 const config: any = computed(() => {
   const config: PlaidLinkOptions = {
     token: token.value,
@@ -66,8 +48,34 @@ const config: any = computed(() => {
   };
   return config;
 });
-
 const { open, ready } = usePlaidLink(config);
+
+const fetchTransactions = async () => {
+  if (accessToken.value) {
+    const today = new Date();
+    const endDate = today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+    // Calculate start date (3 months before today)
+    const threeMonthsAgo = new Date(today);
+    threeMonthsAgo.setMonth(today.getMonth() - 3);
+    const startDate = threeMonthsAgo.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+    try {
+      const response: any = await httpHelper.post("plaid/get-transactions", {
+        access_token: accessToken.value,
+        start_date: startDate,
+        end_date: endDate,
+      });
+      if (response.data) {
+        transactions.value = response.data.transactions;
+      }
+      // Emit events to the parent component
+      emit("connectedBank", transactions.value);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  } else {
+    console.error("No access token available");
+  }
+};
 
 onMounted(() => {
   httpHelper
@@ -82,17 +90,14 @@ onMounted(() => {
 </script>
 
 <template>
-  {{ token }}
   <v-row class="mb-10">
     <v-col cols="12">
       <section>
-        <h5 class="text-electricBlue">Connect Your Bank Account</h5>
+        <h5 class="text-electricBlue">
+          {{ t("tenant.connectYourBankAccount") }}
+        </h5>
         <div class="body2 mt-2">
-          <span>
-            We connect to your bank securely via <strong>Plaid</strong> to
-            verify your income. Please connect<br />
-            the same bank account where you receive your income.
-          </span>
+          <span v-safe-html="t('tenant.weConnectToYourBankSecurely')"></span>
         </div>
       </section>
     </v-col>
@@ -103,33 +108,20 @@ onMounted(() => {
         :disabled="!ready"
         @click="open"
       >
-        <span class="font-weight-medium">Connect Your Bank</span>
+        <span class="font-weight-medium">
+          {{ t("tenant.connectYourBank") }}
+        </span>
         <inline-svg src="/arrowRight.svg" />
       </button>
     </v-col>
     <v-col cols="12">
       <section class="d-flex">
-        <img src="/plaid.png" class="mr-4" />
-        <div class="body3">
-          <strong>Interesting fact about Plaid:</strong> 1 in 3 US adults has
-          connected a<br />
-          financial account to an app with Plaid
-        </div>
+        <img src="/plaid.png" class="mr-4 plaidLogo" />
+        <div
+          class="body3"
+          v-safe-html="t('tenant.weConnectToYourBankSecurely')"
+        ></div>
       </section>
-    </v-col>
-    <!-- new -->
-    <v-col cols="12">
-      <div v-if="transactions?.length">
-        <h5>Transactions:</h5>
-        <ul>
-          <li
-            v-for="transaction in transactions"
-            :key="transaction.transaction_id"
-          >
-            {{ transaction.name }} - {{ transaction.amount }} USD
-          </li>
-        </ul>
-      </div>
     </v-col>
   </v-row>
 </template>
@@ -138,5 +130,9 @@ onMounted(() => {
 .main-btn.connect {
   max-width: 600px !important;
   width: 100%;
+}
+.plaidLogo {
+  max-width: 200px;
+  object-fit: contain;
 }
 </style>
