@@ -56,7 +56,7 @@ const sendFiles = async () => {
   isUploading.value = true;
   try {
     const formData = new FormData();
-    uploadedFiles.value.forEach(({ file }) => {
+    uploadedFiles.value.forEach(({ file }: any) => {
       console.log(file, "filefile");
       formData.append("files", file);
     });
