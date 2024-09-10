@@ -18,6 +18,8 @@ const togglePlayPause = async () => {
       }
     } else {
       try {
+        // Unmute the video after user clicks
+        // await player.setMuted(false);
         await player.play(); // Play the video
         isPlaying.value = true; // Update the state after playing
       } catch (error) {
@@ -30,7 +32,9 @@ const togglePlayPause = async () => {
 // Initialize the Vimeo player and set up event listeners
 onMounted(() => {
   if (iframeRef.value) {
-    player = new Player(iframeRef.value);
+    player = new Player(iframeRef.value, {
+      muted: true, // Start video muted
+    });
 
     player.on("play", () => {
       isPlaying.value = true;
@@ -59,11 +63,13 @@ onMounted(() => {
           <div class="videoSection">
             <iframe
               ref="iframeRef"
-              src="https://player.vimeo.com/video/1007296291?autoplay=0&amp;loop=0&amp;autopause=0&amp;controls=0"
+              src="https://player.vimeo.com/video/1007296291?autoplay=0&amp;loop=0&amp;autopause=0&amp;controls=0&amp;muted=0"
               width="1040"
-              height="760"
+              height="743"
               frameborder="0"
               style="margin: 0 auto"
+              allow="autoplay; fullscreen"
+              allowfullscreen
             ></iframe>
 
             <!-- Transparent overlay to handle clicks -->
@@ -116,15 +122,37 @@ onMounted(() => {
     background: rgba(0, 0, 0, 0); /* Transparent background */
     cursor: pointer; /* Show pointer cursor */
   }
+  iframe {
+    border-radius: var(--Body-P-size, 16px);
+    border: 4px solid var(--Purple-Gradient, #7b78ff);
+    min-width: 1040px;
+    min-height: 743px;
+  }
 }
-@media (max-width: 1500px) {
+@media (max-width: 1300px) {
   .videoSection iframe {
+    // height: 500px;
+    min-width: 500px;
+    min-height: 200px;
+    width: 700px;
     height: 500px;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .videoSection iframe {
-    height: 300px;
+    // height: 300px;
+    min-width: 400px;
+    min-height: 200px;
+    width: 500px;
+    height: 360px;
+  }
+}
+@media (max-width: 550px) {
+  .videoSection iframe {
+    min-width: 300px;
+    min-height: 200px;
+    width: 350px;
+    height: 250px;
   }
 }
 </style>
