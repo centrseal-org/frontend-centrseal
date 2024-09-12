@@ -6,7 +6,6 @@ import { mailchimp } from "@/composables/mailchimp";
 import { useHead } from "@unhead/vue";
 
 useHead({
-  title: "Subpage Title",
   meta: [
     { property: "og:title", content: "CentrSeal" },
     { property: "og:description", content: "Qualify Tenants for Listings" },
@@ -14,6 +13,17 @@ useHead({
     { property: "og:url", content: "https://centrseal.com" },
     { property: "og:type", content: "website" },
   ],
+});
+onMounted(() => {
+  useHead({
+    meta: [
+      { property: "og:title", content: "CentrSeal" },
+      { property: "og:description", content: "Qualify Tenants for Listings" },
+      { property: "og:image", content: "/OG-Image.png" },
+      { property: "og:url", content: "https://centrseal.com" },
+      { property: "og:type", content: "website" },
+    ],
+  });
 });
 
 const { t } = useI18n();
