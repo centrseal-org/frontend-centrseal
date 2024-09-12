@@ -64,7 +64,7 @@ const handleLogoClick = async () => {
                 {{ t("centrSeal") }}
               </RouterLink>
             </h4>
-            <nav style="display: none">
+            <nav>
               <RouterLink to="/faq" class="mr-4"> {{ t("FAQ") }}</RouterLink>
               <RouterLink to="/signin" v-if="!isLoggedIn">
                 <v-btn
