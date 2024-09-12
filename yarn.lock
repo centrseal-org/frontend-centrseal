@@ -1124,6 +1124,50 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@unhead/dom@npm:1.11.2":
+  version: 1.11.2
+  resolution: "@unhead/dom@npm:1.11.2"
+  dependencies:
+    "@unhead/schema": 1.11.2
+    "@unhead/shared": 1.11.2
+  checksum: 45d014a6907651290bb0727c2471621d8f288347f5f877b1d17722d643a7b5e2ef461c1bfeeaaeddeaf51bc5d636586a5e513133fd61edad7c7f91d08a999eab
+  languageName: node
+  linkType: hard
+
+"@unhead/schema@npm:1.11.2":
+  version: 1.11.2
+  resolution: "@unhead/schema@npm:1.11.2"
+  dependencies:
+    hookable: ^5.5.3
+    zhead: ^2.2.4
+  checksum: 6156d47434813fb7ccc0df2a1b3e3fb9c743ea2d5cc9008c0477e2f6ed859863839cdc8e85bb7dbc2447ed59c2adcbcec19d48f7e5563af9a217f3a27c5d6b0b
+  languageName: node
+  linkType: hard
+
+"@unhead/shared@npm:1.11.2":
+  version: 1.11.2
+  resolution: "@unhead/shared@npm:1.11.2"
+  dependencies:
+    "@unhead/schema": 1.11.2
+  checksum: 421e313330f3e079ab642b97abe83025212ed888043b542a6c45a6e4e340258532c87a6343c30fd8a03e8b18eff4e64f0b82b2d90ed14a29f3937e4e72e23a89
+  languageName: node
+  linkType: hard
+
+"@unhead/vue@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "@unhead/vue@npm:1.11.2"
+  dependencies:
+    "@unhead/schema": 1.11.2
+    "@unhead/shared": 1.11.2
+    defu: ^6.1.4
+    hookable: ^5.5.3
+    unhead: 1.11.2
+  peerDependencies:
+    vue: ">=2.7 || >=3"
+  checksum: ee3778ae230e3d902a7eb29bf70d8d374f301d61d3f61eb10bc7ad4e2111ae777f35ac2118eca4c2d0289f5da6ca0d5a6f85a06c8d15bb9240808418ad5adeca
+  languageName: node
+  linkType: hard
+
 "@vimeo/player@npm:^2.24.0":
   version: 2.24.0
   resolution: "@vimeo/player@npm:2.24.0"
@@ -2226,6 +2270,13 @@ __metadata:
   version: 3.0.0
   resolution: "define-lazy-prop@npm:3.0.0"
   checksum: 54884f94caac0791bf6395a3ec530ce901cf71c47b0196b8754f3fd17edb6c0e80149c1214429d851873bb0d689dbe08dcedbb2306dc45c8534a5934723851b6
+  languageName: node
+  linkType: hard
+
+"defu@npm:^6.1.4":
+  version: 6.1.4
+  resolution: "defu@npm:6.1.4"
+  checksum: 40e3af6338f195ac1564f53d1887fa2d0429ac7e8c081204bc4d29191180059d3952b5f4e08fe5df8d59eb873aa26e9c88b56d4fac699673d4a372c93620b229
   languageName: node
   linkType: hard
 
@@ -4848,6 +4899,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unhead@npm:1.11.2":
+  version: 1.11.2
+  resolution: "unhead@npm:1.11.2"
+  dependencies:
+    "@unhead/dom": 1.11.2
+    "@unhead/schema": 1.11.2
+    "@unhead/shared": 1.11.2
+    hookable: ^5.5.3
+  checksum: 60d97b5428a680464d4d7a65a53cb624bf2ffa50849bf0c1025de6f55befdf81878753859ba501befb2ef23d3d5731a80c24058e7c7afc7194efdd545d2e10ef
+  languageName: node
+  linkType: hard
+
 "unique-filename@npm:^3.0.0":
   version: 3.0.0
   resolution: "unique-filename@npm:3.0.0"
@@ -5181,6 +5244,7 @@ __metadata:
     "@types/jsdom": ^21.1.6
     "@types/node": ^20.12.5
     "@types/vimeo__player": ^2.18.3
+    "@unhead/vue": ^1.11.2
     "@vimeo/player": ^2.24.0
     "@vitejs/plugin-vue": ^5.0.4
     "@vue/eslint-config-prettier": ^9.0.0
@@ -5498,5 +5562,12 @@ __metadata:
   version: 1.1.1
   resolution: "yocto-queue@npm:1.1.1"
   checksum: f2e05b767ed3141e6372a80af9caa4715d60969227f38b1a4370d60bffe153c9c5b33a862905609afc9b375ec57cd40999810d20e5e10229a204e8bde7ef255c
+  languageName: node
+  linkType: hard
+
+"zhead@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "zhead@npm:2.2.4"
+  checksum: 22836aa6947b27d35176cde40e3f5b19c24e0f46ee52d860e8df674a35aec07b34f6c78437323c797d1dc37ec0847e61e4f07ab605d519cc742245b5fa25b889
   languageName: node
   linkType: hard

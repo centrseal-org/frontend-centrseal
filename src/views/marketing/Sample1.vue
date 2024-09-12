@@ -1,10 +1,20 @@
 <script setup lang="ts">
-import { usePropertyStore } from "@/stores/useProperty";
-import { useUserStore } from "@/stores/useUser";
-import { computed, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { mailchimp } from "@/composables/mailchimp";
+import { useHead } from "@unhead/vue";
+
+useHead({
+  title: "Subpage Title",
+  meta: [
+    { property: "og:title", content: "CentrSeal" },
+    { property: "og:description", content: "Qualify Tenants for Listings" },
+    { property: "og:image", content: "/OG-Image.png" },
+    { property: "og:url", content: "https://centrseal.com" },
+    { property: "og:type", content: "website" },
+  ],
+});
 
 const { t } = useI18n();
 const router = useRouter();
@@ -13,9 +23,11 @@ const { addAudience } = mailchimp();
 const clickReq = () => {
   email.value = "";
   openPopUp.value = true;
+  disableScroll();
 };
 const exit = () => {
   openPopUp.value = false;
+  enableScroll();
 };
 const email = ref("");
 const submit = ref();
@@ -38,7 +50,21 @@ const submitForm = async () => {
   }
   submit.value = await addAudience(email.value);
   openPopUp.value = false;
+  enableScroll();
 };
+const disableScroll = () => {
+  console.log("1");
+  document.documentElement.style.overflow = "hidden";
+};
+const enableScroll = () => {
+  document.documentElement.style.overflow = "";
+};
+onMounted(() => {
+  if (openPopUp.value) disableScroll();
+});
+onUnmounted(() => {
+  enableScroll();
+});
 </script>
 
 <template>
@@ -116,28 +142,28 @@ const submitForm = async () => {
                   </div>
                   <div><b>Earn: </b>$96,000/year</div>
                   <div class="my-2"><b>Payment: </b> Bi-weekly</div>
-                  <div><b>Paystubs Verified on Jul 15, 2024:</b></div>
+                  <div><b>Paystubs Verified on Sep 09, 2024:</b></div>
                   <section class="d-flex">
                     <div class="mt-4 d-flex">
                       <span
                         class="docs-status px-2 py-2 rounded-pill border bg-lightPeriwinkle border-periwinkle font-weight-medium"
                       >
-                        March 15, 2024
+                        Aug 22, 2024
                       </span>
                     </div>
                     <div class="mt-4 d-flex ml-2">
                       <span
                         class="docs-status px-2 py-2 rounded-pill border bg-lightPeriwinkle border-periwinkle font-weight-medium"
                       >
-                        March 24, 2024
+                        Sep 05, 2024
                       </span>
                     </div>
                   </section>
                 </div>
               </div>
-              <section class="d-sm-flex position-relative mt-16 mt-lg-0">
+              <section class="d-flex position-relative mt-16 mt-lg-0 flex-wrap">
                 <div
-                  class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between small-card mb-sm-0 mb-4"
+                  class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between small-card mb-4"
                 >
                   <h5 class="titleAb">More Info</h5>
                   <div>
@@ -148,7 +174,7 @@ const submitForm = async () => {
                 </div>
 
                 <div
-                  class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between small-card mb-sm-0 mb-4"
+                  class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between small-card mb-4"
                 >
                   <div>
                     <img src="/paw-outline.svg" />
@@ -158,7 +184,7 @@ const submitForm = async () => {
                 </div>
 
                 <div
-                  class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between small-card mb-sm-0 mb-4"
+                  class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between small-card mb-4"
                 >
                   <div>
                     <img src="/group-svgrepo.svg" />
@@ -168,7 +194,7 @@ const submitForm = async () => {
                 </div>
 
                 <div
-                  class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between small-card"
+                  class="card-slide mr-4 pa-6 border border-white d-flex flex-column justify-space-between small-card mb-4"
                 >
                   <div>
                     <img src="/car-side.svg" />
@@ -480,8 +506,10 @@ a {
 form {
   margin: 0 auto;
   width: 500px;
+  backdrop-filter: blur(10px);
   .card-slide-pop {
     width: 500px;
+    backdrop-filter: blur(10px);
   }
   .main-btn {
     min-height: 52px;
@@ -502,8 +530,13 @@ form {
   border-radius: 8px !important;
   border: 1px solid var(--White-Border, #fff) !important;
   background: linear-gradient(93deg, #595968 0%, #484852 100%) !important;
-  box-shadow:
-    0px 4px 10px 0px rgba(57, 57, 67, 0.32),
-    0px 2px 4px 0px rgba(255, 255, 255, 0.75) inset !important;
+}
+@media (max-width: 550px) {
+  form {
+    width: 350px;
+    .card-slide-pop {
+      width: 350px;
+    }
+  }
 }
 </style>
