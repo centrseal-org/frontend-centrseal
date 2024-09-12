@@ -212,9 +212,7 @@ const submitForm = async () => {
                     :ripple="false"
                     @click.prevent="clickReq()"
                   >
-                    <span :class="{ 'text-gray body1 ml-6': isIdCard }">{{
-                      isIdCard ? "Coming Soon" : "Add"
-                    }}</span>
+                    <span>Add</span>
                   </v-btn>
                   <img src="/3DImage2.png" class="dimage" />
                 </div>
@@ -236,9 +234,7 @@ const submitForm = async () => {
                     :ripple="false"
                     @click.prevent="clickReq()"
                   >
-                    <span :class="{ 'text-gray body1 ml-6': isCredit }">
-                      {{ isCredit ? "Coming Soon" : "Add" }}
-                    </span>
+                    <span> Add </span>
                   </v-btn>
                   <img src="/3DImage3.png" class="dimage" />
                 </div>
