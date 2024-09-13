@@ -7,6 +7,8 @@ import Faq from "../views/faq/faq.vue";
 import Error from "../views/error/error.vue";
 import VerifyDocs from "../views/tenant/verifyDocs.vue";
 import Sample1 from "../views/marketing/Sample1.vue";
+import PrivacyPolicy from "@/views/privacyPolicy/privacyPolicy.vue";
+import TermsOfService from "@/views/termsOfService/termsOfService.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +38,16 @@ const router = createRouter({
       path: "/xyszmnjqkbbrkaq",
       name: "marketing",
       component: Sample1,
+    },
+    {
+      path: "/privacy-policy",
+      name: "privacyPolicy",
+      component: PrivacyPolicy,
+    },
+    {
+      path: "/terms-of-service",
+      name: "termsOfService",
+      component: TermsOfService,
     },
     {
       path: "/tenant",

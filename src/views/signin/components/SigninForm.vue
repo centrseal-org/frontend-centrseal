@@ -190,19 +190,19 @@ const resendVerificationEmail = async () => {
 
               <div class="body3 text-gray mb-2 text-center mt-4">
                 By continuing up, you agree to our
-                <a
-                  href="/terms-of-service"
+                <RouterLink
+                  to="/terms-of-service"
                   class="text-grey font-weight-bold text-decoration-none"
-                  target="_blank"
-                  >Terms of Service</a
                 >
+                  Terms of Service
+                </RouterLink>
                 and
-                <a
-                  href="/privacy-policy"
+                <RouterLink
+                  to="/privacy-policy"
                   class="text-grey font-weight-bold text-decoration-none"
-                  target="_blank"
-                  >Privacy Policy</a
-                >.
+                >
+                  Privacy Policy
+                </RouterLink>
               </div>
             </div>
           </v-form>
