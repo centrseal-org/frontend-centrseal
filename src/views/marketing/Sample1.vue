@@ -302,6 +302,7 @@ onUnmounted(() => {
               <v-form
                 class="signup-form position-relative"
                 @submit.prevent="submitForm"
+                v-intersect="'animate__fadeInUp'"
               >
                 <inline-svg
                   src="/exitPop.svg"
