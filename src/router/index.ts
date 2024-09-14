@@ -9,6 +9,7 @@ import VerifyDocs from "../views/tenant/verifyDocs.vue";
 import Sample1 from "../views/marketing/Sample1.vue";
 import PrivacyPolicy from "@/views/privacyPolicy/privacyPolicy.vue";
 import TermsOfService from "@/views/termsOfService/termsOfService.vue";
+import NotFound from "@/views/error/404.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,7 +66,7 @@ const router = createRouter({
       // add <router-view />  in tenant page
     },
     {
-      path: "/tenant/verify", // Add the new route here
+      path: "/tenant/verify",
       name: "verifyDocs",
       component: VerifyDocs,
       meta: { requiresAuth: true },
@@ -92,6 +93,11 @@ const router = createRouter({
       component: Signin,
       props: true,
     },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: NotFound,
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
@@ -106,7 +112,11 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     const token = localStorage.getItem("token");
     if (!token) {
-      next({ name: "landingpage" });
+      next({
+        name: "NotFound", // Show 404 page
+        params: { pathMatch: to.path.substring(1).split("/") }, // Keep the original URL
+        replace: true, // Replace the navigation history, so the URL stays the same
+      });
     } else {
       next();
     }

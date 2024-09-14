@@ -41,10 +41,14 @@ const handleDashboardClick = () => {
 
 const handleLogoClick = async () => {
   emit("resetPropertyFlag");
-  if (router.currentRoute.value.fullPath === "/") {
-    return;
+  if (isLoggedIn.value) {
+    if (router.currentRoute.value.fullPath === "/") {
+      await router.push("/");
+    } else {
+      await router.push("/dashboard");
+    }
   } else {
-    await router.push("/dashboard");
+    await router.push("/");
   }
 };
 </script>
@@ -57,7 +61,7 @@ const handleLogoClick = async () => {
           <header class="d-flex align-center justify-space-between">
             <h4>
               <RouterLink
-                to="/"
+                to="#"
                 class="text-indigo"
                 @click.prevent="handleLogoClick"
               >
