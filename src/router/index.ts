@@ -81,8 +81,8 @@ const router = createRouter({
       name: "ErrorPage",
       component: Error,
       props: (route) => ({
-        title: route.query.title || "Default Title",
-        subtitle: route.query.subtitle || "Default Subtitle",
+        title: route.query.title || "Somthing is wrong!",
+        subtitle: route.query.subtitle || "Please try again",
         btnText: route.query.btnText,
         btnUrl: route.query.btnUrl,
       }),

@@ -6,6 +6,11 @@ import SigninForm from "./components/SigninForm.vue";
 
 const router = useRouter();
 
+const isLoggedIn = ref(!!localStorage.getItem("token"));
+if (isLoggedIn.value) {
+  router.push("/dashboard");
+}
+
 onMounted(async () => {});
 </script>
 

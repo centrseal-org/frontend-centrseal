@@ -14,6 +14,11 @@ const lastName = ref("");
 const brokerageName = ref("");
 const token = ref(route.query.token as string);
 
+const isLoggedIn = ref(!!localStorage.getItem("token"));
+if (isLoggedIn.value) {
+  router.push("/dashboard");
+}
+
 const submitForm = async () => {
   try {
     await httpHelper.post("auth/complete-signup", {
