@@ -8,51 +8,75 @@ Summary: Index of the tenant page
 import { ref, onMounted, computed } from "vue";
 import { useUserStore } from "@/stores/useUser";
 import { useI18n } from "vue-i18n";
+import { useNavigateTo } from "@/composables/useNavigateTo";
 import httpHelper from "@/helpers/httpHelpers";
 import Header from "@/components/Header.vue";
-import Upload from "./components/Upload.vue";
-import Bank from "./components/Bank.vue";
-import Ready from "./components/Ready.vue";
+import PaystubCard from "@/components/PaystubCard.vue";
 
 const { t } = useI18n();
+const { navigateTo } = useNavigateTo();
 const userStore = useUserStore();
 const user = computed(() => userStore.user);
-const property = ref();
-const files = ref();
-const transactions = ref();
-const maxFiles = 2;
-const _uploadedFiles = ref(false);
-const _connectedBank = ref(false);
+const isLoading = ref<boolean>(true);
+const errorMessage = ref<string | null>(null);
+const properties = ref();
 
-const uploadedFiles = (filesEmit: any) => {
-  if (filesEmit.length === maxFiles) {
-    _uploadedFiles.value = true;
-    files.value = filesEmit;
-    return;
-  }
-  _uploadedFiles.value = false;
-};
-
-const connectedBank = (transactionsEmit: any) => {
-  if (transactionsEmit.length) {
-    _connectedBank.value = true;
-    transactions.value = transactionsEmit;
-    return;
-  }
-  _connectedBank.value = false;
+const checkStatus = (property: any) => {
+  return property.paystubs.find((pa: any) => pa.isVerified === false);
 };
 
 onMounted(async () => {
   try {
-    console.log(userStore.user?.tenant, "userStore.user?.tenant");
-    const response = await httpHelper.get(
-      `property/${userStore.user?.tenant.property.uniqueUrl}`
-    );
-    if (response && response.data) {
-      property.value = response.data;
+    const uniqueUrls = userStore.user?.uniqueUrls;
+    const userId = userStore.user?.userId;
+    try {
+      const response = await httpHelper.get("/property/unique-urls", {
+        params: { uniqueUrls },
+      });
+      if (response.data) {
+        properties.value = response.data;
+      } else {
+        console.warn("There is no property for verification");
+      }
+      // For each property, fetch paystubs and merge them
+      for (const property of properties.value) {
+        try {
+          const paystubs = await httpHelper.get(
+            `paystub/user/${userId}/property/${property.propertyId}`
+          );
+          if (paystubs.data) {
+            property.paystubs = paystubs.data;
+            const paystubsUrls = property.paystubs.map(
+              (pa: any) => pa.documentUrl
+            );
+            const response: any = await httpHelper.post("paystub/signed-urls", {
+              paystubsUrls,
+            });
+            const preSignedUrls = response.data;
+            property.paystubs = property.paystubs.map(
+              (pa: any, index: number) => ({
+                ...pa,
+                preSignedUrl: preSignedUrls[index] || null,
+              })
+            );
+          } else {
+            console.warn("There is no paystubs for this user and property");
+          }
+        } catch (error) {
+          console.error(
+            `Error fetching paystubs for property ${property.propertyId}:`,
+            error
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching properties:", error);
     }
   } catch (error) {
-    console.error("Error fetching property data:", error);
+    errorMessage.value = "Error fetching properties: " + error;
+    console.error("Error fetching properties:", error);
+  } finally {
+    isLoading.value = false;
   }
 });
 </script>
@@ -60,7 +84,7 @@ onMounted(async () => {
 <template>
   <main>
     <Header />
-    <div class="position-relative bg-offWhite overflow-hidden tenant-page">
+    <div class="position-relative bg-offWhite overflow-hidden main-content">
       <v-container>
         <v-row class="mt-4">
           <v-col cols="12">
@@ -74,57 +98,76 @@ onMounted(async () => {
               </h4>
               <h6 class="text-blackText mt-2">
                 <span>
-                  {{ t("tenant.youHaveBeenInvited") }}
+                  These are the properties you've completed verifications for.
                 </span>
               </h6>
             </section>
           </v-col>
-          <v-col cols="12">
-            <section class="d-flex align-center justify-space-between">
-              <div class="d-flex my-10 flex-sm-row flex-column">
-                <img src="/uploadfile.png" class="imgProperty" />
-                <div
-                  class="d-flex flex-column justify-space-between ml-sm-4 ml-0"
-                >
-                  <div v-if="property?.address.data.properties">
-                    <div class="body1">
-                      {{ property.address.data.properties?.address_line1 }}
+
+          <v-col
+            cols="12"
+            md="6"
+            lg="4"
+            v-for="(property, index) in properties"
+          >
+            <v-col cols="12">
+              <section class="d-flex align-center">
+                <div class="d-flex mt-10 flex-sm-row flex-column">
+                  <img
+                    :src="property?.image[0]?.url"
+                    class="imageUploaded"
+                    v-if="property?.image[0]?.url"
+                  />
+                  <img src="/uploadfile.png" v-else class="imgProperty" />
+
+                  <div
+                    class="d-flex flex-column justify-space-between ml-sm-4 ml-0"
+                  >
+                    <div>
+                      <div class="body1">
+                        {{ property.address.data.properties.address_line1 }}
+                      </div>
+                      <div class="body3 mt-sm-2 mt-0">
+                        {{ property.address.data.properties.address_line2 }}
+                      </div>
                     </div>
-                    <div class="body3 mt-sm-2 mt-0">
-                      {{ property.address.data.properties?.address_line2 }}
+                    <div>
+                      <span
+                        v-if="property?.paystub"
+                        class="px-6 py-2 rounded-pill border bg-successLight border-success d-flex align-center font-weight-medium mt-2 mt-sm-0"
+                      >
+                        <inline-svg src="/paystub.svg" class="mr-2" />
+                        {{ t("tenant.requiresPaystubs") }}
+                      </span>
                     </div>
-                  </div>
-                  <div>
-                    <span
-                      v-if="property?.paystub"
-                      class="px-6 py-2 rounded-pill border bg-successLight border-success d-flex align-center font-weight-medium mt-2 mt-sm-0"
-                    >
-                      <inline-svg src="/paystub.svg" class="mr-2" />
-                      {{ t("tenant.requiresPaystubs") }}
-                    </span>
                   </div>
                 </div>
+              </section>
+            </v-col>
+            <v-col cols="12">
+              <PaystubCard
+                v-if="property?.paystubs"
+                :fullname="`${user?.firstName} ${user?.lastName}`"
+                earn="-"
+                period="-"
+                :statusDate="property.paystubs[0].verificationDate"
+                :status="checkStatus(property) ? 'unverified' : 'verified'"
+                :paystubs="property.paystubs"
+              />
+              <div
+                v-else
+                @click="
+                  navigateTo(`/tenant/paystub?uniqueUrl=${property.uniqueUrl}`)
+                "
+              >
+                There is no documents!
               </div>
-            </section>
+            </v-col>
           </v-col>
         </v-row>
-        <Upload @uploadedFiles="uploadedFiles" v-if="!_uploadedFiles" />
-        <Bank
-          @connectedBank="connectedBank"
-          v-if="_uploadedFiles && !_connectedBank"
-        />
-        <Ready
-          :files="files"
-          :transactions="transactions"
-          v-if="_connectedBank && _uploadedFiles"
-        />
       </v-container>
     </div>
   </main>
 </template>
 
-<style scoped lang="scss">
-.tenant-page {
-  min-height: calc(100vh - 57px);
-}
-</style>
+<style scoped lang="scss"></style>

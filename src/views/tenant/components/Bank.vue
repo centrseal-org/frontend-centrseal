@@ -15,14 +15,13 @@ import {
 import httpHelper from "@/helpers/httpHelpers";
 
 const { t } = useI18n();
+const emit = defineEmits(["connectedBank"]);
 const data = ref<{ link_token: string } | null>(null);
 const accessToken = ref();
 const transactions = ref();
 const token = computed(() => {
   return data.value?.link_token || "";
 });
-
-const emit = defineEmits(["connectedBank"]);
 
 /* connect to Bank */
 const onSuccess: PlaidLinkOnSuccess = async (publicToken, metadata) => {

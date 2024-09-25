@@ -17,6 +17,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.main-content {
+    min-height: calc(100vh - 57px);
+}
 .border-success{
   border-color: rgb(var(--v-theme-success)) !important;
 }

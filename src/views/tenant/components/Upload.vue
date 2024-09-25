@@ -8,15 +8,30 @@ Summary: Display the upload section of the tenant
 import { ref } from "vue";
 import { truncate } from "@/helpers/truncate";
 import { useI18n } from "vue-i18n";
+import httpHelper from "@/helpers/httpHelpers";
+import { useFileToBase64 } from "@/composables/useFileToBase64";
+
+const props = defineProps({
+  property: {
+    required: false,
+  },
+});
 
 const { t } = useI18n();
+const emit = defineEmits(["paystubs"]);
+const { convertToBase64 } = useFileToBase64();
 const message = ref<string>("");
-const uploadedFiles = ref<{ file: File }[]>([]);
 const maxFiles = 2;
 const allowedFileTypes = ["application/pdf", "image/jpeg", "image/png"];
 const maxFileSize = 2 * 1024 * 1024; // 2 MB
-
-const emit = defineEmits(["uploadedFiles"]);
+const paystubs = ref<
+  {
+    file: File;
+    uploaded: boolean;
+    progress: number;
+    paystub: any;
+  }[]
+>([]);
 
 const onDrop = (e: DragEvent) => {
   e.preventDefault();
@@ -24,19 +39,19 @@ const onDrop = (e: DragEvent) => {
     handleFiles(e.dataTransfer.files);
   }
 };
+
 const onDragOver = (e: DragEvent) => {
   e.preventDefault();
 };
-/* Delete file */
+
 const deleteFile = async (file: File) => {
-  message.value = "";
-  uploadedFiles.value = uploadedFiles.value.filter(
-    (fileWrapper) => fileWrapper.file.name !== file.name
-  );
+  // message.value = "";
+  paystubs.value = paystubs.value.filter((ps) => ps.file.name !== file.name);
 };
+
 /* Upload files */
 const handleFiles = async (files: FileList) => {
-  if (files.length + uploadedFiles.value.length > maxFiles) {
+  if (files.length + paystubs.value.length > maxFiles) {
     message.value = `You can only upload up to ${maxFiles} files.`;
     return;
   }
@@ -53,7 +68,7 @@ const handleFiles = async (files: FileList) => {
       return;
     }
     // Check for duplicate file
-    const isDuplicate = uploadedFiles.value.some(
+    const isDuplicate = paystubs.value.some(
       (fileWrapper) => fileWrapper.file.name === file.name
     );
     if (isDuplicate) {
@@ -61,18 +76,73 @@ const handleFiles = async (files: FileList) => {
       return;
     }
     // Add file if valid
-    uploadedFiles.value = [...uploadedFiles.value, { file }];
+    paystubs.value = [
+      ...paystubs.value,
+      {
+        file,
+        uploaded: false,
+        progress: 0,
+        paystub: "",
+      },
+    ];
+    // Get index of the added file for updating progress and status
+    const currentIndex = paystubs.value.length - 1;
     message.value = "";
+    const base64Image = await convertToBase64(file);
+    paystubs.value[currentIndex].progress = 25;
+    const openAiResult = await OpenAI(base64Image);
+    paystubs.value[currentIndex].progress = 50;
+    if (openAiResult) {
+      const awsResult = await uploadFilesAWS(file, openAiResult);
+      paystubs.value[currentIndex].uploaded = true;
+      paystubs.value[currentIndex].progress = 100;
+      paystubs.value[currentIndex].paystub = awsResult;
+    } else {
+      await deleteFile(file);
+      message.value = "The image is wrong. Please try with the right image.";
+    }
   }
 };
 
-const next = () => {
-  if (uploadedFiles.value.length !== maxFiles) {
+const OpenAI = async (base64Image: string) => {
+  if (base64Image) {
+    try {
+      const response = await httpHelper.post("openai/analyze-paystub", {
+        base64Image,
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error, "error");
+    }
+  } else {
+    console.warn("No file found in object!");
+  }
+};
+
+const uploadFilesAWS = async (file: File, openAiResult: any): Promise<any> => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("property", JSON.stringify(props.property));
+  formData.append("openAiResult", JSON.stringify(openAiResult));
+  try {
+    const response = await httpHelper.post("paystub/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error, "error");
+  }
+};
+
+const handleNextBtn = () => {
+  if (paystubs.value.length !== maxFiles) {
     message.value = `You can only upload up to ${maxFiles} files.`;
     return;
   }
   // Emit events to the parent component
-  emit("uploadedFiles", uploadedFiles.value);
+  emit("paystubs", paystubs.value);
 };
 </script>
 
@@ -91,7 +161,7 @@ const next = () => {
           @dragover="onDragOver"
           @drop="onDrop"
           @click="($refs.fileInput as any).click()"
-          v-if="uploadedFiles.length < maxFiles"
+          v-if="paystubs.length < maxFiles"
         >
           <input
             type="file"
@@ -125,62 +195,60 @@ const next = () => {
         <div class="listFiles">
           <ul>
             <li
-              v-for="fileWrapper in uploadedFiles"
-              :key="fileWrapper.file.name"
+              v-for="ps in paystubs"
+              :key="ps.file.name"
               class="pa-2 px-4 rounded-lg my-4 d-flex align-center justify-space-between"
             >
               <section class="d-flex align-center">
                 <inline-svg src="/pdf.svg" class="mr-4" />
                 <div>
-                  <div>1 {{ truncate(fileWrapper.file.name, 40) }}</div>
+                  <div>{{ truncate(ps.file.name, 40) }}</div>
                   <div class="d-flex align-center">
                     <span class="text-lightGray body3">
-                      {{ (fileWrapper.file.size / 1024).toFixed(2) }}
+                      {{ (ps.file.size / 1024).toFixed(2) }}
                       {{ t("tenant.kb") }}
                     </span>
-                    <!-- <span
-                            class="completedSign d-flex align-center justify-center mx-2"
-                            :class="{ loading: !fileWrapper.uploaded }"
-                          >
-                            <inline-svg
-                              :src="
-                                fileWrapper.uploaded
-                                  ? '/complete.svg'
-                                  : '/loading.svg'
-                              "
-                            />
-                          </span>
-                          <span>
-                            {{
-                              fileWrapper.uploaded ? "Completed" : "Uploading"
-                            }}
-                          </span> -->
+                    <span
+                      class="completedSign d-flex align-center justify-center mx-2"
+                      :class="{ loading: !ps.uploaded }"
+                    >
+                      <inline-svg
+                        :src="ps.uploaded ? '/complete.svg' : '/loading.svg'"
+                      />
+                    </span>
+                    <span>
+                      {{ ps.uploaded ? "Completed" : "Uploading" }}
+                    </span>
                   </div>
-                  <!-- <v-progress-linear
-                    v-if="!fileWrapper.uploaded"
+                  <v-progress-linear
+                    v-if="!ps.uploaded"
                     color="indigo"
-                    :model-value="fileWrapper.progress"
+                    :model-value="ps.progress"
                     rounded
                     height="5"
                     class="mt-2"
-                  ></v-progress-linear> -->
+                  ></v-progress-linear>
                 </div>
               </section>
               <inline-svg
                 src="/bin.svg"
                 class="mr-4 cursor-pointer"
-                @click="() => deleteFile(fileWrapper.file)"
+                @click="() => deleteFile(ps.file)"
               />
             </li>
           </ul>
         </div>
       </section>
     </v-col>
-    <v-col cols="12" class="pt-0" v-if="uploadedFiles.length === maxFiles">
+    <v-col
+      cols="12"
+      class="pt-0"
+      v-if="paystubs.length === maxFiles && paystubs.every((ps) => ps.uploaded)"
+    >
       <button
         class="main-btn next text-white py-3 px-4 d-flex align-center justify-space-between"
         type="button"
-        @click="next()"
+        @click="handleNextBtn()"
       >
         <span class="font-weight-medium">{{ t("tenant.next") }}</span>
         <inline-svg src="/arrowRight.svg" />

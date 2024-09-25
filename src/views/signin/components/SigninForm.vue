@@ -32,9 +32,10 @@ const validatePassword = (password: string) => {
 const submitForm = async () => {
   const uniqueUrl = router.currentRoute.value.params.uniqueUrl;
   _isTenant.value = false;
+
   if (uniqueUrl) {
     try {
-      const response = await httpHelper.get(`property/${uniqueUrl}`);
+      const response = await httpHelper.get(`property/unique-url/${uniqueUrl}`);
       if (response && response.data) {
         _isTenant.value = true;
         property.value = response.data;
@@ -75,6 +76,8 @@ const submitForm = async () => {
       {
         username: email.value,
         password: password.value,
+        role: _isTenant.value ? "tenant" : "realtor",
+        uniqueUrl: uniqueUrl,
       },
       { withCredentials: true }
     );
@@ -87,8 +90,16 @@ const submitForm = async () => {
             property: property.value,
           },
         });
+        router.push(`/tenant/paystub?uniqueUrl=${uniqueUrl}`);
+      } else if (response.data.user.role === "tenant") {
+        userStore.setUser({
+          ...response.data.user,
+          tenant: {
+            property: property.value,
+          },
+        });
         router.push({ name: "tenant" });
-      } else {
+      } else if (response.data.user.role === "realtor") {
         userStore.setUser(response.data.user);
         router.push({ name: "dashboard" });
       }

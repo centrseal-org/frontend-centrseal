@@ -1,5 +1,5 @@
 <!--
-Summary: Display teh header section of the landing page
+Summary: Display the header section of the landing page
 @copyright Copyright (c) 2024 CentrSeal. All rights reserved.
 @file This file defines the Header component.
 @author Kasra Jannati

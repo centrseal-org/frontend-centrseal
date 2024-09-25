@@ -6,6 +6,7 @@ import Tenant from "../views/tenant/tenant.vue";
 import Faq from "../views/faq/faq.vue";
 import Error from "../views/error/error.vue";
 import VerifyDocs from "../views/tenant/verifyDocs.vue";
+import Paystub from "../views/tenant/paystub.vue";
 import Sample1 from "../views/marketing/Sample1.vue";
 import PrivacyPolicy from "@/views/privacyPolicy/privacyPolicy.vue";
 import TermsOfService from "@/views/termsOfService/termsOfService.vue";
@@ -69,6 +70,12 @@ const router = createRouter({
       path: "/tenant/verify",
       name: "verifyDocs",
       component: VerifyDocs,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/tenant/paystub",
+      name: "paystub",
+      component: Paystub,
       meta: { requiresAuth: true },
     },
     {

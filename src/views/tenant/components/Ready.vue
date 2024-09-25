@@ -5,30 +5,30 @@ Summary: Display the all information to submit documents
 @author Kasra Jannati
 -->
 <script setup lang="ts">
-import { useRouter } from "vue-router";
 import { truncate } from "@/helpers/truncate";
-import { useVerificationStore } from "@/stores/verificationStore";
+import { useVerificationStore } from "@/stores/useVerificationStore";
 import { useI18n } from "vue-i18n";
+import { useNavigateTo } from "@/composables/useNavigateTo";
 
 const props = defineProps({
   transactions: {
     type: Array as () => Array<any>,
     required: true,
   },
-  files: {
+  paystubs: {
     type: Array as () => Array<any>,
     required: true,
   },
 });
 
 const { t } = useI18n();
-const router = useRouter();
+const { navigateTo } = useNavigateTo();
 const store = useVerificationStore();
 
 const submit = () => {
   store.setTransactions(props.transactions);
-  store.setFiles(props.files);
-  router.push("/tenant/verify");
+  store.setPaystubs(props.paystubs);
+  navigateTo("/tenant/verify");
 };
 </script>
 
@@ -50,18 +50,26 @@ const submit = () => {
       <div class="listFiles">
         <ul>
           <li
-            v-for="file in files"
-            :key="file.file.name"
+            v-for="ps in paystubs"
+            :key="ps.file.name"
             class="pa-2 px-4 rounded-lg my-4 d-flex align-center justify-space-between"
           >
             <section class="d-flex align-center">
               <inline-svg src="/pdf.svg" class="mr-4" />
               <div>
-                <div>{{ truncate(file.file.name, 40) }}</div>
+                <div>{{ truncate(ps.file.name, 40) }}</div>
                 <div class="d-flex align-center">
                   <span class="text-lightGray body3">
-                    {{ (file.file.size / 1024).toFixed(2) }}
+                    {{ (ps.file.size / 1024).toFixed(2) }}
                     {{ t("tenant.kb") }}
+                  </span>
+                  <span
+                    class="completedSign d-flex align-center justify-center mx-2"
+                  >
+                    <inline-svg :src="'/complete.svg'" />
+                  </span>
+                  <span class="body3">
+                    {{ "Completed" }}
                   </span>
                 </div>
               </div>
@@ -76,7 +84,12 @@ const submit = () => {
                 <!-- TODO: Get this value from Plaid -->
                 <div>CIBC Chequing ••••2124</div>
                 <div class="d-flex align-center">
-                  <span class="text-lightGray body3">
+                  <span
+                    class="completedSign d-flex align-center justify-center mr-2"
+                  >
+                    <inline-svg :src="'/complete.svg'" />
+                  </span>
+                  <span class="body3">
                     {{ t("tenant.connected") }}
                   </span>
                 </div>
@@ -112,5 +125,11 @@ const submit = () => {
 .main-btn.submit {
   max-width: 600px !important;
   width: 100%;
+}
+.completedSign {
+  background: #3ebf8f;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
 }
 </style>
