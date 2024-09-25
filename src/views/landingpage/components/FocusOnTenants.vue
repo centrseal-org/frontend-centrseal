@@ -52,7 +52,7 @@ const copyFn = async () => {
 </script>
 
 <template>
-  <v-container class="py-16">
+  <v-container class="pb-16 pt-0">
     <div v-intersect="'animate__fadeInUp'">
       <v-row class="mb-12">
         <v-col cols="12">
@@ -216,7 +216,7 @@ const copyFn = async () => {
 
 <style scoped lang="scss">
 .text-input {
-  width: 65px;
+  min-width: 65px;
 }
 .switch-card {
   box-shadow: 0px 20px 40px 0px rgba(var(--v-theme-indigo), 0.08);

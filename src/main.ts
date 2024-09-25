@@ -10,10 +10,15 @@ import VueSafeHTML from "vue-safe-html";
 import i18n from "@/locales/i18n";
 import InlineSvg from "vue-inline-svg";
 import animateIntersect from "./views/landingpage/components/v-intersect";
+import piniaPluginPersistedState from "pinia-plugin-persistedstate";
+import { createHead } from "@unhead/vue";
 
 const app = createApp(App);
+const head = createHead();
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedState);
+app.use(pinia);
 
-app.use(createPinia());
 app.use(router);
 app.use(vuetify);
 app.use(i18n);
@@ -35,7 +40,10 @@ app.use(VueSafeHTML, {
     "mark",
   ],
 });
+
 app.component("InlineSvg", InlineSvg);
 app.directive("intersect", animateIntersect);
+// app.use(createPinia());
+app.use(head);
 
 app.mount("#app");
