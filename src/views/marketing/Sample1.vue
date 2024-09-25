@@ -63,7 +63,6 @@ const submitForm = async () => {
   enableScroll();
 };
 const disableScroll = () => {
-  console.log("1");
   document.documentElement.style.overflow = "hidden";
 };
 const enableScroll = () => {
