@@ -11,6 +11,7 @@ import Sample1 from "../views/marketing/Sample1.vue";
 import PrivacyPolicy from "@/views/privacyPolicy/privacyPolicy.vue";
 import TermsOfService from "@/views/termsOfService/termsOfService.vue";
 import NotFound from "@/views/error/404.vue";
+import { jwtDecode } from "./jwtDecode/index.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -125,6 +126,19 @@ router.beforeEach((to, from, next) => {
         replace: true, // Replace the navigation history, so the URL stays the same
       });
     } else {
+      const decodedToken = jwtDecode<any>(token);
+      if (
+        (to.name === "dashboard" && decodedToken.role !== "realtor") ||
+        (to.name === "tenant" && decodedToken.role !== "tenant") ||
+        (to.name === "/tenant/verify" && decodedToken.role !== "tenant") ||
+        (to.name === "/tenant/paystub" && decodedToken.role !== "tenant")
+      ) {
+        next({
+          name: "NotFound",
+        });
+      } else {
+        next();
+      }
       next();
     }
   } else {

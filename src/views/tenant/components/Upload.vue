@@ -10,6 +10,7 @@ import { truncate } from "@/helpers/truncate";
 import { useI18n } from "vue-i18n";
 import httpHelper from "@/helpers/httpHelpers";
 import { useFileToBase64 } from "@/composables/useFileToBase64";
+import { usePdfToImg } from "@/composables/usePdfToImg";
 
 const props = defineProps({
   property: {
@@ -20,6 +21,7 @@ const props = defineProps({
 const { t } = useI18n();
 const emit = defineEmits(["paystubs"]);
 const { convertToBase64 } = useFileToBase64();
+const { convertPdfToImage } = usePdfToImg();
 const message = ref<string>("");
 const maxFiles = 2;
 const allowedFileTypes = ["application/pdf", "image/jpeg", "image/png"];
@@ -88,7 +90,12 @@ const handleFiles = async (files: FileList) => {
     // Get index of the added file for updating progress and status
     const currentIndex = paystubs.value.length - 1;
     message.value = "";
-    const base64Image = await convertToBase64(file);
+    let base64Image: any;
+    if (file.type === "application/pdf") {
+      base64Image = await convertPdfToImage(file);
+    } else {
+      base64Image = await convertToBase64(file);
+    }
     paystubs.value[currentIndex].progress = 25;
     const openAiResult = await OpenAI(base64Image);
     paystubs.value[currentIndex].progress = 50;

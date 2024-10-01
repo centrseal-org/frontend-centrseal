@@ -11,7 +11,9 @@ import Header from "@/components/Header.vue";
 <template>
   <main>
     <Header />
-    <div class="position-relative bg-offWhite overflow-hidden privacy-page">
+    <div
+      class="position-relative bg-offWhite overflow-hidden privacy-page main-content"
+    >
       <v-container class="pb-16">
         <v-row class="container-width">
           <v-col cols="12">
@@ -186,10 +188,12 @@ import Header from "@/components/Header.vue";
 </template>
 
 <style scoped lang="scss">
-.privacy-page {
-  min-height: calc(100vh - 57px);
-}
 .container-width {
-  width: 80%;
+  width: 60%;
+}
+@media (max-width: 1200px) {
+  .container-width {
+    width: 100%;
+  }
 }
 </style>

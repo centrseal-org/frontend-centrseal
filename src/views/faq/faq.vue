@@ -11,9 +11,11 @@ import Header from "@/components/Header.vue";
 <template>
   <main>
     <Header />
-    <div class="position-relative bg-offWhite overflow-hidden faq-page">
+    <div
+      class="position-relative bg-offWhite overflow-hidden faq-page main-content"
+    >
       <v-container class="pb-16">
-        <v-row>
+        <v-row class="container-width">
           <v-col cols="12">
             <section class="my-4">
               <h4 class="font-weight-medium">Frequently Asked Questions</h4>
@@ -142,7 +144,12 @@ import Header from "@/components/Header.vue";
 </template>
 
 <style scoped lang="scss">
-.faq-page {
-  min-height: calc(100vh - 57px);
+.container-width {
+  width: 60%;
+}
+@media (max-width: 1200px) {
+  .container-width {
+    width: 100%;
+  }
 }
 </style>

@@ -47,7 +47,7 @@ onMounted(async () => {
           if (paystubs.data) {
             property.paystubs = paystubs.data;
             const paystubsUrls = property.paystubs.map(
-              (pa: any) => pa.documentUrl
+              (pa: any) => pa.paystubUrl
             );
             const response: any = await httpHelper.post("paystub/signed-urls", {
               paystubsUrls,

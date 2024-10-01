@@ -1,5 +1,5 @@
 <!--
-Summary: Index of the verify documents page
+Summary: Index of the verify paystubs page
 @copyright Copyright (c) 2024 CentrSeal. All rights reserved.
 @file This file defines the verifyDocs component.
 @author Kasra Jannati
@@ -79,87 +79,87 @@ const testPurpose = async () => {
     website: "https://reliqhealth.com",
   };
   transactions.push(newTransaction);
-  // const newTransaction2 = {
-  //   account_id: "fakeAccountId12345",
-  //   account_owner: null,
-  //   amount: 1127.71,
-  //   authorized_date: null,
-  //   authorized_datetime: null,
-  //   category: ["Business", "Healthcare"],
-  //   category_id: "10001000",
-  //   check_number: null,
-  //   counterparties: [],
-  //   date: "2022/09/15",
-  //   datetime: null,
-  //   iso_currency_code: "USD",
-  //   location: {
-  //     address: "123 Fake St",
-  //     city: "FakeCity",
-  //     country: "US",
-  //     lat: null,
-  //     lon: null,
-  //     postal_code: "12345",
-  //     region: "CA",
-  //     store_number: null,
-  //   },
-  //   logo_url: null,
-  //   merchant_entity_id: null,
-  //   merchant_name: "Reliq Health Technologies Inc22",
-  //   name: "Reliq Health Technologies Inc22",
-  //   payment_channel: "online",
-  //   payment_meta: {
-  //     by_order_of: null,
-  //     payee: null,
-  //     payer: null,
-  //     payment_method: "credit",
-  //     payment_processor: "FakeProcessor",
-  //     ppd_id: "123456789",
-  //     reason: "Payment for services",
-  //     reference_number: "REF123456789",
-  //   },
-  //   pending: false,
-  //   pending_transaction_id: null,
-  //   personal_finance_category: {
-  //     confidence_level: "HIGH",
-  //     detailed: "BUSINESS_HEALTHCARE",
-  //     primary: "BUSINESS",
-  //   },
-  //   personal_finance_category_icon_url:
-  //     "https://plaid-category-icons.plaid.com/PFC_BUSINESS.png",
-  //   transaction_code: "12345ABCDE",
-  //   transaction_id: "newTransactionId12345",
-  //   transaction_type: "place",
-  //   unofficial_currency_code: null,
-  //   website: "https://reliqhealth.com",
-  // };
-  // transactions.push(newTransaction2);
+  const newTransaction2 = {
+    account_id: "fakeAccountId12345",
+    account_owner: null,
+    amount: 1127.71,
+    authorized_date: null,
+    authorized_datetime: null,
+    category: ["Business", "Healthcare"],
+    category_id: "10001000",
+    check_number: null,
+    counterparties: [],
+    date: "2022/09/15",
+    datetime: null,
+    iso_currency_code: "USD",
+    location: {
+      address: "123 Fake St",
+      city: "FakeCity",
+      country: "US",
+      lat: null,
+      lon: null,
+      postal_code: "12345",
+      region: "CA",
+      store_number: null,
+    },
+    logo_url: null,
+    merchant_entity_id: null,
+    merchant_name: "Reliq Health Technologies Inc22",
+    name: "Reliq Health Technologies Inc22",
+    payment_channel: "online",
+    payment_meta: {
+      by_order_of: null,
+      payee: null,
+      payer: null,
+      payment_method: "credit",
+      payment_processor: "FakeProcessor",
+      ppd_id: "123456789",
+      reason: "Payment for services",
+      reference_number: "REF123456789",
+    },
+    pending: false,
+    pending_transaction_id: null,
+    personal_finance_category: {
+      confidence_level: "HIGH",
+      detailed: "BUSINESS_HEALTHCARE",
+      primary: "BUSINESS",
+    },
+    personal_finance_category_icon_url:
+      "https://plaid-category-icons.plaid.com/PFC_BUSINESS.png",
+    transaction_code: "12345ABCDE",
+    transaction_id: "newTransactionId12345",
+    transaction_type: "place",
+    unofficial_currency_code: null,
+    website: "https://reliqhealth.com",
+  };
+  transactions.push(newTransaction2);
 };
 
-const updateDocument = async (documentId: number, verified: boolean) => {
+const updatePaystub = async (paystubId: number, verified: boolean) => {
   try {
     // Add the current date as the verificationDate
     const verificationDate = new Date().toISOString();
-    const response = await httpHelper.patch(`paystub/${documentId}`, {
+    const response = await httpHelper.patch(`paystub/${paystubId}`, {
       isVerified: verified,
       verificationDate,
     });
     return response.data;
   } catch (error) {
-    console.error("Error updating document:", error);
+    console.error("Error updating paystub:", error);
     return null;
   }
 };
 
 const addSignedUrls = async () => {
-  // For each property, fetch documents and merge them
+  // For each property, fetch paystubs and merge them
   for (const [index, re] of verificationResults.value.entries()) {
     try {
       const response: any = await httpHelper.post("paystub/signed-url", {
-        documentUrl: re.documentUrl,
+        paystubUrl: re.paystubUrl,
       });
       verificationResults.value[index].preSignedUrl = response.data;
     } catch (error) {
-      console.error(`Error fetching documents for property :`, error);
+      console.error(`Error fetching paystubs for property :`, error);
     }
   }
 };
@@ -167,13 +167,15 @@ const addSignedUrls = async () => {
 const performVerification = async () => {
   const results: any = await Promise.all(
     paystubs.map(async (ps) => {
+      console.log(transactions, "111");
+      console.log(ps.paystub, "222");
       const result = await httpHelper.post("paystub/verify", {
         transactions: transactions,
         paystub: ps.paystub,
       });
       const isVerified = result.data ? true : false;
-      const updateResult: any = await updateDocument(
-        ps.paystub.documentId,
+      const updateResult: any = await updatePaystub(
+        ps.paystub.paystubId,
         isVerified
       );
       return updateResult;
