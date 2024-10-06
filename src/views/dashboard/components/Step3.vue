@@ -46,9 +46,14 @@ onMounted(async () => {
 
   <div class="d-flex my-10">
     <img
+      :src="props.response?.image[0]?.file?.location"
+      class="imageUploaded"
+      v-if="props.response?.image[0]?.file?.location"
+    />
+    <img
       :src="props.response?.image[0]?.url"
       class="imageUploaded"
-      v-if="props.response?.image[0]?.url"
+      v-else-if="props.response?.image[0]?.url"
     />
     <img src="/uploadfile.png" v-else class="imageUploaded" />
     <div class="d-flex flex-column ml-4">

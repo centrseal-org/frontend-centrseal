@@ -13,9 +13,7 @@ export const useUserStore = defineStore(
     };
 
     const $reset = () => {
-      console.log(user.value, "123123");
       user.value = null;
-      console.log(user.value, "123123");
     };
 
     return {

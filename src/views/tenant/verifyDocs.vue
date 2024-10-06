@@ -167,8 +167,6 @@ const addSignedUrls = async () => {
 const performVerification = async () => {
   const results: any = await Promise.all(
     paystubs.map(async (ps) => {
-      console.log(transactions, "111");
-      console.log(ps.paystub, "222");
       const result = await httpHelper.post("paystub/verify", {
         transactions: transactions,
         paystub: ps.paystub,

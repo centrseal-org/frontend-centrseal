@@ -93,8 +93,18 @@ onMounted(async () => {
           <v-col cols="12">
             <section class="d-flex align-center justify-space-between">
               <div class="d-flex my-10 flex-sm-row flex-column">
-                <!-- TODO: aws image -->
-                <img src="/uploadfile.png" class="imgProperty" />
+                <img
+                  :src="property.image[0]?.file?.location"
+                  class="imgProperty"
+                  v-if="property?.image[0]?.file?.location"
+                />
+                <img
+                  :src="property.image[0]?.url"
+                  class="imgProperty"
+                  v-else-if="property?.image[0]?.url"
+                />
+                <img src="/uploadfile.png" v-else class="imgProperty" />
+
                 <div
                   class="d-flex flex-column justify-space-between ml-sm-4 ml-0"
                 >

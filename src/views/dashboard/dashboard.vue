@@ -59,8 +59,18 @@ const addProperty = async () => {
         ? `property/${property.value.propertyId}`
         : "property";
       const method = isEditingProperty.value ? "put" : "post";
+      const formData = new FormData();
+      // Append the image to formData
+      if (property.value.image.length) {
+        formData.append("file", property.value.image[0].file);
+      }
+      formData.append("property", JSON.stringify(property.value));
 
-      response.value = await httpHelper[method](endpoint, property.value);
+      response.value = await httpHelper[method](endpoint, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       if (response.value.code === 200 || response.value.code === 201) {
         // Successfully added property
         stepperRef.value?.next();
@@ -144,16 +154,17 @@ const clickStep1 = () => {
             </section>
           </v-col>
         </v-row>
-        <v-row v-for="pro in properties">
+        <v-row v-for="(pro, index) in properties">
           <v-col cols="12">
             <section class="d-flex align-center justify-space-between">
               <div class="d-flex my-10">
-                <!-- <img
-                  :src="pro?.image[0]?.url"
-                  class="imageUploaded"
-                  v-if="pro?.image[0]?.url"
-                /> -->
-                <img src="/uploadfile.png" class="imgProperty" />
+                <img
+                  :src="pro.image[0].file.location"
+                  class="imgProperty"
+                  v-if="pro?.image[0]?.file?.location"
+                />
+
+                <img src="/uploadfile.png" class="imgProperty" v-else />
 
                 <div class="d-flex flex-column ml-4">
                   <span class="body1">

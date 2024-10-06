@@ -103,20 +103,14 @@ onMounted(async () => {
               </h6>
             </section>
           </v-col>
-
-          <v-col
-            cols="12"
-            md="6"
-            lg="4"
-            v-for="(property, index) in properties"
-          >
+          <v-col cols="12" v-for="(property, index) in properties">
             <v-col cols="12">
               <section class="d-flex align-center">
                 <div class="d-flex mt-10 flex-sm-row flex-column">
                   <img
-                    :src="property?.image[0]?.url"
-                    class="imageUploaded"
-                    v-if="property?.image[0]?.url"
+                    :src="property.image[0]?.file?.location"
+                    class="imgProperty"
+                    v-if="property.image[0]?.file?.location"
                   />
                   <img src="/uploadfile.png" v-else class="imgProperty" />
 
@@ -154,14 +148,20 @@ onMounted(async () => {
                 :status="checkStatus(property) ? 'unverified' : 'verified'"
                 :paystubs="property.paystubs"
               />
-              <div
+              <button
+                class="main-btn text-white py-3 px-4 d-flex align-center justify-space-between"
+                type="button"
+                :ripple="false"
                 v-else
                 @click="
                   navigateTo(`/tenant/paystub?uniqueUrl=${property.uniqueUrl}`)
                 "
               >
-                There is no documents!
-              </div>
+                <span class="font-weight-medium">
+                  {{ t("Continue Verfication") }}</span
+                >
+                <inline-svg src="/arrowRight.svg" class="ml-4" />
+              </button>
             </v-col>
           </v-col>
         </v-row>

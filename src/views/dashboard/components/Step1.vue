@@ -52,25 +52,6 @@ const triggerUpload = () => {
   fileInput.value?.click();
 };
 
-const sendFiles = async () => {
-  isUploading.value = true;
-  try {
-    const formData = new FormData();
-    uploadedFiles.value.forEach(({ file }: any) => {
-      console.log(file, "filefile");
-      formData.append("files", file);
-    });
-
-    console.log(formData);
-    // const response = await httpHelper.post("upload", formData);
-    // uploadedFiles.value = []; // Clear the files after sending
-  } catch (error) {
-    console.error("Error sending files:", error);
-  } finally {
-    isUploading.value = false;
-  }
-};
-
 // Function to fetch address suggestions from Geoapify
 // TODO: change API key in prodcut
 const fetchAddressSuggestions = async (query: string) => {
@@ -96,6 +77,10 @@ const onConditionChange = (newAddress: any) => {
   fetchAddressSuggestions(newAddress);
 };
 
+const removeFile = () => {
+  uploadedFiles.value = [];
+};
+
 // Emit events to the parent component
 const emit = defineEmits(["updatePropertyInfo"]);
 emit("updatePropertyInfo", { propertyAddress, uploadedFiles });
@@ -108,7 +93,10 @@ emit("updatePropertyInfo", { propertyAddress, uploadedFiles });
     <span v-else> Welcome! Let's add your first property </span>
     <span class="text-gray">(it takes 30 seconds).</span>
   </h6>
-  <div class="upload-container pa-10 my-8">
+  <div
+    class="upload-container my-8 position-relative"
+    :class="uploadedFiles.length > 0 ? 'pa-2' : 'pa-10'"
+  >
     <div
       @dragover.prevent="handleDragOver"
       @drop.prevent="handleDrop"
@@ -117,23 +105,42 @@ emit("updatePropertyInfo", { propertyAddress, uploadedFiles });
     >
       <img src="/uploadfile.png" v-if="uploadedFiles.length === 0" />
       <div v-if="uploadedFiles.length > 0" class="preview">
-        <span v-for="(file, index) in uploadedFiles" :key="index">
-          <img :src="file.url" :alt="file.name" class="preview-image" />
+        <span
+          v-for="(file, index) in uploadedFiles"
+          :key="index"
+          class="d-flex"
+        >
+          <img
+            :src="file.file.location"
+            class="preview-image"
+            v-if="file.file.location"
+          />
+          <img :src="file.url" class="preview-image" v-else />
         </span>
       </div>
-      <input
-        ref="fileInput"
-        type="file"
-        accept="image/*"
-        multiple
-        @change="handleFileSelect"
-        style="display: none"
-      />
-      <div v-if="isUploading" class="loading-message">Uploading...</div>
-      <div v-else class="text-center">
-        <p>Drag & Drop a Nice Property Photo or</p>
-        <button class="font-weight-bold mt-2">Click to Upload</button>
-      </div>
+      <span v-if="uploadedFiles.length === 0">
+        <input
+          ref="fileInput"
+          type="file"
+          accept="image/*"
+          multiple
+          @change="handleFileSelect"
+          style="display: none"
+        />
+        <div v-if="isUploading" class="loading-message">Uploading...</div>
+        <div v-else class="text-center">
+          <p>Drag & Drop a Nice Property Photo or</p>
+          <button class="font-weight-bold mt-2">Click to Upload</button>
+        </div>
+      </span>
+    </div>
+    <div
+      class="removeBtn"
+      @click="removeFile()"
+      v-if="uploadedFiles.length > 0"
+    >
+      <inline-svg src="/trash.svg" />
+      <span> Remove </span>
     </div>
   </div>
 
@@ -177,8 +184,13 @@ emit("updatePropertyInfo", { propertyAddress, uploadedFiles });
   background: linear-gradient(246deg, #e8e8f2 0%, #dddde8 100%);
 }
 .preview-image {
-  max-width: 200px;
-  margin-right: 10px;
+  max-width: 430px;
+  width: 430px;
+  // margin-right: 10px;
+
+  border-radius: 8px;
+  border: 1px solid var(--Blue-blue-300, #6663ff);
+  background: url(<path-to-image>) lightgray 50% / cover no-repeat;
 }
 .progressBar {
   .v-progress-linear {
@@ -192,5 +204,20 @@ emit("updatePropertyInfo", { propertyAddress, uploadedFiles });
 }
 :deep(.v-field__append-inner) {
   display: none !important;
+}
+.removeBtn {
+  display: flex;
+  padding: 4px var(--Body-P-size, 16px);
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: var(--Heading-H4-size, 31px);
+  background: rgba(5, 4, 33, 0.3);
+  backdrop-filter: blur(25px);
+  color: #fff;
+  cursor: pointer;
 }
 </style>

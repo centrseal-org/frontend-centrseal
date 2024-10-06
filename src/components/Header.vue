@@ -34,10 +34,10 @@ const logout = async () => {
 };
 
 const emit = defineEmits(["resetPropertyFlag"]);
-const handleDashboardClick = () => {
-  emit("resetPropertyFlag");
-  router.push("/dashboard");
-};
+// const handleDashboardClick = () => {
+//   emit("resetPropertyFlag");
+//   router.push("/dashboard");
+// };
 
 const handleLogoClick = async () => {
   emit("resetPropertyFlag");
@@ -45,7 +45,11 @@ const handleLogoClick = async () => {
     if (router.currentRoute.value.fullPath === "/") {
       await router.push("/");
     } else {
-      await router.push("/dashboard");
+      if (user.value.role === "tenant") {
+        await router.push("/tenant");
+      } else {
+        await router.push("/dashboard");
+      }
     }
   } else {
     await router.push("/");
@@ -84,18 +88,34 @@ const handleLogoClick = async () => {
                     {{ user?.firstName }} {{ user?.lastName }}
                   </v-btn>
                 </template>
-                <v-list>
-                  <v-list-item
+                <v-list class="dropDown">
+                  <!-- <v-list-item
                     to="/dashboard"
                     @click.prevent="handleDashboardClick"
                   >
                     <v-list-item-title>
                       {{ t("Dashboard") }}
                     </v-list-item-title>
+                  </v-list-item> -->
+                  <v-list-item>
+                    <v-list-item-title class="d-flex align-center">
+                      <inline-svg src="/changePassword.svg" class="mr-2" />
+                      <span>{{ t("header.changePassword") }}</span>
+                    </v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item class="borderItem">
+                    <v-list-item-title class="d-flex align-center">
+                      <inline-svg src="/billing.svg" class="mr-2" />
+                      <span>{{ t("header.billing") }}</span>
+                    </v-list-item-title>
                   </v-list-item>
                   <v-list-item @click.prevent="logout">
-                    <v-list-item-title>
-                      {{ t("Log Out") }}
+                    <v-list-item-title class="d-flex align-center">
+                      <inline-svg src="/logout.svg" class="mr-2" />
+                      <span>
+                        {{ t("header.logOut") }}
+                      </span>
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>
@@ -139,5 +159,37 @@ a {
   :deep(.v-btn:hover > .v-btn__overlay) {
     opacity: 0 !important;
   }
+}
+.borderItem {
+  border-bottom: 1px solid #ececec;
+  border-top: 1px solid #ececec;
+}
+.dropDown {
+  border-radius: 8px !important;
+  border: 1px solid #fff !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  box-shadow:
+    0px 16px 16px 0px rgba(4, 3, 36, 0.03),
+    0px 20px 40px 0px rgba(65, 61, 255, 0.08) !important;
+  backdrop-filter: blur(10px) !important;
+  margin-top: 20px;
+  // overflow: unset !important;
+}
+// .dropDown:after {
+//   content: "";
+//   border: 1px solid #fff !important;
+//   background: rgba(255, 255, 255, 0.5) !important;
+//   width: 20px;
+//   height: 20px;
+//   position: absolute;
+//   top: -10px;
+//   right: 20px;
+//   z-index: 999999;
+//   rotate: 45deg;
+//   border-radius: 2px;
+// }
+/* To remove hover from items */
+:deep(.v-list-item:hover > .v-list-item__overlay) {
+  // opacity: 0 !important;
 }
 </style>

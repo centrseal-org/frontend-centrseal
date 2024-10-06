@@ -30,6 +30,11 @@
   "waitingOnCreditScore": "Waiting on Credit Score",
   "waitingOnIdCard": "Waiting on ID Card",
   "WeWillLetYouKnowOnce": "We'll let you know once we launch and occasionally send updates",
+  "header": {
+    "changePassword": "Change Password",
+    "billing": "Billing",
+    "logOut": "Log Out"
+  },
   "tenant": {
     "hi": "Hi, {firstName}!",
     "youHaveBeenInvited": "You've been invited to submit your paystubs and verify your income.",
