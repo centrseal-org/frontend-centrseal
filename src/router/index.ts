@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../views/landingpage/index.vue";
 import Signin from "../views/signin/index.vue";
 import Dashboard from "../views/dashboard/dashboard.vue";
+import propertyDashboard from "../views/dashboard/propertyDashboard.vue";
 import Tenant from "../views/tenant/tenant.vue";
 import Faq from "../views/faq/faq.vue";
 import Error from "../views/error/error.vue";
@@ -35,6 +36,12 @@ const router = createRouter({
       path: "/dashboard",
       name: "dashboard",
       component: Dashboard,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/dashboard/property",
+      name: "propertyDashboard",
+      component: propertyDashboard,
       meta: { requiresAuth: true },
     },
     {

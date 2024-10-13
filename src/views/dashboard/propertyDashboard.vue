@@ -5,47 +5,33 @@ import { useUserStore } from "@/stores/useUser";
 import { usePropertyStore } from "@/stores/useProperty";
 import httpHelper from "../../helpers/httpHelpers";
 import Header from "../../components/Header.vue";
+import { useRoute, useRouter } from "vue-router";
+import { useLeadsStore } from "@/stores/useLeads";
+import PaystubCard from "@/components/PaystubCard.vue";
+import useClipboard from "vue-clipboard3";
 import Step1 from "./components/Step1.vue";
 import Step2 from "./components/Step2.vue";
 import Step3 from "./components/Step3.vue";
-import Leads from "./components/Leads.vue";
-import useClipboard from "vue-clipboard3";
 import type { VStepper } from "vuetify/components";
 
-interface Lead {
-  status: string;
-}
-
-interface LeadStats {
-  verifiedLeadsCount: number | null;
-  totalLeadsCount: number | null;
-  propertyId: number | null;
-}
-
-interface LeadsInfo {
-  propertyId: number;
-  leads: Lead[];
-}
-
-const { toClipboard } = useClipboard();
 const { t } = useI18n();
+const { toClipboard } = useClipboard();
 const snackbar = ref(false);
-const response = ref();
-const errorChecks = ref(false);
-const errorAddress = ref(false);
-const errorMessage = ref("");
-const isAddingProperty = ref(false);
-const isEditingProperty = ref(false);
+const router = useRouter();
 
 /* Store */
-const propertyStore = usePropertyStore();
 const userStore = useUserStore();
-const properties = computed(() => propertyStore.properties);
 const user = computed(() => userStore.user);
+const leadsStore = useLeadsStore();
 
+const leads = computed(() => leadsStore.leads);
+const pro = computed(() => leadsStore.property);
+const errorMessage = ref("");
+const errorChecks = ref(false);
+const errorAddress = ref(false);
+const isEditingProperty = ref(false);
 const stepNumber = ref(0);
 const stepperRef = shallowRef<InstanceType<typeof VStepper>>();
-
 const property: any = ref({
   address: null,
   image: null,
@@ -53,8 +39,43 @@ const property: any = ref({
   idCard: false,
   credit: false,
 });
+const response = ref();
 
-const leadsObj = ref<LeadStats[]>([]);
+const copyFn = async (url: string) => {
+  try {
+    await toClipboard(`https://centrseal.com/${url}`);
+    snackbar.value = true;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const allProperties = () => {
+  router.push("/dashboard");
+};
+
+const editProperty = async (pro: any) => {
+  // Populate the form with the selected property's data
+  property.value = {
+    address: pro.address,
+    image: pro.image,
+    paystub: pro.paystub,
+    idCard: pro.idCard,
+    credit: pro.credit,
+    propertyId: pro.propertyId, // Ensure this field is included
+  };
+  stepNumber.value = 0; // Reset the stepper to the first step
+  isEditingProperty.value = true; // Set the editing flag to true
+};
+
+const clickStep1 = () => {
+  if (property.value.address) {
+    stepperRef.value?.next();
+    errorAddress.value = false;
+  } else {
+    errorAddress.value = true;
+  }
+};
 
 const handleUpdatePropertyInfo = (val: any) => {
   property.value.address = val.propertyAddress;
@@ -75,27 +96,22 @@ const addProperty = async () => {
   if ((property.value.address, property.value.image)) {
     try {
       errorChecks.value = false;
-      const endpoint = isEditingProperty.value
-        ? `property/${property.value.propertyId}`
-        : "property";
-      const method = isEditingProperty.value ? "put" : "post";
+      const endpoint = `property/${property.value.propertyId}`;
+      const method = "put";
       const formData = new FormData();
       // Append the image to formData
       if (property.value.image.length) {
         formData.append("file", property.value.image[0].file);
       }
       formData.append("property", JSON.stringify(property.value));
-
       response.value = await httpHelper[method](endpoint, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
       if (response.value.code === 200 || response.value.code === 201) {
-        // Successfully added property
         stepperRef.value?.next();
       } else {
-        // Handle error case
         errorMessage.value =
           response.value.error?.message || "Failed to add property.";
       }
@@ -104,174 +120,15 @@ const addProperty = async () => {
     }
   }
 };
-
-const resetPropertyFlag = () => {
-  isAddingProperty.value = false;
-  isEditingProperty.value = false;
-  stepNumber.value = 0;
-  property.value = {
-    address: null,
-    image: null,
-    paystub: false,
-    idCard: false,
-    credit: false,
-  };
-};
-
-const copyFn = async (url: string) => {
-  try {
-    await toClipboard(`https://centrseal.com/${url}`);
-    snackbar.value = true;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-const editProperty = async (pro: any) => {
-  // Populate the form with the selected property's data
-  property.value = {
-    address: pro.address,
-    image: pro.image,
-    paystub: pro.paystub,
-    idCard: pro.idCard,
-    credit: pro.credit,
-    propertyId: pro.propertyId, // Ensure this field is included
-  };
-  stepNumber.value = 0; // Reset the stepper to the first step
-  isEditingProperty.value = true; // Set the editing flag to true
-};
-
-const handleLeadsUpdate = (leadsInfo: LeadsInfo) => {
-  const verifiedLeadsCount = leadsInfo.leads.reduce(
-    (count, lead) => count + (lead.status === "verified" ? 1 : 0),
-    0
-  );
-  const leadStats: LeadStats = {
-    verifiedLeadsCount,
-    totalLeadsCount: leadsInfo.leads.length,
-    propertyId: leadsInfo.propertyId,
-  };
-  const existingLeadIndex = leadsObj.value.findIndex(
-    (lead) => lead.propertyId === leadsInfo.propertyId
-  );
-  if (existingLeadIndex !== -1) {
-    // Update the existing entry
-    leadsObj.value[existingLeadIndex] = leadStats;
-  } else {
-    // Add new entry
-    leadsObj.value.push(leadStats);
-  }
-};
-
-const clickStep1 = () => {
-  if (property.value.address) {
-    stepperRef.value?.next();
-    errorAddress.value = false;
-  } else {
-    errorAddress.value = true;
-  }
-};
-
-onMounted(async () => {
-  propertyStore.fetchProperties();
-});
 </script>
 
 <template>
   <main>
-    <Header @resetPropertyFlag="resetPropertyFlag" />
-    <div class="position-relative bg-offWhite overflow-hidden dashboard-page">
-      <v-container
-        v-if="properties?.length > 0 && !isAddingProperty && !isEditingProperty"
-      >
-        <v-row class="mt-4">
-          <v-col cols="12">
-            <section class="d-flex align-center justify-space-between">
-              <h4>Properties</h4>
-              <v-btn
-                @click="isAddingProperty = true"
-                class="body1 main-btn addProperty px-6"
-                >Add a Property <inline-svg src="/home.svg" class="ml-2"
-              /></v-btn>
-            </section>
-          </v-col>
-        </v-row>
-        <v-row v-for="(pro, index) in properties" :key="pro.propertyId">
-          <v-col cols="12">
-            <section class="d-flex align-center justify-space-between">
-              <div class="d-flex mt-10 mb-0">
-                <img
-                  :src="pro.image[0].file.location"
-                  class="imgProperty"
-                  v-if="pro?.image[0]?.file?.location"
-                />
-
-                <img src="/uploadfile.png" class="imgProperty" v-else />
-
-                <div class="d-flex flex-column ml-4">
-                  <span class="body1">
-                    {{ pro.address?.data?.properties?.address_line1 }}
-                  </span>
-                  <span class="body3">
-                    {{ pro.address?.data?.properties?.address_line2 }}
-                  </span>
-                  <span
-                    class="body3 mt-2 font-weight-bold text-darkGray cursor-pointer"
-                    @click="editProperty(pro)"
-                  >
-                    Edit Property
-                  </span>
-                  <div class="mt-4 d-flex">
-                    <span
-                      class="docs-status px-4 py-2 rounded-pill border bg-lightPeriwinkle border-periwinkle"
-                    >
-                      {{
-                        leadsObj.find((le) => le.propertyId === pro.propertyId)
-                          ?.verifiedLeadsCount
-                      }}
-                      /
-                      {{
-                        leadsObj.find((le) => le.propertyId === pro.propertyId)
-                          ?.totalLeadsCount
-                      }}
-                      Leads Verified
-                    </span>
-                    <span
-                      class="docs-status px-4 py-2 rounded-pill border bg-successLight border-success ml-2"
-                    >
-                      <inline-svg src="/paystub.svg" class="mr-2" />
-                      Check Paystubs
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div
-                  class="d-flex align-center px-4 py-3 rounded-pill switch-card cursor-pointer hoverStyle"
-                  @click="copyFn(pro.uniqueUrl)"
-                >
-                  <span>
-                    <span class="text-gray font-weight-medium"
-                      >https://centrseal.com/</span
-                    >{{ pro.uniqueUrl }}
-                  </span>
-
-                  <span class="ml-4 d-flex align-center">
-                    <inline-svg src="/copy-double.svg" />
-                    <span class="body2 text-electricBlue">Copy</span>
-                  </span>
-                </div>
-              </div>
-            </section>
-          </v-col>
-          <v-col cols="12">
-            <Leads :property="pro" @update-leads="handleLeadsUpdate" />
-          </v-col>
-        </v-row>
-      </v-container>
-      <v-container
-        v-if="properties?.length === 0 || isAddingProperty || isEditingProperty"
-      >
+    <Header />
+    <div
+      class="position-relative bg-offWhite overflow-hidden dashboard-property-page"
+    >
+      <v-container v-if="isEditingProperty">
         <v-row>
           <v-col cols="12" class="pa-0">
             <div v-if="user">
@@ -369,6 +226,94 @@ onMounted(async () => {
           </v-col>
         </v-row>
       </v-container>
+
+      <v-container v-else>
+        <v-row class="mt-4">
+          <v-col cols="12">
+            <div @click="allProperties">All Properties</div>
+            <h4>{{ pro.address?.data?.properties?.address_line1 }}</h4>
+            <section class="d-flex align-center justify-space-between">
+              <div class="d-flex mt-10 mb-0">
+                <img
+                  :src="pro.image[0].file.location"
+                  class="imgProperty"
+                  v-if="pro?.image[0]?.file?.location"
+                />
+
+                <img src="/uploadfile.png" class="imgProperty" v-else />
+
+                <div class="d-flex flex-column ml-4">
+                  <span class="body1">
+                    {{ pro.address?.data?.properties?.address_line1 }}
+                  </span>
+                  <span class="body3">
+                    {{ pro.address?.data?.properties?.address_line2 }}
+                  </span>
+                  <span
+                    class="body3 mt-2 font-weight-bold text-darkGray cursor-pointer"
+                    @click="editProperty(pro)"
+                  >
+                    Edit Property
+                  </span>
+                  <div class="mt-4 d-flex">
+                    <span
+                      class="docs-status px-4 py-2 rounded-pill border bg-lightPeriwinkle border-periwinkle"
+                    >
+                      {{
+                        leads.filter((le: any) => le.status === "verified")
+                          .length
+                      }}
+                      /
+                      {{ leads.length }}
+                      Leads Verified
+                    </span>
+                    <span
+                      class="docs-status px-4 py-2 rounded-pill border bg-successLight border-success ml-2"
+                    >
+                      <inline-svg src="/paystub.svg" class="mr-2" />
+                      Check Paystubs
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div
+                  class="d-flex align-center px-4 py-3 rounded-pill switch-card cursor-pointer hoverStyle"
+                  @click="copyFn(pro.uniqueUrl)"
+                >
+                  <span>
+                    <span class="text-gray font-weight-medium"
+                      >https://centrseal.com/</span
+                    >{{ pro.uniqueUrl }}
+                  </span>
+
+                  <span class="ml-4 d-flex align-center">
+                    <inline-svg src="/copy-double.svg" />
+                    <span class="body2 text-electricBlue">Copy</span>
+                  </span>
+                </div>
+              </div>
+            </section>
+          </v-col>
+          <v-col cols="12">
+            <h5 class="mb-2">
+              {{ leads?.length > 0 ? leads?.length : "" }} Leads
+            </h5>
+            <section class="d-flex" v-if="leads">
+              <div v-for="(lead, index) in leads" :key="index" class="mr-4">
+                <PaystubCard
+                  :fullname="`${lead?.firstName} ${lead?.lastName}`"
+                  earn="-"
+                  period="-"
+                  :statusDate="lead?.verificationDate ?? lead.createdDate"
+                  :status="lead.status"
+                  :paystubs="lead.paystubs"
+                />
+              </div>
+            </section>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
   </main>
   <v-snackbar v-model="snackbar" :timeout="2000">
@@ -376,7 +321,14 @@ onMounted(async () => {
   </v-snackbar>
 </template>
 <style scoped lang="scss">
-.dashboard-page {
+.docs-status {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  width: fit-content;
+}
+.dashboard-property-page {
   min-height: calc(100vh - 67.2px);
   z-index: 1;
   position: relative;
@@ -397,13 +349,6 @@ onMounted(async () => {
       width: 100%;
     }
   }
-}
-.docs-status {
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  font-weight: 500;
-  width: fit-content;
 }
 .main-btn.addProperty {
   border: none !important;

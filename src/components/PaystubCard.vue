@@ -8,7 +8,7 @@ Summary: Display the paystub card component
 import { type PropType } from "vue";
 import { useFormattedDate } from "@/composables/useFormattedDate";
 
-type Status = "unverified" | "verified";
+type Status = "unverified" | "verified" | "waitingOn" | "basic";
 type Paystub = {
   preSignedUrl: string;
   paystubDate: string;
@@ -41,7 +41,7 @@ const props = defineProps({
   },
   paystubs: {
     type: Array as PropType<Paystub[]>,
-    required: true,
+    required: false,
   },
 });
 
@@ -55,7 +55,7 @@ const openFile = async (url: string) => window.open(url, "_blank");
     <inline-svg
       src="/centreseal.svg"
       class="centreseal-pattern"
-      v-if="props.status === 'verified'"
+      v-if="props.status === 'verified' || props.status === 'basic'"
       v-intersect="'animate__fadeInDown'"
     />
     <div>
@@ -69,7 +69,13 @@ const openFile = async (url: string) => window.open(url, "_blank");
           </div>
           <div class="d-flex align-center">
             <inline-svg
-              :src="props.status === 'verified' ? '/dot.svg' : '/dot-red.svg'"
+              :src="
+                props.status === 'verified'
+                  ? '/dot.svg'
+                  : props.status === 'unverified'
+                    ? '/dot-red.svg'
+                    : '/dot-gray.svg'
+              "
               v-intersect="
                 props.status === 'verified' ? 'animate__fadeInDown' : null
               "
@@ -77,36 +83,53 @@ const openFile = async (url: string) => window.open(url, "_blank");
             <span
               class="ml-1 body2"
               :class="
-                props.status === 'verified' ? 'text-verified' : 'text-warning'
+                props.status === 'verified'
+                  ? 'text-verified'
+                  : props.status === 'unverified'
+                    ? 'text-warning'
+                    : 'text-gray'
               "
               v-intersect="
                 props.status === 'verified' ? 'animate__fadeInDown' : null
               "
             >
               {{
-                props.status === "verified" ? "Paystub Verified" : "Unverified"
+                props.status === "verified"
+                  ? "Paystub Verified"
+                  : props.status === "unverified"
+                    ? "Unverified"
+                    : "Waiting On"
               }}
             </span>
           </div>
         </div>
       </div>
-      <div><span class="font-weight-medium">Earn: </span>{{ props.earn }}</div>
       <div class="my-2">
-        <span class="font-weight-medium">Payment: </span> {{ props.period }}
+        <span class="font-weight-medium">Earn: </span>
+        <span v-if="props.status !== 'basic'">{{ props.earn }}</span>
+        <span class="basic-style" v-if="props.status === 'basic'"></span>
       </div>
-      <div>
+      <div class="my-2" v-if="props.status !== 'waitingOn'">
+        <span class="font-weight-medium">Payment: </span>
+        <span v-if="props.status !== 'basic'"> {{ props.period }}</span>
+        <span class="basic-style" v-if="props.status === 'basic'"></span>
+      </div>
+      <div v-if="props.status !== 'basic'">
         <span class="font-weight-medium">
           {{
             props.status === "verified"
               ? "Paystubs Verified on"
-              : "Verification Failed on"
+              : props.status === "unverified"
+                ? "Verification Failed on"
+                : "Signed up on"
           }}
-          {{ formatDate(props.statusDate) }}:
+          {{ formatDate(props.statusDate) }}
+          {{ props.status !== "waitingOn" ? ":" : "" }}
         </span>
       </div>
       <section class="mt-4 d-flex justify-space-between">
         <span
-          v-if="props.paystubs[0]?.preSignedUrl"
+          v-if="props.paystubs"
           class="docs-status pa-2 mr-6 rounded-pill border bg-lightPeriwinkle border-periwinkle font-weight-medium cursor-pointer"
           @click="openFile(props.paystubs[0].preSignedUrl)"
         >
@@ -114,7 +137,7 @@ const openFile = async (url: string) => window.open(url, "_blank");
         </span>
 
         <span
-          v-if="props.paystubs[1]?.preSignedUrl"
+          v-if="props.paystubs"
           class="docs-status pa-2 rounded-pill border bg-lightPeriwinkle border-periwinkle font-weight-medium cursor-pointer"
           @click="openFile(props.paystubs[1].preSignedUrl)"
         >
@@ -147,7 +170,16 @@ const openFile = async (url: string) => window.open(url, "_blank");
     position: absolute;
     right: -10%;
     top: -25%;
-    opacity: 0.4;
+    opacity: 0.4 !important;
+  }
+  .basic-style {
+    width: 65px;
+    height: 19px;
+    display: inline-block;
+    background: #e8e8ff;
+    border-radius: 50px;
+    top: 4px;
+    position: relative;
   }
 }
 </style>
