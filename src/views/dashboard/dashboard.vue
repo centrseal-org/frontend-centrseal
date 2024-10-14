@@ -245,7 +245,7 @@ onMounted(async () => {
                   </div>
                 </div>
               </div>
-              <div>
+              <div class="position-relative">
                 <div
                   class="d-flex align-center px-4 py-3 rounded-pill switch-card cursor-pointer hoverStyle"
                   @click="copyFn(pro.uniqueUrl)"
@@ -261,11 +261,36 @@ onMounted(async () => {
                     <span class="body2 text-electricBlue">Copy</span>
                   </span>
                 </div>
+                <div
+                  :class="{
+                    'hintComment text-grey animate__delay-1s d-block':
+                      properties.length === 1 &&
+                      leadsObj[0]?.totalLeadsCount === 0,
+                  }"
+                  v-intersect="'animate__fadeInDown'"
+                  class="d-none"
+                >
+                  Share this link with potential<br />
+                  tenants to get them verified
+                  <inline-svg src="/arrow_hint.svg" />
+                </div>
               </div>
             </section>
           </v-col>
-          <v-col cols="12">
+          <v-col cols="12" class="position-relative">
             <Leads :property="pro" @update-leads="handleLeadsUpdate" />
+            <div
+              :class="{
+                'hintCommentLeads text-grey animate__delay-1s d-block':
+                  properties.length === 1 && leadsObj[0]?.totalLeadsCount === 0,
+              }"
+              v-intersect="'animate__fadeInDown'"
+              class="d-none"
+            >
+              Tenants who complete verification show<br />
+              up here with their paystub status.<br />
+              <inline-svg src="/arrow_hint2.svg" />
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -455,5 +480,23 @@ onMounted(async () => {
   border-radius: 8px;
   border: 1px solid var(--Blue-blue-300, #6663ff);
   background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+}
+.hintComment {
+  position: absolute;
+  left: -270px;
+  top: 15px;
+  svg {
+    position: absolute;
+    top: 0;
+  }
+}
+.hintCommentLeads {
+  position: absolute;
+  left: 400px;
+  top: 50px;
+  svg {
+    position: absolute;
+    top: 50px;
+  }
 }
 </style>

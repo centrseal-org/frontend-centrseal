@@ -38,6 +38,8 @@ onMounted(async () => {
     const uniqueUrl = props.property.uniqueUrl;
     try {
       const response = await httpHelper.get(`/user/uniqueUrl/${uniqueUrl}`);
+
+      console.log(response, "KSK9px7p57");
       if (response.data) {
         leads.value = response.data;
         for (const lead of leads.value) {
