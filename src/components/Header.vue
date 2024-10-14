@@ -167,11 +167,11 @@ a {
 .dropDown {
   border-radius: 8px !important;
   border: 1px solid #fff !important;
-  background: rgba(255, 255, 255, 0.5) !important;
+  background: rgba(255, 255, 255, 01) !important;
   box-shadow:
     0px 16px 16px 0px rgba(4, 3, 36, 0.03),
     0px 20px 40px 0px rgba(65, 61, 255, 0.08) !important;
-  backdrop-filter: blur(10px) !important;
+  // backdrop-filter: blur(100px) !important;
   margin-top: 20px;
   // overflow: unset !important;
 }
