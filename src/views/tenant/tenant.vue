@@ -29,8 +29,6 @@ onMounted(async () => {
   try {
     const uniqueUrls = userStore.user?.uniqueUrls;
     const userId = userStore.user?.userId;
-    console.log(uniqueUrls, "uniqueUrls");
-    console.log(userStore.user, "userId");
     try {
       const response = await httpHelper.get("/property/unique-urls", {
         params: { uniqueUrls },
@@ -41,7 +39,6 @@ onMounted(async () => {
         console.warn("There is no property for verification");
       }
       // For each property, fetch paystubs and merge them
-      console.log(properties.value, "properties.value");
       for (const property of properties.value) {
         try {
           const paystubs = await httpHelper.get(

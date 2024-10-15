@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import Header from "../../components/Header.vue";
-import httpHelper from "../../helpers/httpHelpers";
+import Header from "@/components/Header.vue";
+import httpHelper from "@/helpers/httpHelpers";
 import { useRouter, useRoute } from "vue-router";
 import { useUserStore } from "@/stores/useUser";
 
@@ -10,9 +10,12 @@ const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 
-const firstName = ref("");
-const lastName = ref("");
-const brokerageName = ref("");
+const newPassword = ref("");
+const passwordConfirmation = ref("");
+const visible = ref(false);
+const visibleNewPassword = ref(false);
+const errorMessage = ref("");
+
 const token = ref(route.query.token as string);
 const userStore = useUserStore();
 
@@ -22,37 +25,42 @@ if (isLoggedIn.value) {
 }
 
 const submitForm = async () => {
+  // Validate passwords
+  if (newPassword.value !== passwordConfirmation.value) {
+    errorMessage.value = "Passwords do not match!";
+    return;
+  }
+
+  // Check password length and requirements
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  if (!passwordRegex.test(newPassword.value)) {
+    errorMessage.value =
+      "Must be 8 characters or longer, include 1 number, and 1 uppercase letter";
+    return;
+  }
+
   try {
-    const response = await httpHelper.post<any>("auth/complete-signup", {
+    const response: any = await httpHelper.post("/auth/reset-password", {
       token: token.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
-      brokerageName: brokerageName.value,
+      newPassword: newPassword.value,
     });
 
+    if (response.status === 200) {
+      alert(t("Password reset successfully!"));
+      router.push("/login");
+    }
     if (response.data?.status === "logged_in" && response.data.access_token) {
-      // Store the token securely (e.g., in a cookie or secure storage)
       localStorage.setItem("token", response.data.access_token);
-      if (response.data.user.role === "tenant") {
-        const property = await httpHelper.get(
-          `property/unique-url/${response.data.user.uniqueUrls[0]}`
-        );
-        userStore.setUser({
-          ...response.data.user,
-          tenant: {
-            property: property.data,
-          },
-        });
-        router.push(
-          `/tenant/paystub?uniqueUrl=${response.data.user.uniqueUrls[0]}`
-        );
-      } else {
+      if (response.data.user.role === "realtor") {
         userStore.setUser(response.data.user);
         router.push({ name: "dashboard" });
+      } else {
+        userStore.setUser(response.data.user);
+        router.push({ name: "tenant" });
       }
     }
   } catch (error) {
-    console.error("Failed to complete signup", error);
+    errorMessage.value = "An error occurred. Please try again..";
   }
 };
 </script>
@@ -65,59 +73,83 @@ const submitForm = async () => {
       <img src="/s2.svg" class="shadowTop" alt="" />
       <img src="/s1.svg" class="shadowBottom" alt="" />
       <img src="/s2.svg" class="shadowBottom" alt="" />
-      <div class="py-16 profile-page">
+      <div class="py-16 reset-password-page">
         <v-container>
           <v-row>
             <v-col cols="12" class="py-4">
-              <v-form @submit.prevent="submitForm" class="profile-form">
+              <v-form @submit.prevent="submitForm" class="reset-password-form">
                 <div class="card-slide mr-4 pa-6 border border-white">
                   <div class="d-flex flex-column align-center">
                     <h6 class="text-blackText text-center mt-2">
-                      {{ t("Let's get to know each other") }}
+                      {{ t("Create a New Password!") }}
                     </h6>
                   </div>
 
                   <div class="mt-10">
-                    <div class="body2 text-gray mb-2">First Name</div>
+                    <div class="body2 text-gray mb-2">New Password</div>
                     <v-text-field
-                      v-model="firstName"
-                      type="text"
+                      v-model="newPassword"
+                      :type="visibleNewPassword ? 'text' : 'password'"
                       hide-details="auto"
-                      placeholder="John"
+                      placeholder="Enter your password"
                       class="text-input mb-2 mb-sm-0 w-sm-auto w-100"
                       variant="solo"
                       density="compact"
                       required
-                      autocomplete="text"
-                    />
-                  </div>
-                  <div class="my-4">
-                    <div class="body2 text-gray mb-2">Last Name</div>
-                    <v-text-field
-                      v-model="lastName"
-                      type="text"
-                      hide-details="auto"
-                      placeholder="Doe"
-                      class="text-input mb-2 mb-sm-0 w-sm-auto w-100"
-                      variant="solo"
-                      density="compact"
-                      required
-                      autocomplete="text"
-                    />
+                      autocomplete="current-password"
+                    >
+                      <template v-slot:prepend-inner>
+                        <inline-svg
+                          src="/lock.svg"
+                          class="prepend-inner-icon"
+                        />
+                      </template>
+                      <template v-slot:append-inner>
+                        <inline-svg
+                          src="/eye.svg"
+                          class="append-inner-icon cursor-pointer"
+                          @click="visibleNewPassword = !visibleNewPassword"
+                        />
+                      </template>
+                    </v-text-field>
                   </div>
                   <div class="my-4">
                     <div class="body2 text-gray mb-2">
-                      Brokerage Name (Optional)
+                      Password Confirmation
                     </div>
                     <v-text-field
-                      v-model="brokerageName"
-                      type="text"
+                      v-model="passwordConfirmation"
+                      :type="visible ? 'text' : 'password'"
                       hide-details="auto"
-                      placeholder="DABC Realtyoe"
+                      placeholder="Re-enter your password"
                       class="text-input mb-2 mb-sm-0 w-sm-auto w-100"
                       variant="solo"
                       density="compact"
-                    />
+                      required
+                      autocomplete="current-password"
+                    >
+                      <template v-slot:prepend-inner>
+                        <inline-svg
+                          src="/lock.svg"
+                          class="prepend-inner-icon"
+                        />
+                      </template>
+                      <template v-slot:append-inner>
+                        <inline-svg
+                          src="/eye.svg"
+                          class="append-inner-icon cursor-pointer"
+                          @click="visible = !visible"
+                        />
+                      </template>
+                    </v-text-field>
+                    <div
+                      class="body3 text-gray mt-3 d-flex justify-space-between"
+                    >
+                      <span>
+                        Must be 8 characters or longer, include 1 number, and 1
+                        uppercase letter
+                      </span>
+                    </div>
                   </div>
                   <v-btn
                     class="main-btn w-100 d-flex align-center mt-8"
@@ -126,10 +158,13 @@ const submitForm = async () => {
                     <div
                       class="d-flex align-center justify-space-between w-100"
                     >
-                      <span> {{ t("Done") }} </span>
+                      <span> {{ t("Confirm") }} </span>
                       <inline-svg src="/arrowRight.svg" class="ml-2" />
                     </div>
                   </v-btn>
+                  <div v-if="errorMessage" class="mt-4 text-error">
+                    {{ errorMessage }}
+                  </div>
                 </div>
               </v-form>
             </v-col>
@@ -197,13 +232,11 @@ const submitForm = async () => {
   animation: circleMove2 50s linear infinite; /* Apply animation */
   pointer-events: none;
 }
-
-.profile-page {
+.reset-password-page {
   min-height: calc(100vh - 57px);
   position: relative;
 }
-.profile-form,
-.verify-email {
+.reset-password-form {
   width: 540px;
   min-width: 350px;
   min-height: 350px;

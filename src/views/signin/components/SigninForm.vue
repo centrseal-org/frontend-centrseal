@@ -59,14 +59,9 @@ const submitForm = async () => {
     return;
   }
 
-  if (password.value.length < 8) {
-    errorMessage.value = "Password must be at least 8 characters long.";
-    return;
-  }
-
-  if (!validatePassword(password.value)) {
+  if (!validatePassword(password.value) || password.value.length < 8) {
     errorMessage.value =
-      "Password must contain at least one number and one uppercase letter.";
+      "Must be 8 characters or longer, include 1 number, and 1 uppercase letter";
     return;
   }
 
@@ -108,7 +103,7 @@ const submitForm = async () => {
     } else {
       errorMessage.value = response.error.message;
     }
-  } catch (error: any) {
+  } catch (error) {
     errorMessage.value = "An error occurred. Please try again.";
   }
 };
@@ -122,6 +117,10 @@ const resendVerificationEmail = async () => {
     errorMessage.value =
       "Failed to resend verification email. Please try again.";
   }
+};
+
+const forgotPassword = async () => {
+  router.push("forgot-password");
 };
 </script>
 
@@ -180,6 +179,17 @@ const resendVerificationEmail = async () => {
                     />
                   </template>
                 </v-text-field>
+                <div class="body3 text-gray mt-3 d-flex justify-space-between">
+                  <span>
+                    Must be 8 characters or longer, include 1 <br />number, and
+                    1 uppercase letter
+                  </span>
+                  <span
+                    class="font-weight-bold cursor-pointer"
+                    @click="forgotPassword()"
+                    >Forgot Password?</span
+                  >
+                </div>
               </div>
               <v-btn
                 class="main-btn w-100 d-flex align-center mt-8"
@@ -190,7 +200,7 @@ const resendVerificationEmail = async () => {
                   <inline-svg src="/arrowRight.svg" class="ml-2" />
                 </div>
               </v-btn>
-              <div v-if="errorMessage" class="mt-4 text-danger">
+              <div v-if="errorMessage" class="mt-4 text-error">
                 {{ errorMessage }}
               </div>
               <!-- <div class="divider-container">
