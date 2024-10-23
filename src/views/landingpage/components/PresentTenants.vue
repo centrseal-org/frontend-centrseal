@@ -13,17 +13,17 @@ const presentTenants = [
     id: "1",
     title:
       "Spend <mark><b>0 minutes</b></mark> sending repeat questions to leads",
-    text: "Our tenant verification app asks the right questions and gives you a summary of leads who are in the pipeline for your lease properties.",
+    text: "Our tenant verification app asks the right questions and gives you a summary of leads who are in the pipeline for your properties.",
   },
   {
     id: "2",
-    title: "A lot of submitted documents are fake",
-    text: "That’s why we run the checks and give you a seal of approval on the qualified tenants, so you can focus on what you do best, closing deals.",
+    title: "No more second guessing if documents are real or fake",
+    text: "We run the checks and give you a seal of approval on the qualified tenants, so you can focus on doing more important things.",
   },
   {
     id: "3",
-    title: "A Seamless process for tenants & landlords",
-    text: "Leads can add their information and complete a screening in minutes. When you have the right tenant, sending them to the landlord takes 10 seconds.",
+    title: "A seamless process for property managers & landlords",
+    text: "Adding properties is quick. Leads add their information and complete a screening in minutes, helping you qualify tenants easily.",
   },
 ];
 </script>
@@ -36,7 +36,7 @@ const presentTenants = [
         <div class="zindexHelper">
           <div v-intersect="'animate__fadeInUp'">
             <h2 class="text-center mb-6 gradient-text position-relative">
-              {{ t("presentTenantsWithConfidence") }}
+              {{ t("chooseTheRightTenantsWithConfidence") }}
             </h2>
           </div>
         </div>

@@ -57,15 +57,15 @@ onMounted(() => {
     <div v-intersect="'animate__fadeInUp'">
       <v-row class="mb-12">
         <v-col cols="12">
-          <h2 class="text-center mb-6 gradient-text">Here’s How it Works</h2>
+          <h2 class="text-center mb-6 gradient-text">Here's How it Works</h2>
         </v-col>
         <v-col cols="12">
           <div class="videoSection">
             <iframe
               ref="iframeRef"
-              src="https://player.vimeo.com/video/1007296291?autoplay=0&amp;loop=0&amp;autopause=0&amp;controls=0&amp;muted=0"
+              src="https://player.vimeo.com/video/1021539450?autoplay=0&amp;loop=0&amp;autopause=0&amp;controls=0&amp;muted=0"
               width="1040"
-              height="743"
+              height="590"
               frameborder="0"
               style="margin: 0 auto"
               allow="autoplay; fullscreen"
@@ -126,7 +126,7 @@ onMounted(() => {
     border-radius: var(--Body-P-size, 16px);
     border: 4px solid var(--Purple-Gradient, #7b78ff);
     min-width: 1040px;
-    min-height: 743px;
+    min-height: 590px;
   }
 }
 @media (max-width: 1300px) {
@@ -135,7 +135,7 @@ onMounted(() => {
     min-width: 500px;
     min-height: 200px;
     width: 700px;
-    height: 500px;
+    height: 400px;
   }
 }
 @media (max-width: 800px) {
@@ -144,7 +144,7 @@ onMounted(() => {
     min-width: 400px;
     min-height: 200px;
     width: 500px;
-    height: 360px;
+    height: 300px;
   }
 }
 @media (max-width: 550px) {
@@ -152,7 +152,7 @@ onMounted(() => {
     min-width: 300px;
     min-height: 200px;
     width: 350px;
-    height: 250px;
+    height: 200px;
   }
 }
 </style>
